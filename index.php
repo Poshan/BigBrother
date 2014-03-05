@@ -5,7 +5,9 @@
 	<link rel="stylesheet" href="/trial/css/formcss.css">
 </head>
 <body background = "/trial/img/image.jpg">
-
+<form action ="user.php">
+	<input type="submit" id="Alreadyauser" name="Already a user">
+</form>
 <h1>
 	Register
 </h1>
@@ -38,13 +40,14 @@
 			</div><!--end of .row-->	
 
 			<div class="submit">
-				<input type="submit" id="submit" name="submit" value="submit" onclick="submit_form(this);"/>
+				<input type="submit" id="submit" name="submit" value="submit"/>
 			</div><!--end of .submit-->
 		</form><!--end of the form-->
 
 
 	</div><!--end #form-->
 </div><!--end of formContent-->
+
 </body>
 </html>
 

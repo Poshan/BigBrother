@@ -13,7 +13,7 @@
 	else{*/
 		echo "working dude";
 		$sql = "INSERT INTO viewer (`viewer_id`, `viewer_name`, `person_id`) 
-				VALUES (NULL, `$name`, `$phone`);";
+				VALUES (NULL, `$name`, `$phone`)";
 		mysql_query($sql) or die(mysql_error());
 		echo "inserted to dbase";
 		header("Location:view.php");
