@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ODD edits map</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+	<!--<link rel="points" type="application/json" href="odd_nodes.geojson">-->
+	<style>
+		#map{width:1000px;height:1000px;}
+	</style>
+</head>
+<body>
+	<div id='map'></div>
+	
+	<script>
+		//add mapbox layer mapid=poshan.hc1eo89i
+		var map = L.mapbox.map('map', 'poshan.hc1eo89i').setView([28.425,84.435], 7);
+		//add geojson
+		//working here
+		// $.getJSON($('link[rel="points"]').attr("href"), function(data) {
+  //   		var geojson = L.geoJson(data, {
+  //     			onEachFeature: function (feature, layer) {
+  //       			layer.bindPopup(feature.properties.name);
+  //     			}
+  //   		});
+  //   		var map = L.map('map').fitBounds(geojson.getBounds());
+  //   		// mapboxTiles.addTo(map);
+  //   		geojson.addTo(map);
+  // 		});
+
+		// var markers = mapbox.markers.layer().url('odd_nodes.geojson');
+		// mapbox.markers.interaction(markers);
+		// map.addLayer(markers);
+		var nodes = L.mapbox.featureLayer()
+    		.loadURL('odd_nodes.geojson')
+    		.addTo(map);
+    	var ways = L.mapbox.featureLayer().
+    		loadURL('odd_ways.geojson')
+    		.addTo(map);
+
+
+	</script>
+</body>
+</html>
