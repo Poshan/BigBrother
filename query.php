@@ -35,31 +35,23 @@
 		while ($row = mysqli_fetch_array($result)){
                         //$row = mysqli_fetch_array($result);
                         //$_SESSION['W'] = $row[3];
-		        $W[$row[3]] = array('id' => $row[3]);
-                }
+		            
+		    $sql = "SELECT * FROM `person`WHERE `person_id` = '" . $row[3] . "'";
+                    $person_result = mysqli_query($con,$sql);
+                    while($row1 = mysqli_fetch_array($person_result)){
+                        $X = $row1[2]; 
+		        $Y = $row1[3];
+                        //$arrayName[] = array($X,$Y);	
+                        $W[] = array($row[3] => array($X,$Y));
+                      
+		                //echo json_encode($arrayName);		//sent to daaam.php
+	     			}      	
+        }
 	}
-        var_dump($W);
-	$sql = "SELECT * 
-			FROM `person`
-			WHERE `person_id` = '" . $_SESSION['W'] . "'";
-	;
-
-        $result = mysqli_query($con,$sql);
-	$arrayName = array();
-        if (! $result){
-		echo "no results";
-	}
-	else{
-             while($row = mysqli_fetch_array($result)){
-                $X = $row[2]; 
-		$Y = $row[3];
-                $arrayName[] = array($X,$Y);	
-                
-                        
-		//echo json_encode($arrayName);		//sent to daaam.php
-	     }
-	}       
-print_r($arrayName);
+       var_dump ($W);
+       echo '<br>';
+        echo json_encode($W);
+//print_r($arrayName);
 ?>
 <html>
 <head>
@@ -75,18 +67,40 @@ print_r($arrayName);
 <body>
 <div id ="map"></div>
 <script type="text/javascript">
-        var x = "<?php echo $X; ?>";
-        var y = "<?php echo $Y;?>";
-        var latlng = L.latLng(x,y);
+        //var x = "<?php echo $X; ?>";
+        //var y = "<?php echo $Y;?>";
+        var jso = <?php echo json_encode($W);?>;
+        //var jso = <?php echo $W; ?>;
+        //var jso_obj = JSON.parse(jso);
+        
+        var coords = [];
+        for(sth in jso){
+        	sth_in = jso[sth]; 
+        	for(any in sth_in){
+        		index = any;
+        		ins = sth_in[any];
+        		coords.push(ins);
+        	}
+        }
+        var latlng = [];
+        for (var i = 0; i < coords.length; i++) {
+        	var x = coords[i][0];
+        	var y = coords[i][1];
+        	var latlng[i] = L.latLng(x,y);
+        	var marker[i] = L.marker(latlng[i]).addTo(map);
+
+        };
+
+        //var latlng = L.latLng(x,y);
         var map = new L.Map('map', {
 	    center: new L.LatLng(28.425,84.435),
 	    zoom: 7,
 	    layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
 	});
-	var marker = L.marker(latlng).addTo(map);
-        var extend1 = new L.LatLngBounds();
-        extend1.extend(latlng);
-        map.fitBounds(extend1);
+	//var marker = L.marker(latlng).addTo(map);
+    var extend1 = new L.LatLngBounds();
+    extend1.extend(latlng);
+    map.fitBounds(extend1);
 
 </script>
 </body>
