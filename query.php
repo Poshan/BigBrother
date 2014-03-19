@@ -86,21 +86,25 @@
         for (var i = 0; i < coords.length; i++) {
         	var x = coords[i][0];
         	var y = coords[i][1];
-        	var latlng[i] = L.latLng(x,y);
-        	var marker[i] = L.marker(latlng[i]).addTo(map);
+            var ll = L.latLng(x,y);
+            latlng.push(ll);
 
         };
-
+        
         //var latlng = L.latLng(x,y);
         var map = new L.Map('map', {
 	    center: new L.LatLng(28.425,84.435),
 	    zoom: 7,
-	    layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
-	});
-	//var marker = L.marker(latlng).addTo(map);
-    var extend1 = new L.LatLngBounds();
-    extend1.extend(latlng);
-    map.fitBounds(extend1);
+	    layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')});
+	    var extend1 = new L.LatLngBounds();
+        for (var i = 0; i < latlng.length; i++) {
+            L.marker(latlng[i]).addTo(map);
+            extend1.extend(latlng[i]);
+        };
+        //var marker = L.marker(latlng).addTo(map);
+    
+    
+        map.fitBounds(extend1);
 
 </script>
 </body>
