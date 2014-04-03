@@ -45,7 +45,7 @@
 		<div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" 	href="#collapseTwo">
-                        Myaans
+                        Viewable persons
                     </a>
                 </div>
                 <div id="collapseTwo" class="accordion-body collapse">
@@ -76,9 +76,14 @@ $(person).each(function(p){
 
 addthepersons(person_obj);
 function clickfunction(id){
-	console.log(id);
-	
-
+	$.ajax({
+  		url: 'abcd.php',
+  		type: 'get',
+  		data: {id : 'test'},
+  		success: function(output){
+  			debugger;
+  		}
+	});
 }
 
 
@@ -100,8 +105,6 @@ function addthepersons(person1){
         	label.innerHTML = person_obj[a];
         	label.appendChild(button);
         	rdiv.appendChild(label);
-        	debugger;
-        	
 	      
 	 }	
 }
