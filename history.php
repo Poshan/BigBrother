@@ -78,8 +78,8 @@ addthepersons(person_obj);
 function clickfunction(id){
 	$.ajax({
   		url: 'abcd.php',
-  		type: 'get',
-  		data: {id : 'test'},
+  		type: 'post',
+  		data: {pid : id},
   		success: function(output){
   			debugger;
   		}
