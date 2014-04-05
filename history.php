@@ -34,13 +34,24 @@
 <html>
 <head>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
+ <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
 <title>View the history not the one where we can see hitler</title>
+  <style>
+    #map{
+	    height:100%;
+	    width:100%;
+	    position:absolute;
+	    left:100px;
+	    top:150px;
+    }
+  </style>
 </head>
+
 <body>
-<div id="Map" style="width:80%; height: 100%">
+<div id="button" style="width:80%; height: 100%">
 	<div class="accordion" id="accordion2" position="absolute" style="width:20%; height: 75%" >
 		<div class="accordion-group">
                 <div class="accordion-heading">
@@ -59,12 +70,17 @@
 </div>
 
 
-
-
+<div id ='map'></map>
 <script type="text/javascript">
 var person = <?php echo json_encode($person_list);?>;
 //take each item from person and call the addtheperson(each item from person) function
 var person_obj = {};
+var map = new L.Map('map', {
+    center: new L.LatLng(28.425,84.435),
+    zoom: 7,
+    layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
+});
+
 $(person).each(function(p){
 	x = person[p]; 
 	for (a in x){
@@ -75,16 +91,30 @@ $(person).each(function(p){
 
 
 addthepersons(person_obj);
+dis = '';
+
 function clickfunction(id){
 	$.ajax({
   		url: 'abcd.php',
   		type: 'post',
   		data: {pid : id},
+  		datatype: 'json',
   		success: function(output){
-  			debugger;
+  			a = JSON.parse(output);
+  			for (anythg in a){
+  				b = (a[anythg]);
+  				for (ath in b){
+  					//dis += 'at'+ath+'user was at'+b[ath][0]+','+b[ath][1]; 
+  					//working
+  					L.marker(b[ath][0],b[ath][1]).addTo(map);
+  				}	
+  			}
   		}
+  		//alert (dis);
 	});
+
 }
+
 
 
 function addthepersons(person1){

@@ -29,7 +29,7 @@
     while ($roow = mysqli_fetch_array($result1)){
       $pw = $roow[2];
     }
-    echo $pw;
+    //echo $pw;
     if ($password = $pw) {
       $sql = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['name'] . "'";
       $W = array();
@@ -60,7 +60,7 @@
       }
        //var_dump ($W);
        //echo '<br>';
-      echo json_encode($W);
+      //echo json_encode($W);
     
 //print_r($arrayName);
 }
@@ -91,6 +91,7 @@ view the hstory that
         //var x = "<?php echo $X; ?>";
         //var y = "<?php echo $Y;?>";
         var jso = <?php echo json_encode($W);?>;
+        
         //var jso = <?php echo $W; ?>;
         //var jso_obj = JSON.parse(jso);
         var coords = {};
@@ -126,6 +127,13 @@ view the hstory that
         for (any in coords){
             x = coords[any];
             //var latlng = L.latlng[x];
+            //the number 50 represents the radius of the circle this will be the radius of the accuracy data from gps
+            var circle = L.circle(x, 50, {
+    color: 'red',
+    fillColor: '#f03',
+    fillOpacity: 0.5
+      }).addTo(map);
+            
             var marker = L.marker(x);
             marker.bindLabel(any,{
               noHide:true,
@@ -140,6 +148,7 @@ view the hstory that
                  x1 = x[0];
                  y1 = x[1];
                  var ll = L.latLng(x1,y1);
+   
                  latlng.push(ll);
             }
         } 

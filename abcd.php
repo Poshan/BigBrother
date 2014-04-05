@@ -12,4 +12,5 @@
 		$W[] = array($row[3] => array($X,$Y));
 	}
 	echo json_encode($W);
+	//echo ($W);
 ?>
