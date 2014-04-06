@@ -35,9 +35,10 @@
 <head>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+
 <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <title>View the history not the one where we can see hitler</title>
   <style>
     #map{
@@ -92,6 +93,11 @@ $(person).each(function(p){
 
 addthepersons(person_obj);
 dis = '';
+latlngforpll = [];
+function createpolyline(l4pll){
+	//debugger;
+	var polyline = L.polyline(l4pll, {color: 'red'}).addTo(map);
+}
 
 function clickfunction(id){
 	$.ajax({
@@ -106,13 +112,19 @@ function clickfunction(id){
   				for (ath in b){
   					//dis += 'at'+ath+'user was at'+b[ath][0]+','+b[ath][1]; 
   					//working
-  					L.marker(b[ath][0],b[ath][1]).addTo(map);
+  					x = parseInt(b[ath][0]);
+  					y = parseInt(b[ath][1]);
+  					var latlng = L.latLng(x,y);
+  					latlngforpll.push(latlng);
+  					marker = L.marker(latlng).addTo(map);
+  					marker.bindPopup(ath);
+  					
   				}	
   			}
   		}
   		//alert (dis);
 	});
-
+	createpolyline(latlngforpll);
 }
 
 

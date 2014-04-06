@@ -50,9 +50,10 @@
                   while($row1 = mysqli_fetch_array($person_result)){
                           $X = $row1[2]; 
                           $Y = $row1[3];
+                          $acc = $row1[4];
                           //$arrayName[] = array($X,$Y);  
-                          echo $row1[1];
-                          $W[] = array($row1[1] => array($X,$Y));
+                          //echo $row1[1];
+                          $W[] = array($row1[1] => array($X,$Y,$acc));
                       
                         //echo json_encode($arrayName);     //sent to daaam.php
                   }       
@@ -103,6 +104,7 @@ view the hstory that
                 ins = sth_in[any];
                 // coords.push(ins);
                 coords[name] = ins;
+               
             }
          }
         //debugger;
@@ -125,7 +127,9 @@ view the hstory that
         });
         
         for (any in coords){
+          debugger;
             x = coords[any];
+            debugger;
             //var latlng = L.latlng[x];
             //the number 50 represents the radius of the circle this will be the radius of the accuracy data from gps
             var circle = L.circle(x, 50, {
