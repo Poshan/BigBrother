@@ -107,8 +107,7 @@ function createpolyline(l4pll){
 }
 
 function clickfunction(id){
-	debugger;
-	//remove existing markers and polylines
+	
 	if (marker.getLatLng()){
 		marker_layergr.clearLayers();
 	}
@@ -130,7 +129,7 @@ function clickfunction(id){
   					y = parseInt(b[ath][1]);
   					var latlng = L.latLng(x,y);
   					latlngforpll.push(latlng);
-  					//create a layer group from the markers
+  					
   					marker = L.marker(latlng).addTo(map);
   					marker.bindPopup(ath);
   					marker_layergr.addLayer(marker);
@@ -145,6 +144,10 @@ function clickfunction(id){
 	});
 }
 marker_layergr.addTo(map);
+
+//to dos:: put the extend hint:::::use the polyline 
+//photos
+
 
 
 

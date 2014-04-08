@@ -67,6 +67,8 @@
 }
 else{
   echo 'password doesnot match';
+  //take back to the login page
+  //echo '<a href = '/user.php'>' . 'goto the login page' . '</a>';
 }
 ?>
 <html>
@@ -85,7 +87,7 @@ else{
   </style>
 </head>     
 <body>
-view the hstory that
+view the hstory 
 <a href="history.php">click</a>
 <div id ="map"></div>
 <script type="text/javascript">
@@ -127,12 +129,11 @@ view the hstory that
         });
         
         for (any in coords){
-          debugger;
             x = coords[any];
-            debugger;
-            //var latlng = L.latlng[x];
-            //the number 50 represents the radius of the circle this will be the radius of the accuracy data from gps
-            var circle = L.circle(x, 50, {
+            acc = x[2];
+            //this is accuracy value scale it and then use as the radius of the circle
+            //console.log(acc);
+            var circle = L.circle(x, acc*100, {
     color: 'red',
     fillColor: '#f03',
     fillOpacity: 0.5
@@ -164,7 +165,8 @@ view the hstory that
         };
         //var marker = L.marker(latlng).addTo(map);
         //http://leaflet.github.io/Leaflet.label/leaflet.js and             http://leaflet.github.io/Leaflet.label/leaflet.label.css
-        map.fitBounds(extend1);        
+        map.fitBounds(extend1); 
+        L.control.scale().addTo(map);       
 
 </script>
 </body>
