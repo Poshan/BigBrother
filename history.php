@@ -94,19 +94,33 @@ $(person).each(function(p){
 addthepersons(person_obj);
 dis = '';
 latlngforpll = [];
+var marker = L.marker();
+var marker_layergr = L.layerGroup();
+//var polyline = L.polyline();
 function createpolyline(l4pll){
 	//debugger;
 	var polyline = L.polyline(l4pll, {color: 'red'}).addTo(map);
+	marker_layergr.addLayer(polyline);
+	//polyline.setLatLngs(l4pll);
+	//polyline.addTo(map);
+	
 }
 
 function clickfunction(id){
+	debugger;
+	//remove existing markers and polylines
+	if (marker.getLatLng()){
+		marker_layergr.clearLayers();
+	}
 	$.ajax({
   		url: 'abcd.php',
   		type: 'post',
   		data: {pid : id},
   		datatype: 'json',
   		success: function(output){
+
   			a = JSON.parse(output);
+  			  		console.log(a);
   			for (anythg in a){
   				b = (a[anythg]);
   				for (ath in b){
@@ -116,16 +130,21 @@ function clickfunction(id){
   					y = parseInt(b[ath][1]);
   					var latlng = L.latLng(x,y);
   					latlngforpll.push(latlng);
+  					//create a layer group from the markers
   					marker = L.marker(latlng).addTo(map);
   					marker.bindPopup(ath);
+  					marker_layergr.addLayer(marker);
   					
-  				}	
+  				}
+  				createpolyline(latlngforpll);	
   			}
+  			
   		}
+  		
   		//alert (dis);
 	});
-	createpolyline(latlngforpll);
 }
+marker_layergr.addTo(map);
 
 
 
