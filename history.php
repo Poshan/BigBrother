@@ -1,8 +1,6 @@
 <?php
 	session_start();
 	if(isset($_SESSION['name'])){
-		echo 'can view following persons';
-		echo '<br>';
 		$nam = $_SESSION['name'];
 		include 'connection.php';
 		$sql1 = "SELECT * FROM `user` WHERE `name`='" . $nam . "'";
@@ -35,43 +33,53 @@
 <head>
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-
-<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <title>View the history not the one where we can see hitler</title>
   <style>
     #map{
 	    height:100%;
 	    width:100%;
-	    position:absolute;
-	    left:100px;
-	    top:150px;
+	    
+	    outline: 5px inset #ADB0FF;
+	    outline-offset: 10px;
+	    top: 10px;
+    }
+    #leftside{
+					left:835px;
+					top:25px;
+					width:100px;
+					z-index:1000;
+					position: absolute;
+			}
+    #names{
+    	
     }
   </style>
 </head>
 
 <body>
-<div id="button" style="width:80%; height: 100%">
-	<div class="accordion" id="accordion2" position="absolute" style="width:20%; height: 75%" >
-		<div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" 	href="#collapseTwo">
-                        Viewable persons
-                    </a>
-                </div>
-                <div id="collapseTwo" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <div id="names">
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div id="leftside">		
+	<div class="panel-group" id="accordion">
+	  <div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+	          View Persons
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseOne" class="panel-collapse collapse">
+	      <div id="names" class="panel-body">
+	      </div>
+	    </div>
+	  </div>
 	</div>
-</div>
-
-
+</div>	
 <div id ='map'></map>
+
 <script type="text/javascript">
 var person = <?php echo json_encode($person_list);?>;
 //take each item from person and call the addtheperson(each item from person) function
@@ -107,7 +115,8 @@ function createpolyline(l4pll){
 }
 
 function clickfunction(id){
-	
+	alert('clicked');
+	console.log(id);
 	if (marker.getLatLng()){
 		marker_layergr.clearLayers();
 	}
@@ -152,9 +161,10 @@ marker_layergr.addTo(map);
 
 
 function addthepersons(person1){
+	console.log(person_obj);
 	var panel = document.getElementById("names");
 	var rdiv = document.createElement('div');
-    	rdiv.setAttribute("class", "btn-group");
+    	rdiv.setAttribute("class", "btn-group-vertical");
     	rdiv.setAttribute("data-toggle", "buttons");
     	panel.appendChild(rdiv);
     	for (a in person_obj){
@@ -164,6 +174,7 @@ function addthepersons(person1){
 	        button.name = 'options';
 	        button.id = a;
 	        button.setAttribute("onclick","clickfunction(this.id)");
+	        
 	        var label = document.createElement('label');
         	label.setAttribute("class", "btn btn-default");
         	label.innerHTML = person_obj[a];
@@ -172,10 +183,8 @@ function addthepersons(person1){
 	      
 	 }	
 }
-$('#collapseTwo').show();
-
-
 </script>
+	
 </body>
 
 </html>
