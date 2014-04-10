@@ -4,10 +4,14 @@
 	
 	<link rel="stylesheet" href="/trial/css/formcss.css">
 </head>
-<body background = "/trial/img/image.jpg">
-<form action ="user.php">
-	<input type="submit" id="Alreadyauser" name="Already a user">
+<body background = "/tracker/images/image.jpg">
+<h1>Login </h1>
+<form action="query.php" method="post">
+	Name: <input type="text" name="name">
+	Password: <input type="password" name="pwd">
+	<input type="submit">
 </form>
+
 <h1>
 	Register
 </h1>
@@ -50,4 +54,3 @@
 
 </body>
 </html>
-
