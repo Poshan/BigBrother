@@ -115,7 +115,7 @@ function createpolyline(l4pll){
 }
 
 function clickfunction(id){
-	alert('clicked');
+	//alert('clicked');
 	console.log(id);
 	if (marker.getLatLng()){
 		marker_layergr.clearLayers();
@@ -161,25 +161,26 @@ marker_layergr.addTo(map);
 
 
 function addthepersons(person1){
-	console.log(person_obj);
+	console.log(person1);
 	var panel = document.getElementById("names");
 	var rdiv = document.createElement('div');
     	rdiv.setAttribute("class", "btn-group-vertical");
-    	rdiv.setAttribute("data-toggle", "buttons");
+    	rdiv.setAttribute("data-toggle", "modal");
     	panel.appendChild(rdiv);
-    	for (a in person_obj){
+    	for (a in person1){
     		
     		var button = document.createElement('input');
-	        button.type = 'radio';
+    		button.setAttribute("class","btn btn-primary")
+	        button.type = 'button';
 	        button.name = 'options';
 	        button.id = a;
 	        button.setAttribute("onclick","clickfunction(this.id)");
-	        
-	        var label = document.createElement('label');
-        	label.setAttribute("class", "btn btn-default");
-        	label.innerHTML = person_obj[a];
-        	label.appendChild(button);
-        	rdiv.appendChild(label);
+	        button.value = person1[a];
+	        //var label = document.createElement('label');
+        	//label.setAttribute("class", "btn btn-default");
+        	//label.innerHTML = person_obj[a];
+        	//button.appendChild(label);
+        	rdiv.appendChild(button);
 	      
 	 }	
 }
