@@ -66,7 +66,7 @@
 //print_r($arrayName);
 }
 else{
-  echo 'password doesnot match';
+  //echo 'password doesnot match';
   //take back to the login page
   //echo '<a href = '/user.php'>' . 'goto the login page' . '</a>';
 }
@@ -77,26 +77,69 @@ else{
    this is the start
   </title>
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.label/leaflet.label.css" />
+
+  
   <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+ <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-  <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
+  <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 
   <style>
-    #map{height:100%;width:100%}
+   #top-bar{
+      height: 45px;
+      width : 500px;
+      position: relative;
+      z-index: 1001;
+      background-image:url('/public_html/uploads/team/kll-logo.png');
+      background-color:#EDE8A6;
+      
+    }
+    #container{
+      top : 0px;
+      left:500px;
+      height:45px;
+      width:500px;
+      position: absolute;
+      background-color:darkkhaki;
+      
+    }
+    #map{
+      
+      width:100%;
+      bottom: 0;
+      position: absolute;
+      left:10px;
+      top: 55px;
+    }
+    
   </style>
 </head>     
 <body>
-view the hstory 
-<a href="history.php">click</a>
+ 
+<!-- <a href="history.php">click</a> -->
+<div id = "top-bar">
+  <h1>Track-or whereever you ll go</h1>
+  <div id="container">
+  <button type="button" id="loading-example-btn" data-loading-text="Loading..." class="btn btn-primary" onclick= "button_click()">View Tracks            
+  </button>
+            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle">Settings <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#">LOgOuT</a></li>        
+            </ul>
+        </div>
+</div>
 <div id ="map"></div>
 <script type="text/javascript">
-        //var x = "<?php echo $X; ?>";
-        //var y = "<?php echo $Y;?>";
+        function button_click(){
+          window.location.href = "http://kathmandulivinglabs.org/tracker/history.php";
+        }
         var jso = <?php echo json_encode($W);?>;
+      
         
-        //var jso = <?php echo $W; ?>;
-        //var jso_obj = JSON.parse(jso);
+        
         var coords = {};
         var latlng = [];
         for(sth in jso){
@@ -109,17 +152,6 @@ view the hstory
                
             }
          }
-        //debugger;
-
-        // for (var i = 0; i < coords.length; i++) {
-        //     var x = coords[i][0];
-        //     var y = coords[i][1];
-        //     var ll = L.latLng(x,y);
-        //     latlng.push(ll);
-
-        // };
-        
-        //var latlng = L.latLng(x,y);
         var extend1 = new L.LatLngBounds();
         //var markers = new L.MarkerClusterGroup({ spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false });
         var map = new L.Map('map', {
