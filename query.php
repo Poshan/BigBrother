@@ -25,11 +25,16 @@
     include "connection.php";
     $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['name'] . "'";
     $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
-    $pw = ""; 
+    
+    $pw = ""; //password
+    
+    $img_link = "";//image link work on this
+    
     while ($roow = mysqli_fetch_array($result1)){
       $pw = $roow[2];
+      $img_link = $roow[4];
     }
-    //echo $pw;
+    //echo $img_link;
     if ($password = $pw) {
       $sql = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['name'] . "'";
       $W = array();
@@ -41,11 +46,50 @@
           echo "no result";
       }
       else {
+        
           while ($row = mysqli_fetch_array($result)){
-                        //$row = mysqli_fetch_array($result);
-                        //$_SESSION['W'] = $row[3];
-                    
-                $sql = "SELECT * FROM `person`WHERE `person_id` = '" . $row[3] . "'";
+                  //$row now have got 0->id 1->name 2->password 3->image 
+                  // initialize array persons[]
+                  //step1: get the uid and search in the reltn for the person_id where uid = $row[0] store it in the array persons[]
+                  //step 2 : loop through the persons array and search for the person_id in the person table and acquire the coordinates
+                  //$persons  = array();
+                  $sql2 = "SELECT * FROM `relatn` WHERE `uid`='" . $row[0] . "' AND `viewable` = 1";
+                  $result2 = mysqli_query($con, $sql2) or die(mysqli_error($con)); 
+                  if (!result2){
+                    echo "noone to view";
+                  }
+                  else{
+                    while ($rows = mysqli_fetch_array($result2)){
+                      $sql = "SELECT * FROM `person`WHERE `person_id` = '" . $rows[1] . "'";
+                      $person_result = mysqli_query($con,$sql);
+                      while($row1 = mysqli_fetch_array($person_result)){
+                              $X = $row1[2]; 
+                              $Y = $row1[3];
+                              $acc = $row1[4];
+                              //$arrayName[] = array($X,$Y);  
+                              //echo $row1[1];
+                              $W[] = array($row1[1] => array($X,$Y,$acc));
+                          
+                            //echo json_encode($arrayName);     //sent to daaam.php
+                      }       
+                      
+                    }
+                  }
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                
+                /*$sql = "SELECT * FROM `person`WHERE `person_id` = '" . $row[3] . "'";
                   $person_result = mysqli_query($con,$sql);
                   while($row1 = mysqli_fetch_array($person_result)){
                           $X = $row1[2]; 
@@ -56,7 +100,7 @@
                           $W[] = array($row1[1] => array($X,$Y,$acc));
                       
                         //echo json_encode($arrayName);     //sent to daaam.php
-                  }       
+                  }*/     
           }
       }
        //var_dump ($W);
@@ -93,7 +137,6 @@ else{
       width : 500px;
       position: relative;
       z-index: 1001;
-      background-image:url('/public_html/uploads/team/kll-logo.png');
       background-color:#EDE8A6;
       
     }
@@ -106,6 +149,7 @@ else{
       background-color:darkkhaki;
       
     }
+
     #map{
       
       width:100%;
@@ -129,17 +173,39 @@ else{
             <ul class="dropdown-menu">
                 <li><a href="#">LOgOuT</a></li>        
             </ul>
-        </div>
+        </div>       
 </div>
 <div id ="map"></div>
 <script type="text/javascript">
         function button_click(){
           window.location.href = "http://kathmandulivinglabs.org/tracker/history.php";
         }
+        
         var jso = <?php echo json_encode($W);?>;
-      
-        
-        
+        var image_link  = '<?php echo ($img_link);?>';
+        if (!image_link){
+          console.log('default image function called');
+          var panel = document.getElementById("container");
+          var img = document.createElement("img");
+          img.src = "/uploads/banner/52wuHJslS5Z9xIi7.jpg";
+          img.width = "80";
+          img.height = "50";
+          img.position = "fixed";
+          panel.appendChild(img);
+        }
+        else{
+          
+          console.log('custom image called');
+          
+          var panel = document.getElementById("container");
+          var img = document.createElement("img");
+          img.src = image_link;
+          img.alt = 'poshan';
+          img.width = "80";
+          img.height = "50";
+          img.positon = "fixed";
+          panel.appendChild(img);
+        }
         var coords = {};
         var latlng = [];
         for(sth in jso){
