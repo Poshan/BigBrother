@@ -32,7 +32,7 @@
     
     while ($roow = mysqli_fetch_array($result1)){
       $pw = $roow[2];
-      $img_link = $roow[4];
+      $img_link = $roow[3];
     }
     //echo $img_link;
     if ($password = $pw) {
@@ -66,11 +66,12 @@
                               $X = $row1[2]; 
                               $Y = $row1[3];
                               $acc = $row1[4];
+                              $imag_link = $row1[5]; 
                               //$arrayName[] = array($X,$Y);  
                               //echo $row1[1];
-                              $W[] = array($row1[1] => array($X,$Y,$acc));
+                              $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
                           
-                            //echo json_encode($arrayName);     //sent to daaam.php
+                            //echo json_encode($arrayName);     
                       }       
                       
                     }
@@ -182,12 +183,13 @@ else{
         }
         
         var jso = <?php echo json_encode($W);?>;
+        //console.log(jso);
         var image_link  = '<?php echo ($img_link);?>';
         if (!image_link){
           console.log('default image function called');
           var panel = document.getElementById("container");
           var img = document.createElement("img");
-          img.src = "/uploads/banner/52wuHJslS5Z9xIi7.jpg";
+          img.src = "/uploads/banner/B5Bssd130803010803.jpg";
           img.width = "80";
           img.height = "50";
           img.position = "fixed";
@@ -227,23 +229,42 @@ else{
         });
         
         for (any in coords){
+            
             x = coords[any];
             acc = x[2];
-            //this is accuracy value scale it and then use as the radius of the circle
-            //console.log(acc);
+            img_lnk = x[3];
+            //create icon of the image of the users
+            if (!img_lnk){
+              var myIcon = L.icon({
+                iconUrl: '/uplaods/team/130803010816uLs11b.jpg',
+                iconSize: [25,25],
+                iconAnchor:[5,5],
+              });
+            }
+            else {
+              var myIcon = L.icon({
+                iconUrl: img_lnk,
+                iconSize: [25,25],
+                iconAnchor:[5,5],
+              });
+            }
+            //debugger;
+            //this(acc) is accuracy value scale it and then use as the radius of the circle
+            
             var circle = L.circle(x, acc*100, {
     color: 'red',
     fillColor: '#f03',
     fillOpacity: 0.5
       }).addTo(map);
             
-            var marker = L.marker(x);
-            marker.bindLabel(any,{
+            var marker = L.marker((x), {icon:myIcon});
+            /*marker.bindLabel(any,{
               noHide:true,
               direction:'auto'
             }).showLabel();
             //marker.addTo(map);
             //marker.bindPopup(any);
+            */
             marker.addTo(map);
             //markers.addLayer(marker);
             var x1,y1;
