@@ -265,7 +265,18 @@ else{
             //marker.addTo(map);
             //marker.bindPopup(any);
             */
+            
+            //instead of making the image markers trying the image in popup
+            popupContent = '<img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
+            marker.bindPopup(popupContent).openPopup();
+            
+            
+            
+            
+            
             marker.addTo(map);
+            
+            
             //markers.addLayer(marker);
             var x1,y1;
             for (p in x){
