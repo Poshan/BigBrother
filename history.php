@@ -15,14 +15,53 @@
 	    outline: 5px inset #ADB0FF;
 	    outline-offset: 10px;
 	    top: 10px;
+	    z-index:1000
     }
     #leftside{
 					right:50px;
 					top:25px;
 					width:100px;
-					z-index:1000;
+					z-index:1001;
 					position: absolute;
 			}
+    #top-bar1{
+    	position: absolute;
+    	top: 10px;
+    	left:150px;
+    	color: #ADB0FF;
+    	height:50px;
+    	z-index:1001
+    }
+    #top-bar {
+    	position: absolute;
+    	top: 05px;
+    	left: 150px;
+    	z-index: 1001;
+	font-size: 1.0em;
+	margin-top: 0.6em;
+	margin-bottom: 1em;
+	font-weight: bold;
+	padding: 4px 12px 3px;
+	margin-left: 0;
+	margin-right: 0;
+	background: #edeeef;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+
+	color: white;
+
+	background-color: #b0de5d;
+	background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); /* FF3.6 */
+	background-image: -o-linear-gradient(top, #b0de5c, #82cb00); /* Opera 11.10+ */
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); /* Chrome 10+, Saf5.1+ */
+	background-image: linear-gradient(top, #b0de5c, #82cb00);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6�IE9 */
+
+	border-radius: 5px;
+
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+	}
   </style>
 
 </head>
@@ -46,15 +85,44 @@
 	</div>
 </div>	
 <div id ='map'></map>
-
+<div id = "top-bar">
+	currently u cannot view anyone
+</div>
 <script type="text/javascript">
-
 var map = new L.Map('map', {
     center: new L.LatLng(28.425,84.435),
     zoom: 7,
     layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
 });
 var person_obj1 = {};
+
+
+//check if person_obj1 is empty
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function checkEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
+}
+
+
+
+
 
 //call the person_list.php to receive the list of persons	
 $.ajax({
@@ -70,10 +138,14 @@ $.ajax({
 			}
 		}
 		//if there is no result output of the success than call a function which creats a tab on the top which says "sorry no result for the user"
-		addthepersons(person_obj1); //call the function which adds the button of each user
+		if (checkEmpty(person_obj1)==false){
+			$('#top-bar').hide();
+			addthepersons(person_obj1);
+		}
 		
-	}	
-
+		//addthepersons(person_obj1); //call the function which adds the button of each user
+		
+	}
 });
 
 latlngforpll = [];
@@ -144,7 +216,6 @@ marker_layergr.addTo(map);
 //function which creates the buttons on the basis of the persons viewable by a user
 function addthepersons(person1){	
 	//console.log(person1);
-	
 	var panel = document.getElementById("names"); //to put the buttons in the element named "names"
 	var rdiv = document.createElement('div');
     	rdiv.setAttribute("class", "btn-group-vertical");
@@ -162,8 +233,9 @@ function addthepersons(person1){
         	//label.setAttribute("class", "btn btn-default");
         	//label.innerHTML = person_obj[a];
         	//button.appendChild(label);
-        	rdiv.appendChild(button);      
-	 }	
+        	rdiv.appendChild(button);     
+	 }
+	 	
 }
 	
 

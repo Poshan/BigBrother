@@ -256,8 +256,9 @@ else{
     fillColor: '#f03',
     fillOpacity: 0.5
       }).addTo(map);
-            
-            var marker = L.marker((x), {icon:myIcon});
+             
+            var marker = L.marker(x); //automatically takes the first two elements in this case it is lat and lon
+            //var marker = L.marker((x), {icon:myIcon});
             /*marker.bindLabel(any,{
               noHide:true,
               direction:'auto'
@@ -268,13 +269,13 @@ else{
             
             //instead of making the image markers trying the image in popup
             popupContent = '<img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
-            marker.bindPopup(popupContent).openPopup();
+            marker.bindPopup(popupContent).openPopup().addTo(map);
             
             
             
             
             
-            marker.addTo(map);
+            //marker.addTo(map);
             
             
             //markers.addLayer(marker);
