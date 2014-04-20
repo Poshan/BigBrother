@@ -1,42 +1,67 @@
 <?php
+	//dont echo anything other than the json encoded persons with time location data
+	$pos = (int)$_POST['pid'];
+	//$pos = 1;
+	
+	include 'connection.php';
 	session_start();
-	if(isset($_SESSION['name'])){
-		$nam = $_SESSION['name'];
-		include 'connection.php';
-		$sql1 = "SELECT * FROM `user` WHERE `name`='" . $nam . "'";
-		$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
-		$person_list = array();
-		if (!$result1){
-			echo 'no history for the user';
-		}
-		else{
-			while ($row = mysqli_fetch_array($result1)){
-				$sql1 = "SELECT * FROM `relatn` WHERE `uid` = '" . $row[0] . "' AND trackable =1";
-				$per_result = mysqli_query($con,$sql1);
-				while($rows1 = mysqli_fetch_array($per_result)){
-					$sql2 = "SELECT * FROM `person`WHERE `person_id` = '" . $rows1[1] . "'";
-					$person_result = mysqli_query($con,$sql2);
-					while($row1 = mysqli_fetch_array($person_result)){
-						$person_list [] = array($row1[0]=>$row1[1]); 
-						
-					} 
-				}
-				
-				
-				
-				/*$sql = "SELECT * FROM `person`WHERE `person_id` = '" . $row[3] . "'";
-				$person_result = mysqli_query($con,$sql);
-				while($row1 = mysqli_fetch_array($person_result)){
-					$person_list [] = array($row1[0]=>$row1[1]); 
-						
-				}*/				
-			
-			}
-		}
-		echo json_encode($person_list);
+	$nam = $_SESSION['name'];
+	//echo $nam;
+	$sql3 = "SELECT * FROM `user` WHERE `name`='" . $nam . "'";
+	$result3 = mysqli_query($con,$sql3) or die(mysqli_error($con));
+	while ($row3 = mysqli_fetch_array($result3)){
+		$uid = $row3[0];
+	}
+	//echo $uid;
+	//find the "result_date" which is the date when person accepted the user
+	
+	$result_date = '';
+	
+	$sql2 = "SELECT * FROM `relatn` WHERE `person_id`='" . $pos . "' && `uid` = '" . $uid . "'";
+	
+	$result2 = mysqli_query($con,$sql2) or die(mysqli_error($con));
+	
+	while ($row1 = mysqli_fetch_array($result2)){
+		$result_date = $row1[4];
 	}
 	
-	else{
-		echo 'please log in';
+	//echo $result_date;
+	//$result_int = (int)$result_date;
+	//echo $result_int;
+	//$result_dated = strtotime($result_date);
+	
+	
+	//echo $result_date;
+	//echo "<br>";
+	
+	
+	//$result_dated = date('y-m-d H:i:s',strtotime($result_date));
+	$result_dated = strtotime($result_date);
+	
+	
+	//echo 'resulted_date' . $result_dated;
+	//echo "<br>";
+	
+	
+	$sql1 = "SELECT * FROM `aap` WHERE `pid`='" . $pos . "'";
+	$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
+	$W = array();
+	while ($row = mysqli_fetch_array($result1)){
+		//while row[3] is greater than the result_date
+		//$time1 = date('y-m-d H:i:s',strtotime($row[3]));
+		$time1 = strtotime($row[3]);
+		
+		
+		//echo 'time in aap' . $time1;
+		//echo "<br>";
+		
+		
+		if ($result_dated < $time1){
+			$X = $row[1];
+			$Y = $row[2];
+			$W[] = array($row[3] => array($X,$Y));
+		}
 	}
+	
+	echo json_encode($W);	
 ?>

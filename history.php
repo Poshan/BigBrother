@@ -99,6 +99,8 @@ var person_obj1 = {};
 
 //check if person_obj1 is empty
 var hasOwnProperty = Object.prototype.hasOwnProperty;
+//also check if the object has got some other information
+
 
 function checkEmpty(obj) {
 
@@ -177,9 +179,11 @@ function clickfunction(id){
 	$.ajax({                            
   		url: 'abcd.php',
   		type: 'post',
-  		data: {pid : id},
+  		data: {pid : id,},
   		datatype: 'json',
   		success: function(output){
+  			debugger;
+  			
   			a = JSON.parse(output);
   			  		
   			for (anythg in a){
