@@ -143,7 +143,7 @@ else{
     }
     #container{
       top : 0px;
-      left:500px;
+      left:700px;
       height:45px;
       width:500px;
       position: absolute;
@@ -187,7 +187,15 @@ else{
       bottom: 0;
       position: absolute;
       left:10px;
-      top: 55px;
+      top: 105px;
+    }
+    #for-nav-tabs{
+      top : 0px;
+      left:500px;
+      height:45px;
+      width:200px;
+      position: absolute;
+      background-color:darkkhaki;
     }
     
   </style>
@@ -197,7 +205,8 @@ else{
 <!-- <a href="history.php">click</a> -->
 <div id = "top-bar">
   <h1>Track-or whereever you ll go</h1>
-  <div id="container">
+  
+    <div id="container">
   <button type="button" id="loading-example-btn" data-loading-text="Loading..." class="btn btn-primary" onclick= "button_click()">View Tracks            
   </button>
             <button data-toggle="dropdown" class="btn btn-info dropdown-toggle">Settings <span class="caret"></span></button>
@@ -206,12 +215,24 @@ else{
             </ul>
         </div>       
 </div>
-<div id ="map"></div>
-<div id = "top-bar1">
-  u are currently offline 
-  go back to <a href = 'index.php'>login page</a>
-</div>
-<script type="text/javascript">
+  
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+      <li><a href="#profile" data-toggle="tab">Profile</a></li>
+    </ul>
+
+      <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="home">
+        <div id ="map"></div>
+        <div id = "top-bar1">
+          u are currently offline 
+          go back to <a href = 'index.php'>login page</a>
+        </div>
+      </div>
+      <div class="tab-pane" id="profile">...</div>
+    </div>
+  <script type="text/javascript">
         $('#top-bar1').hide();
         function button_click(){
           window.location.href = "http://kathmandulivinglabs.org/tracker/history.php";
@@ -341,5 +362,12 @@ else{
         L.control.scale().addTo(map);       
 
 </script>
+  
+  
+  
+  
+
+
+
 </body>
 </html>
