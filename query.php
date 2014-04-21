@@ -150,6 +150,36 @@ else{
       background-color:darkkhaki;
       
     }
+     #top-bar1 {
+      position: absolute;
+      top: 05px;
+      left: 150px;
+      z-index: 1001;
+  font-size: 1.0em;
+  margin-top: 0.6em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  padding: 4px 12px 3px;
+  margin-left: 0;
+  margin-right: 0;
+  background: #edeeef;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
+  color: white;
+
+  background-color: #b0de5d;
+  background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); /* FF3.6 */
+  background-image: -o-linear-gradient(top, #b0de5c, #82cb00); /* Opera 11.10+ */
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); /* Chrome 10+, Saf5.1+ */
+  background-image: linear-gradient(top, #b0de5c, #82cb00);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6�IE9 */
+
+  border-radius: 5px;
+
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+  }
 
     #map{
       
@@ -177,13 +207,24 @@ else{
         </div>       
 </div>
 <div id ="map"></div>
+<div id = "top-bar1">
+  u are currently offline 
+  go back to <a href = 'index.php'>login page</a>
+</div>
 <script type="text/javascript">
+        $('#top-bar1').hide();
         function button_click(){
           window.location.href = "http://kathmandulivinglabs.org/tracker/history.php";
         }
         
         var jso = <?php echo json_encode($W);?>;
         //console.log(jso);
+        if (jso == null){
+          $('#top-bar').hide();
+          $('#top-bar1').show();
+     
+          
+        }
         var image_link  = '<?php echo ($img_link);?>';
         if (!image_link){
           console.log('default image function called');
