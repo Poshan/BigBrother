@@ -62,6 +62,37 @@
 
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
 	}
+	
+	#notification-bar{
+		position: absolute;
+	    	top: 05px;
+	    	left: 150px;
+	    	z-index: 1001;
+		font-size: 1.0em;
+		margin-top: 0.6em;
+		margin-bottom: 1em;
+		font-weight: bold;
+		padding: 4px 12px 3px;
+		margin-left: 0;
+		margin-right: 0;
+		background: #edeeef;
+		border-right: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+	
+		color: white;
+	
+		background-color: #b0de5d;
+		background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); /* FF3.6 */
+		background-image: -o-linear-gradient(top, #b0de5c, #82cb00); /* Opera 11.10+ */
+		background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); /* Saf4+, Chrome */
+		background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); /* Chrome 10+, Saf5.1+ */
+		background-image: linear-gradient(top, #b0de5c, #82cb00);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6�IE9 */
+	
+		border-radius: 5px;
+	
+		text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+	}
   </style>
 
 </head>
@@ -88,7 +119,14 @@
 <div id = "top-bar">
 	currently u cannot view anyone
 </div>
+<div id = 'notification-bar'>
+	To see time based history enter the time (in hours)here
+	<input type="text" id="time" name="myText" style="color:green;"> 
+	<button onclick="timedclick()">ShoW</button>
+</div>
 <script type="text/javascript">
+//createEditableSelect(document.forms[0].myText);
+
 var map = new L.Map('map', {
     center: new L.LatLng(28.425,84.435),
     zoom: 7,
@@ -121,8 +159,13 @@ function checkEmpty(obj) {
 
     return true;
 }
+var tyme;           // this is the time to be sent to the abcd.php
 
-
+function timedclick(){
+	//find out the time entered if nothing entered then the default time is all the life hehheh
+	tyme = $('#time').val();
+	console.log(tyme);
+}
 
 
 
@@ -165,6 +208,15 @@ function createpolyline(l4pll){
 	
 }
 
+//!@#$%^&*@@#$%^&*(^%$#@#$%^&*()_)(*&#@#$%^&*
+//add a function which in particular add markers when data json is sent
+function addMarkers(obj){
+	
+}
+
+
+
+
 
 // function which receives the time related data of each user on click of the person on the button... id is the person id
 function clickfunction(id){
@@ -176,14 +228,34 @@ function clickfunction(id){
 		marker_layergr.clearLayers();// if already markers and polylines are present than clear it
 	}
 // ajax call to abcd.php where the id from the button i.e. user id is sent and the person's time data is received
+	
+	
+	var tyyme;
+	var timed_value;
+	if (tyme == undefined){ //no time value entered
+			timed_value = 0;
+			//tyyme = 0;
+	}
+	else {
+		timed_value = 1;
+		tyyme = tyme;
+	}
+	
 	$.ajax({                            
   		url: 'abcd.php',
   		type: 'post',
-  		data: {pid : id,},
+  		data: {
+  			pid : id,
+  			timed: timed_value,
+  			tiime: tyyme
+  		},
+  		
   		datatype: 'json',
+  		
   		success: function(output){
+  		
   			debugger;
-  			
+  		
   			a = JSON.parse(output);
   			  		
   			for (anythg in a){
@@ -214,7 +286,7 @@ function clickfunction(id){
 }
 marker_layergr.addTo(map);
 
-//photos
+
 
 
 //function which creates the buttons on the basis of the persons viewable by a user
