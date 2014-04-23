@@ -161,10 +161,16 @@ function checkEmpty(obj) {
 }
 var tyme;           // this is the time to be sent to the abcd.php
 
+
+//directly get the value of time with out the click
+//tyme = $('#time').val();
+
+
+//oncklick submit 
 function timedclick(){
 	//find out the time entered if nothing entered then the default time is all the life hehheh
 	tyme = $('#time').val();
-	console.log(tyme);
+	//console.log(tyme);
 }
 
 
@@ -229,7 +235,7 @@ function clickfunction(id){
 	}
 // ajax call to abcd.php where the id from the button i.e. user id is sent and the person's time data is received
 	
-	
+
 	var tyyme;
 	var timed_value;
 	if (tyme == undefined){ //no time value entered

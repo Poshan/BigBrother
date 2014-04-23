@@ -2,14 +2,17 @@
 	//dont echo anything other than the json encoded persons with time location data
 	$pos = (int)$_POST['pid'];
 	$timed = $_POST['timed'];
-	$time = (int)$_POST['tiime']*60*60;
-	//$pos = 1;
+	$time1 = (int)$_POST['tiime'];
+	$times = $time1*60*60;
+	
 	
 	include 'connection.php';
 	session_start();
 	$nam = $_SESSION['name'];
 	//echo $nam;
 		
+	
+	//echo $timed;
 	
 	
 	//get uid from hte name !#$%^&$%$#@!#$% rather store the id in the session variable
@@ -82,19 +85,20 @@ if ($timed == 0){
 
 
 else{
-	$time_value = strtotime($time);
-	$time_now = strtotime(time());
+	$time_value = $times;
+	$time_now = time(); //time is already in UTC
 	
 	while ($row = mysqli_fetch_array($result1)){
 		$time1 = strtotime($row[3]);
 		
-		if ($time1 < ($time_now+$time_value)){
+		if (($time1 > ($time_now-$time_value))&&( $time1 <=$time_now)&&($result_dated < $time1)){
 			$X = $row[1];
 			$Y = $row[2];
 			$W[] = array($row[3] => array($X,$Y));
 		}
 		
 	}
+	
 	echo json_encode($W);
 }
 ?>
