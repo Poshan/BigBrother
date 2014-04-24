@@ -127,6 +127,8 @@
 <script type="text/javascript">
 //createEditableSelect(document.forms[0].myText);
 
+$('#notification-bar').hide();
+
 var map = new L.Map('map', {
     center: new L.LatLng(28.425,84.435),
     zoom: 7,
@@ -170,6 +172,7 @@ var tyme;           // this is the time to be sent to the abcd.php
 function timedclick(){
 	//find out the time entered if nothing entered then the default time is all the life hehheh
 	tyme = $('#time').val();
+	('#notification-bar').hide();
 	//console.log(tyme);
 }
 
@@ -188,11 +191,14 @@ $.ajax({
 				person_obj1[anyth] = b[anyth]
 			}
 		}
+		
 		//if there is no result output of the success than call a function which creats a tab on the top which says "sorry no result for the user"
 		if (checkEmpty(person_obj1)==false){
 			$('#top-bar').hide();
+			$('#notification-bar').show();
 			addthepersons(person_obj1);
 		}
+		
 		
 		//addthepersons(person_obj1); //call the function which adds the button of each user
 		
@@ -260,7 +266,7 @@ function clickfunction(id){
   		
   		success: function(output){
   		
-  			debugger;
+  			//debugger;
   		
   			a = JSON.parse(output);
   			  		

@@ -1,15 +1,21 @@
 <?php 
     session_start();
         include "connection.php";
-        $_SESSION['name'] = "";
+        
+        //$_SESSION['name'] = "";
+        
+        
+      //need to work on password
       $password = "";
-
+    //if (!isset($_SESSION['name'])){ 
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
       $_SESSION['name'] = test_input($_POST["name"]);
       $password = test_input($_POST["password"]);
       // $password = password_encrypter($_POST["password"]);
     }
+    
+    //}
     function test_input($data)
     {
        $data = trim($data);
@@ -17,6 +23,8 @@
        $data = htmlspecialchars($data);
        return $data;
     }
+   
+   
     // funtion password_encrypter ($data){
     //  //encrypt the password with some algos andord: N then return to store in database
     // }
@@ -35,7 +43,7 @@
       $img_link = $roow[3];
     }
     //echo $img_link;
-    if ($password = $pw) {
+    if ($password = $pw) { //make ==
       $sql = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['name'] . "'";
       $W = array();
         //$_SESSION['W']=array();
@@ -70,7 +78,6 @@
                               //$arrayName[] = array($X,$Y);  
                               //echo $row1[1];
                               $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
-                          
                             //echo json_encode($arrayName);     
                       }       
                       
@@ -143,7 +150,7 @@ else{
     }
     #container{
       top : 0px;
-      left:700px;
+      left:500px;
       height:45px;
       width:500px;
       position: absolute;
@@ -189,6 +196,14 @@ else{
       left:10px;
       top: 105px;
     }
+    #map-prof{
+          width:100%;
+      bottom: 0;
+      position: absolute;
+      left:10px;
+      top: 105px;
+    
+    }
     #for-nav-tabs{
       top : 0px;
       left:500px;
@@ -225,12 +240,73 @@ else{
     <div class="tab-content">
       <div class="tab-pane active" id="home">
         <div id ="map"></div>
-        <div id = "top-bar1">
+        
+      </div>
+      <div class="tab-pane" id="profile">...
+        //design the profile page
+        <h1>profile page</h1>
+        <div id="prof"></div>
+        <script>
+           var person_obj1 = {};
+           function create_table_from(obj){
+            
+              var panel = document.getElementById('prof');
+              var rdiv = document.createElement('div');
+              rdiv.setAttribute("class", "btn-group-vertical");
+              rdiv.setAttribute("data-toggle", "modal");
+              panel.appendChild(rdiv);
+              
+              for (a in obj){
+                var button = document.createElement('input');
+                button.setAttribute("class","btn btn-primary")
+                  button.type = 'button';
+                  button.name = 'options';
+                  button.id = a; 
+                button.value = obj[a];
+                rdiv.appendChild(button);
+                
+            
+              }
+            
+            };
+            
+            $.ajax({
+          url : 'person_list.php',
+          datatype:'json',
+          success: function(output){
+            
+            //console.log(output);
+            a = JSON.parse(output); 
+                for (any in a){ 
+              b = a[any];
+              for (anyth in b){
+                person_obj1[anyth] = b[anyth]
+              }
+                }
+            create_table_from(person_obj1);
+          }
+          
+            });
+            
+           
+          
+        
+        </script>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+      </div>
+    </div>
+    <div id = "top-bar1">
           u are currently offline 
           go back to <a href = 'index.php'>login page</a>
-        </div>
-      </div>
-      <div class="tab-pane" id="profile">...</div>
     </div>
   <script type="text/javascript">
         $('#top-bar1').hide();
@@ -243,6 +319,7 @@ else{
         if (jso == null){
           $('#top-bar').hide();
           $('#top-bar1').show();
+          $('.tab-content').hide();
      
           
         }
