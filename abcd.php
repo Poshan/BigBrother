@@ -8,7 +8,7 @@
 	
 	include 'connection.php';
 	session_start();
-	$nam = $_SESSION['name'];
+	$nam = $_SESSION['namm'];
 	//echo $nam;
 		
 	
@@ -58,7 +58,7 @@
 	//echo "<br>";
 	
 	
-	$sql1 = "SELECT * FROM `aap` WHERE `pid`='" . $pos . "'";
+	$sql1 = "SELECT * FROM `aap` WHERE `pid`='" . $pos . "'";//&& DATE(time) >= '" . $result_dated . "'"; 
 	$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
 	$W = array();
 if ($timed == 0){
@@ -86,7 +86,7 @@ if ($timed == 0){
 
 else{
 	$time_value = $times;
-	$time_now = time(); //time is already in UTC
+	$time_now = time();
 	
 	while ($row = mysqli_fetch_array($result1)){
 		$time1 = strtotime($row[3]);
