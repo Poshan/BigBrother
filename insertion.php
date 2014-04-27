@@ -30,7 +30,6 @@
 	//work on photo upload
 		//echo $id;
 		
-		
 		$sql = 
 			"INSERT INTO `user` ".
        			"(id,name,password) ".

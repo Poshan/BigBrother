@@ -7,15 +7,16 @@
         
       //need to work on password
       $password = "";
-    //if (!isset($_SESSION['name'])){ 
-    if ($_SERVER["REQUEST_METHOD"] == "POST")
-    {
-      $_SESSION['name'] = test_input($_POST["name"]);
+    
+    
+    //if ($_SERVER["REQUEST_METHOD"] == "POST")
+    //{
+      $_SESSION['namm'] = test_input($_POST["name"]);
       $password = test_input($_POST["password"]);
       // $password = password_encrypter($_POST["password"]);
-    }
-    
     //}
+    $nam = $_SESSION['namm'];
+    
     function test_input($data)
     {
        $data = trim($data);
@@ -31,7 +32,7 @@
         //echo $name;
 
     include "connection.php";
-    $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['name'] . "'";
+    $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
     $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
     
     $pw = ""; //password
@@ -44,7 +45,7 @@
     }
     //echo $img_link;
     if ($password = $pw) { //make ==
-      $sql = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['name'] . "'";
+      $sql = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
       $W = array();
         //$_SESSION['W']=array();
         //$W = "";
@@ -219,7 +220,7 @@ else{
  
 <!-- <a href="history.php">click</a> -->
 <div id = "top-bar">
-  <h1>Track-or whereever you ll go</h1>
+  <h1>Track-or wherever you ll go</h1>
   
     <div id="container">
   <button type="button" id="loading-example-btn" data-loading-text="Loading..." class="btn btn-primary" onclick= "button_click()">View Tracks            
@@ -242,15 +243,20 @@ else{
         <div id ="map"></div>
         
       </div>
+      
+      
+      //the profile page
       <div class="tab-pane" id="profile">...
         //design the profile page
         <h1>profile page</h1>
-        <div id="prof"></div>
+        <div id="prof">these are your viewable persons </div>
         <script>
            var person_obj1 = {};
            function create_table_from(obj){
-            
+            //function create_table_from(obj,dddiv){ // to create the buttons when the objects and the div in which the buttons are 
+              //var prof1 = dddiv;
               var panel = document.getElementById('prof');
+              //var panel = document.getElementById(prof1);
               var rdiv = document.createElement('div');
               rdiv.setAttribute("class", "btn-group-vertical");
               rdiv.setAttribute("data-toggle", "modal");
@@ -283,6 +289,7 @@ else{
                 person_obj1[anyth] = b[anyth]
               }
                 }
+            //create_table_from(person_obj1,'prof');
             create_table_from(person_obj1);
           }
           
@@ -293,7 +300,79 @@ else{
         
         </script>
         
-        
+        <div id = 'requests'>THese are the requests  incomming</div>
+        <script>
+          
+          var incom_request ={};
+          
+          function clickfunction(id){
+            //id is the id of request "pathaune manchhey"
+            //if this is the acceptance buttons' click function make actn=0 and send to the same php
+            actn = 1;
+            $.ajax({
+              url : "requests_responses.php",
+              type:'post',
+              data: {
+                action: actn,
+                req_id : id         
+              },
+              success: function(output){
+                console.log(output);
+                //in the top bar visualize you can now view Mr. Someone
+              }
+              
+            
+            });
+            
+            
+          }
+          
+          function create_table_fromm(obj){
+                
+                //var prof1 = dddiv;
+                var panel = document.getElementById('requests');
+                //var panel = document.getElementById(prof1);
+                var rdiv = document.createElement('div');
+                rdiv.setAttribute("class", "btn-group-vertical");
+                rdiv.setAttribute("data-toggle", "modal");
+                panel.appendChild(rdiv);
+                
+                for (a in obj){
+                  
+                  var button = document.createElement('input');
+                  button.setAttribute("class","btn btn-primary")
+                    button.type = 'button';
+                    button.name = 'options';
+                    button.id = a; 
+                  button.value = obj[a];
+                  
+                  button.setAttribute("onclick","clickfunction(a)");                 
+              rdiv.appendChild(button);
+                 }
+            
+            };
+          $.ajax({
+            url:'requests.php',
+            datatype:'json',
+            type: 'post',
+            data:{request_type:1},//1 means incoming requests
+            success:function(output){
+              debugger;
+              a = JSON.parse(output); 
+                for (any in a){ 
+              b = a[any];
+              for (anyth in b){
+                incom_request[anyth] = b[anyth]
+              }
+                }
+            //create_table_from(incom_request,'requests');
+            create_table_fromm(incom_request);
+            }
+          
+              });
+              
+            
+        </script>
         
         
         
@@ -315,6 +394,7 @@ else{
         }
         
         var jso = <?php echo json_encode($W);?>;
+        var nam = '<?php echo $nam;?>';
         //console.log(jso);
         if (jso == null){
           $('#top-bar').hide();
