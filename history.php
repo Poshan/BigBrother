@@ -120,7 +120,7 @@
 	currently u cannot view anyone
 </div>
 <div id = 'notification-bar'>
-	To see time based history enter the time (in hours)here
+	To see time based history enter the <strong> time </strong>(in hours)here
 	<input type="text" id="time" name="myText" style="color:green;"> 
 	<button onclick="timedclick()">ShoW</button>
 </div>
@@ -172,7 +172,7 @@ var tyme;           // this is the time to be sent to the abcd.php
 function timedclick(){
 	//find out the time entered if nothing entered then the default time is all the life hehheh
 	tyme = $('#time').val();
-	('#notification-bar').hide();
+	//('#notification-bar').hide();
 	//console.log(tyme);
 }
 
@@ -184,6 +184,7 @@ $.ajax({
 	datatype:'json',
 	success: function(output){
 		//console.log(output);
+		
 		a = JSON.parse(output); //JSON parsed the return from the person_list.php
 		for (any in a){         //creation of the object person_obj1 which contains id and name of persons
 			b = a[any];

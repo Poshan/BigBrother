@@ -10,9 +10,8 @@
 	session_start();
 	$nam = $_SESSION['namm'];
 	//echo $nam;
-		
-	
-	//echo $timed;
+	$uid = $_SESSION['idd'];
+	//echo $uid;
 	
 	
 	//get uid from hte name !#$%^&$%$#@!#$% rather store the id in the session variable
@@ -21,11 +20,11 @@
 
 
 	
-	$sql3 = "SELECT * FROM `user` WHERE `name`='" . $nam . "'";
-	$result3 = mysqli_query($con,$sql3) or die(mysqli_error($con));
-	while ($row3 = mysqli_fetch_array($result3)){
-		$uid = $row3[0];
-	}
+	//$sql3 = "SELECT * FROM `user` WHERE `name`='" . $nam . "'";
+	//$result3 = mysqli_query($con,$sql3) or die(mysqli_error($con));
+	//while ($row3 = mysqli_fetch_array($result3)){
+	//	$uid = $row3[0];
+	//}
 	//echo $uid;
 	
 	
@@ -58,7 +57,7 @@
 	//echo "<br>";
 	
 	
-	$sql1 = "SELECT * FROM `aap` WHERE `pid`='" . $pos . "'";//&& DATE(time) >= '" . $result_dated . "'"; 
+	$sql1 = "SELECT * FROM `aap` WHERE `pid`='" . $pos . "'";//&& DATE(time) >= '" . $result_dated . "'"; //and date > result_dated
 	$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
 	$W = array();
 if ($timed == 0){

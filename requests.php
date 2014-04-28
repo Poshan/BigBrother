@@ -6,14 +6,16 @@
 		$request_type = $_POST['request_type'];
 		include 'connection.php';
 		
+		$uid = $_SESSION['idd'];
 		
-		//finding the id of the user use the id a session variable....... to be done
-		$sql1 = "SELECT id FROM `user` WHERE `name`='" . $nam . "'";
-		$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
-		$uid = '';
-		while ($row = mysqli_fetch_array($result1)){
-			$uid = $row['id'];
-		}
+		//finding the id of the user use the id a session variable....... 
+		//$sql1 = "SELECT id FROM `user` WHERE `name`='" . $nam . "'";
+		//$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
+		//$uid = '';
+		//while ($row = mysqli_fetch_array($result1)){
+		//	$uid = $row['id'];
+		//}
+		
 		$uid1 = (int)$uid;
 		
 		

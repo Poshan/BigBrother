@@ -5,7 +5,7 @@
 		$req_id = $_POST['req_id'];
 		$action = (int)$_POST['action']; //0 if rejected to be ......done........
 		// action = 1 if the user accepts the call 
-		
+		$id = $_SESSION['idd'];
 		
 		
 		
@@ -14,10 +14,10 @@
 		include 'connection.php';
 		
 		//finding out the user's id //use the id also as session variable
-		$sql1 = "SELECT id FROM `user` WHERE `name`='" . $nam . "'";
-		$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
-		$row = mysqli_fetch_array($result1);
-		$id = $row[0];
+		//$sql1 = "SELECT id FROM `user` WHERE `name`='" . $nam . "'";
+		//$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
+		//$row = mysqli_fetch_array($result1);
+		//$id = $row[0];
 		
 		
 		//finding the request and writing in the action field of the relatn 
