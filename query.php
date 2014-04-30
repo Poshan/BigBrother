@@ -2,20 +2,19 @@
     session_start();
         include "connection.php";
         
-        //$_SESSION['name'] = "";
-        
         
       //need to work on password
       $password = "";
     
     
-    //if ($_SERVER["REQUEST_METHOD"] == "POST")
-    //{
+    if ($_SERVER["REQUEST_METHOD"] == "POST")
+    {
       $_SESSION['namm'] = test_input($_POST["name"]);
-      $password = test_input($_POST["password"]);
+      $password = $_POST["pwd"];
+      
       // $password = password_encrypter($_POST["password"]);
-    //}
-    $nam = $_SESSION['namm'];
+    }
+    
     
     function test_input($data)
     {
@@ -26,14 +25,13 @@
     }
    
    
-    // funtion password_encrypter ($data){
-    //  //encrypt the password with some algos andord: N then return to store in database
-    // }
-        //echo $name;
+
 
     include "connection.php";
     $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
     $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
+   
+    
     
     $pw = ""; //password
     
@@ -41,10 +39,12 @@
     
     while ($roow = mysqli_fetch_array($result1)){
       $pw = $roow[2];
+      $_SESSION['idd'] = $roow[0];
       $img_link = $roow[3];
     }
     //echo $img_link;
-    if ($password = $pw) { //make ==
+   
+    if (crypt($password, $pw) == $pw) { //make ==
       $sql = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
       $W = array();
         //$_SESSION['W']=array();
@@ -305,10 +305,31 @@ else{
           
           var incom_request ={};
           
-          function clickfunction(id){
+          
+          requests();
+          function on_top_bar(what){
+            //debugger;
+            if (what == 'yes'){
+              var content = 'You added a new person'
+            }
+            
+            else if (what == 'no'){
+              var content = 'you rejected the request'
+            }
+            var ddiv = document.getElementById('top-bar1');
+            ddiv.innerHTML = content;
+            
+            $('#top-bar1').show();
+            $('#top-bar1').delay(1000).fadeOut();
+            //$('#accept_reject').hide();
+            
+            //name of the id required
+          }
+          function clickfunction(id, acn){
             //id is the id of request "pathaune manchhey"
             //if this is the acceptance buttons' click function make actn=0 and send to the same php
-            actn = 1;
+            actn = acn;
+            console.log(actn);
             $.ajax({
               url : "requests_responses.php",
               type:'post',
@@ -317,8 +338,23 @@ else{
                 req_id : id         
               },
               success: function(output){
+                //debugger;
                 console.log(output);
-                //in the top bar visualize you can now view Mr. Someone
+                if (output == 'yes'){
+                  
+                  on_top_bar('yes');
+                  //requests();
+                  
+                }
+                
+                else if (output == 'no'){
+                  on_top_bar('no');
+                  
+                }
+                
+                
+                
+                //now hide this request
               }
               
             
@@ -332,44 +368,62 @@ else{
                 //var prof1 = dddiv;
                 var panel = document.getElementById('requests');
                 //var panel = document.getElementById(prof1);
+                var named = document.createElement('div');
                 var rdiv = document.createElement('div');
                 rdiv.setAttribute("class", "btn-group-vertical");
                 rdiv.setAttribute("data-toggle", "modal");
+                panel.appendChild(named);
                 panel.appendChild(rdiv);
                 
                 for (a in obj){
+                  //display the name
+                  named.innerHTML = obj[a];
                   
+                  //accept button
                   var button = document.createElement('input');
-                  button.setAttribute("class","btn btn-primary")
+                  button.setAttribute("class","btn btn-primary");
                     button.type = 'button';
                     button.name = 'options';
-                    button.id = a; 
-                  button.value = obj[a];
+                    button.id = 'accept_reject'; 
+                  //button.value = obj[a];
+                  button.value = 'accept';
+                  button.setAttribute("onclick","clickfunction(a,1)");
+                  rdiv.appendChild(button);
                   
-                  button.setAttribute("onclick","clickfunction(a)");                 
-              rdiv.appendChild(button);
+                  //reject button
+                  var button_rej = document.createElement('input');
+                  button_rej.setAttribute("class", "btn btn-primary");
+                  button_rej.type = 'button';
+                  button_rej.name = 'options';
+                  button_rej.id = 'accept_reject';
+                  button_rej.value = 'reject';
+                  button_rej.setAttribute("onclick","clickfunction(a,2)");               
+              rdiv.appendChild(button_rej);
                  }
             
             };
-          $.ajax({
-            url:'requests.php',
-            datatype:'json',
-            type: 'post',
-            data:{request_type:1},//1 means incoming requests
-            success:function(output){
-              debugger;
-              a = JSON.parse(output); 
-                for (any in a){ 
-              b = a[any];
-              for (anyth in b){
-                incom_request[anyth] = b[anyth]
-              }
-                }
-            //create_table_from(incom_request,'requests');
-            create_table_fromm(incom_request);
-            }
           
-              });
+          function requests(){
+            $.ajax({
+              url:'requests.php//',
+              datatype:'json',
+              type: 'post',
+              data:{request_type:1},//1 means incoming requests
+              success:function(output){
+                //debugger;
+                a = JSON.parse(output); 
+                    for (any in a){ 
+                  b = a[any];
+                  for (anyth in b){
+                    incom_request[anyth] = b[anyth]
+                  }
+                   }
+              //create_table_from(incom_request,'requests');
+                create_table_fromm(incom_request);
+              }
+            
+                });
+              }
               
             
         </script>
@@ -394,7 +448,7 @@ else{
         }
         
         var jso = <?php echo json_encode($W);?>;
-        var nam = '<?php echo $nam;?>';
+        var pass = '<?php echo $password;?>';
         //console.log(jso);
         if (jso == null){
           $('#top-bar').hide();

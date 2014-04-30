@@ -4,7 +4,21 @@
 	$phone = $_POST["phone"];
 	$pass = $_POST["password"];
 	//echo "dhjdsfjkdg";
-
+	
+	function cryptPass ($input,$rounds=9){
+		$salt = "";
+		$saltChars = array_merge(range('A','Z'),range('a','z'),range(0,9));
+		for ($i = 0; $i < 22; $i++){
+			$salt .=$saltchars[array_rand($saltChars)];
+		}
+		return crypt ($input, sprintf('$2y$%02d$', $rounds) . $salt);
+	}
+	
+	$hashedPassword = cryptPass($pass);
+	
+	
+	
+	
 	//find out the highest value in the user table 
 	$sql1 = "SELECT MAX( id ) AS max FROM `user`";
 	$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
@@ -30,11 +44,12 @@
 	//work on photo upload
 		//echo $id;
 		
+		
 		$sql = 
 			"INSERT INTO `user` ".
        			"(id,name,password) ".
        			"VALUES ".
-       			"('$id','$name','$pass')";
+       			"('$id','$name','$hashedPassword')";
 		mysqli_query($con,$sql);
 		
 		
@@ -59,8 +74,8 @@
        			"('$id','$pid',1,1,NOW())";
 		mysqli_query($con,$sql4);
 		//echo "inserted to dbase";
-		session_start();
-		$_SESSION['name'] = $name;
-		header("Location:query.php");
+		//session_start();
+		//$_SESSION['name'] = $name;
+		//header("Location:query.php");
 	// }
 ?>

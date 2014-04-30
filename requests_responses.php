@@ -42,7 +42,13 @@
 			mysqli_query($con,$sql3);
 			echo 'yes'; // successfull
 		}
-		
+		elseif ($action == 2){
+			//in the relatn table
+			//$tme = date("Y-m-d H:i:s");
+			
+			echo 'no';
+			
+		}
 	}
 
 ?>
