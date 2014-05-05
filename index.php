@@ -6,7 +6,7 @@
 </head>
 <body background = "/tracker/images/image.jpg">
 <h1>Login </h1>
-<form action="query.php" method="post">
+<form action="loginto.php" method="post">
 	Name: <input type="text" name="name">
 	Password: <input type="password" name="pwd">
 	<input type="submit">

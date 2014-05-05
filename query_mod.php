@@ -1,116 +1,43 @@
-<?php 
-    //if (empty ($_SESSION['namm'])){
-      session_start();
-    //}
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST")
-    {
-      
-      if (!isset($_SEESION['namm'])){
-        $_SESSION['namm'] = test_input($_POST["name"]);
-        $password = $_POST["pwd"];
-        }
-    }
-    
-    $phir = $_SESSION['namm'];
-    function test_input($data)
-    {
-       $data = trim($data);
-       $data = stripslashes($data);
-       $data = htmlspecialchars($data);
-       return $data;
-    }
-   
-   
-if(isset($_SESSION['namm'])){
-  echo 'session namm check';
+<?php
+  session_start();
+  if (isset($_SESSION['namm']) || isset($_SESSION['idd'])){
     include "connection.php";
-    $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
-    $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
-   
-    
-    
-    $pw = ""; //password
-    
-    $img_link = "";//image link work on this
-    
-    while ($roow = mysqli_fetch_array($result1)){
-      $pw = $roow[2];
-      $_SESSION['idd'] = $roow[0];
-      $img_link = $roow[3];
-    }
-    //echo $img_link;
-   
-
-    if (crypt($password, $pw) == $pw) { //make ==
-      echo 'passwordcheck';
-      $sql = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
-      $W = array();
-
-      $result = mysqli_query($con, $sql) or die(mysqli_error($con));
-        
-      if (!$result){
-          echo "no result";
-          exit();
-      }
-      else {
-        
-          while ($row = mysqli_fetch_array($result)){
-                  //$row now have got 0->id 1->name 2->password 3->image 
-                  // initialize array persons[]
-                  //step1: get the uid and search in the reltn for the person_id where uid = $row[0] store it in the array persons[]
-                  //step 2 : loop through the persons array and search for the person_id in the person table and acquire the coordinates
-                  //$persons  = array();
-                  $sql2 = "SELECT * FROM `relatn` WHERE `uid`='" . $row[0] . "' AND `viewable` = 1";
+        $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
+        $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
+        if (!result1){
+          echo 'no result';
+        }
+        else{
+          while ($roow = mysqli_fetch_array($result1)){
+            $img_link = $roow[3];
+            $sql2 = "SELECT * FROM `relatn` WHERE `uid`='" . $_SESSION['idd'] . "' AND `viewable` = 1";
                   $result2 = mysqli_query($con, $sql2) or die(mysqli_error($con)); 
                   if (!result2){
-                    echo "noone to view";
-                  }
-                  else{
-                    while ($rows = mysqli_fetch_array($result2)){
-                      $sql = "SELECT * FROM `person`WHERE `person_id` = '" . $rows[1] . "'";
-                      $person_result = mysqli_query($con,$sql);
-                      while($row1 = mysqli_fetch_array($person_result)){
-                              $X = $row1[2]; 
+                      echo 'noone to view yet';
+                    }
+                    else{
+                      while ($rows = mysqli_fetch_array($result2)){
+                        $sql = "SELECT * FROM `person`WHERE `person_id` = '" . $rows[1] . "'";
+                          $person_result = mysqli_query($con,$sql);
+                          while($row1 = mysqli_fetch_array($person_result)){
+                            $X = $row1[2]; 
                               $Y = $row1[3];
                               $acc = $row1[4];
                               $imag_link = $row1[5]; 
-                              //$arrayName[] = array($X,$Y);  
-                              //echo $row1[1];
                               $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
-                            //echo json_encode($arrayName);     
-                      }       
-                      
+                                  
+                          }       
+                        
+                      }
                     }
-                  }
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                      
           }
-      }
-       //var_dump ($W);
-       //echo '<br>';
-      //echo json_encode($W);
-    
-//print_r($arrayName);
-}
+        }
+  }
 else{
-  //echo 'password doesnot match';
-  //take back to the login page
-  //echo '<a href = '/user.php'>' . 'goto the login page' . '</a>';
-}
+  echo 'not logged in';
 }
 ?>
+
 <html>
 <head>
   <title>
@@ -312,11 +239,14 @@ else{
             
             //name of the id required
           }
-          function clickfunction(id, acn){
+          function clickfunction(id, acn, div_name){
             //id is the id of request "pathaune manchhey"
             //if this is the acceptance buttons' click function make actn=0 and send to the same php
             actn = acn;
-            console.log('sent to'),actn;
+            node = document.getElementById(div_name)
+            
+
+
             $.ajax({
               url : "requests_responses.php",
               type:'post',
@@ -325,25 +255,36 @@ else{
                 req_id : id         
               },
               success: function(output){
-                //debugger;
-                //console.log(output);
-                if (output == 'yes'){
-                  
-                  on_top_bar('yes');
-                  //requests();
-                  
+                  //debugger;
+                  //console.log(output);
+              while (node.firstChild){
+                  node.removeChild(node.firstChild);
                 }
+                if (actn == 1){
+                node.innerHTML = 'Accepted';
                 
-                else if (output == 'no'){
-                  on_top_bar('no');
-                  
+                
                 }
-                
-                
-                
-                //now hide this request
-              }
+                else if (actn == 2){
+                  node.innerHTML = 'Rejected';
               
+                }
+             
+             if (output == 'yes'){
+                    
+                  on_top_bar('yes');
+               
+                    
+             }
+                  
+              else if (output == 'no'){
+                on_top_bar('no');
+                    
+               }
+   
+                  //requests();
+         }
+                
             
             });
             
@@ -361,59 +302,62 @@ else{
                 
                 
                 for (a in obj){
-                  //display the name
-                  var named = document.createElement('div');
-                  named.innerHTML = obj[a];
-                  panel.appendChild(named);
-                  var rdiv = document.createElement('div');
-                  rdiv.setAttribute("class", "btn-group-vertical");
-                  rdiv.setAttribute("data-toggle", "modal");
-                  panel.appendChild(rdiv);
-                  //accept button
-                  var button = document.createElement('input');
-                  button.setAttribute("class","btn btn-primary");
+                  
+                    var named = document.createElement('div');
+                    named.innerHTML = obj[a];
+                    panel.appendChild(named);
+                    var rdiv = document.createElement('div');
+                    rdiv.setAttribute("class", "btn-group");
+                    rdiv.setAttribute("data-toggle", "modal");
+                    rdiv.setAttribute("id", obj[a]);
+                    panel.appendChild(rdiv);
+  
+                    var button = document.createElement('input');
+                    button.setAttribute("class","btn btn-primary");
                     button.type = 'button';
                     button.name = 'options';
                     button.id = a; 
-                  //button.value = obj[a];
-                  button.value = 'approve';
-                  button.setAttribute("onclick","clickfunction(this.id,1)");
-                  rdiv.appendChild(button);
-                  
-                  //reject button
-                  var button_rej = document.createElement('input');
-                  button_rej.setAttribute("class", "btn btn-primary");
-                  button_rej.type = 'button';
-                  button_rej.name = 'options';
-                  button_rej.id = a;
-                  button_rej.value = 'Decline';
-                  button_rej.setAttribute("onclick","clickfunction(this.id,2)");               
-              rdiv.appendChild(button_rej);
+                    div_name = obj[a];
+                    button.value = 'approve';
+                    button.setAttribute("onclick","clickfunction(this.id,1,div_name)");
+                    
+                    rdiv.appendChild(button);
+                    
+                    //reject button
+                    var button_rej = document.createElement('input');
+                    button_rej.setAttribute("class", "btn btn-primary");
+                    button_rej.type = 'button';
+                    button_rej.name = 'options';
+                    button_rej.id = a;
+                    button_rej.value = 'Decline';
+                    button_rej.setAttribute("onclick","clickfunction(this.id,2,div_name)");
+                                   
+                    rdiv.appendChild(button_rej);
                  }
             
             };
           
           function requests(){
-            $.ajax({
-              url:'requests.php//',
-              datatype:'json',
-              type: 'post',
-              data:{request_type:1},//1 means incoming requests
-              success:function(output){
-                //debugger;
-                a = JSON.parse(output); 
-                    for (any in a){ 
-                  b = a[any];
-                  for (anyth in b){
-                    incom_request[anyth] = b[anyth]
+              $.ajax({
+                url:'requests.php//',
+                datatype:'json',
+                type: 'post',
+                data:{request_type:1},//1 means incoming requests
+                success:function(output){
+                    //debugger;
+                    a = JSON.parse(output); 
+                        for (any in a){ 
+                      b = a[any];
+                      for (anyth in b){
+                        incom_request[anyth] = b[anyth]
+                      }
+                       }
+                  //create_table_from(incom_request,'requests');
+                    create_table_fromm(incom_request);
                   }
-                   }
-              //create_table_from(incom_request,'requests');
-                create_table_fromm(incom_request);
-              }
-            
-                });
-              }
+              
+                  });
+           }
               
             
         </script>

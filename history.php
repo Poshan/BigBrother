@@ -4,8 +4,10 @@
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
 <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+ 
 
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+<script src="lib\leaflet.polylineDecorator.min.js"></script>
 <title>View the history</title>
   <style>
     #map{
@@ -139,7 +141,7 @@ var person_obj1 = {};
 
 //check if person_obj1 is empty
 var hasOwnProperty = Object.prototype.hasOwnProperty;
-//also check if the object has got some other information
+//to do:: also check if the object has got some other information
 
 
 function checkEmpty(obj) {
@@ -213,9 +215,31 @@ var marker_layergr = L.layerGroup();
 
 //function that creates a polyline on the user's time related data and polyline is added on marker_layergr
 function createpolyline(l4pll){
+	 var poly = new L.Polyline(l4pll, {
+            color: 'green',
+            weight: 7
+        }).addTo(map);
+	  
+	 
+	 //addMarkers(poly);
+	  // var arrowHead = new L.polylineDecorator(poly, {
+	  // 	patterns: [{
+	  // 		offset: 25,
+	  // 		repeat: 50,
+	  // 		symbol: L.Symbol.arrowHead({
+	  // 			pixelSize: 15,
+	  // 			pathOptions: {
+	  // 				 fillOpacity: 1,
+	  // 				  weight: 0
+	  // 			}
+	  // 		})
+	  // 	}]
+
+	  // });
+
+	//var polyline = L.polyline(l4pll, {color: 'red'}).addTo(map);
+	marker_layergr.addLayer(poly);
 	
-	var polyline = L.polyline(l4pll, {color: 'red'}).addTo(map);
-	marker_layergr.addLayer(polyline);
 	//polyline.setLatLngs(l4pll);
 	//polyline.addTo(map);
 	
@@ -223,9 +247,33 @@ function createpolyline(l4pll){
 
 //!@#$%^&*@@#$%^&*(^%$#@#$%^&*()_)(*&#@#$%^&*
 //add a function which in particular add markers when data json is sent
-function addMarkers(obj){
-	
+function addMarkers(obj){}
+
+
+//leaflet decorationsss
+function makeDecor(l4pll){
+	 // var decorator = L.polylineDecorator(l4pll, {
+  //       patterns: [
+  //           // define a pattern of 10px-wide dashes, repeated every 20px on the line 
+  //           {offset: 0, repeat: '20px', symbol: new L.Symbol.Dash({pixelSize: 10})}
+  //       ]
+  //   });
+
+	var pathPattern = L.polylineDecorator(
+        [l4pll],
+        {
+            patterns: [
+                { offset: 12, repeat: 25, symbol: L.Symbol.dash({pixelSize: 10, pathOptions: {color: '#f00', weight: 2}}) },
+                { offset: 0, repeat: 25, symbol: L.Symbol.dash({pixelSize: 0}) }
+            ]
+        }
+    );
+
+	marker_layergr.addLayer(pathPattern);
+
+
 }
+	
 
 
 
@@ -267,7 +315,6 @@ function clickfunction(id){
   		
   		success: function(output){
   		
-  			//debugger;
   		
   			a = JSON.parse(output);
   			  		
@@ -285,17 +332,24 @@ function clickfunction(id){
   					marker_layergr.addLayer(marker);
   					
   				}
-  				createpolyline(latlngforpll);	//call the function which would create the polyline over the persons time data
+  				
+  				//createpolyline(latlngforpll);	//call the function which would create the polyline over the persons time data
+  				 
   			}
+  			
   			//for (var i = 0; i < latlngforpll.length; i++) {
 			//	debugger;
 			//	extend1.extend(latlngforpll[i]);
   			//}
+  			createpolyline(latlngforpll);
   			map.fitBounds(extend1);
   			
   		}
   		//alert (dis);
+		//call the function which would create the polyline over the persons time data
+	//makeDecor(latlngforpll);
 	});
+
 }
 marker_layergr.addTo(map);
 
