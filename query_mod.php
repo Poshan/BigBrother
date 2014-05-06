@@ -470,12 +470,7 @@ else{
           }
         
         });
-        
-        
-                  
 
-        var sess_name = '<?php echo ($phir);?>';
-        
         var jso = <?php echo json_encode($W);?>;
         //console.log(jso);
         if (jso == null){

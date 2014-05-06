@@ -208,17 +208,18 @@ $.ajax({
 	}
 });
 
-latlngforpll = [];
+
 var marker = L.marker();
 var marker_layergr = L.layerGroup();
 //var polyline = L.polyline();
 
 //function that creates a polyline on the user's time related data and polyline is added on marker_layergr
 function createpolyline(l4pll){
+	if(poly){console.log('polyline already exists');}
 	 var poly = new L.Polyline(l4pll, {
             color: 'green',
             weight: 7
-        }).addTo(map);
+        });
 	  
 	 
 	 //addMarkers(poly);
@@ -285,8 +286,11 @@ function clickfunction(id){
 	//console.log(id);
 	//clear the values in the present extend1 layer
 	var extend1 = new L.LatLngBounds();
-	if (marker.getLatLng()){
-		marker_layergr.clearLayers();// if already markers and polylines are present than clear it
+	debugger;
+	if ((marker.getLatLng()) || (marker_layergr)){
+		marker_layergr.clearLayers();
+		
+		// if already markers and polylines are present than clear it
 	}
 // ajax call to abcd.php where the id from the button i.e. user id is sent and the person's time data is received
 	
@@ -315,7 +319,7 @@ function clickfunction(id){
   		
   		success: function(output){
   		
-  		
+  			var latlngforpll = [];
   			a = JSON.parse(output);
   			  		
   			for (anythg in a){
