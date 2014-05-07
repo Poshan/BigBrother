@@ -1,6 +1,10 @@
 <?php
   session_start();
-  if (isset($_SESSION['namm']) || isset($_SESSION['idd'])){
+  if (isset($_SESSION['namm']) && isset($_SESSION['idd'])){
+    $user_name = $_SESSION['namm'];
+    
+    
+    
     include "connection.php";
         $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
         $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
@@ -20,15 +24,23 @@
                         $sql = "SELECT * FROM `person`WHERE `person_id` = '" . $rows[1] . "'";
                           $person_result = mysqli_query($con,$sql);
                           while($row1 = mysqli_fetch_array($person_result)){
-                            $X = $row1[2]; 
+                              $X = $row1[2]; 
                               $Y = $row1[3];
                               $acc = $row1[4];
                               $imag_link = $row1[5]; 
-                              $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
-                                  
+                             
+                              if ($row1[1] == $user_name){
+                                $users_location[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
+                                
+                              }
+                              else{
+                                
+                                $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
+                                
+                              }       
                           }       
-                        
                       }
+                     
                     }
           }
         }
@@ -37,7 +49,6 @@ else{
   echo 'not logged in';
 }
 ?>
-
 <html>
 <head>
   <title>
@@ -127,7 +138,19 @@ else{
       position: absolute;
       background-color:darkkhaki;
     }
+    #prof{
+      border: solid 0.25em rosybrown;
+      background-color: tan
+      
+      
+    }
+    #name{
+      border: solid 0.1em rosybrown;
+      background-color: tan
+      
+    }
     
+
   </style>
 </head>     
 <body>
@@ -141,7 +164,7 @@ else{
   </button>
             <button data-toggle="dropdown" class="btn btn-info dropdown-toggle">Settings <span class="caret"></span></button>
             <ul class="dropdown-menu">
-                <li><a href="#">LOgOuT</a></li>        
+                <li><a href="http://kathmandulivinglabs.org/tracker/logout.php">LOgOuT</a></li>        
             </ul>
         </div>       
 </div>
@@ -158,54 +181,66 @@ else{
         
       </div>
       
+     
       
-      //the profile page
-      <div class="tab-pane" id="profile">...
-        //design the profile page
-        <h1>profile page</h1>
-        <div id="prof">these are your viewable persons </div>
+      <div class="tab-pane" id="profile">
+        <div id= "name" align="center">
+      <h1><?php echo $_SESSION['namm'];?></h1>
+  </div>
+        
+        <div id ="prof">these are your viewable persons </br> </div>
         <script>
            var person_obj1 = {};
            function create_table_from(obj){
-            //function create_table_from(obj,dddiv){ // to create the buttons when the objects and the div in which the buttons are 
+           
               //var prof1 = dddiv;
-              var panel = document.getElementById('prof');
+                var panel = document.getElementById('prof');
+                
+                
+                //var input1 = document.createElement("input");
+    //input1.name = "post";
+                //panel.appendChild(input1);
+              
               //var panel = document.getElementById(prof1);
               var rdiv = document.createElement('div');
-              rdiv.setAttribute("class", "btn-group-vertical");
+              rdiv.setAttribute("class", "btn-group");
               rdiv.setAttribute("data-toggle", "modal");
+              
               panel.appendChild(rdiv);
+              //input1.appendChild(rdiv);
               
               for (a in obj){
-                var button = document.createElement('input');
-                button.setAttribute("class","btn btn-primary")
+                  var button = document.createElement('input');
+                  button.setAttribute("class","btn btn-primary")
                   button.type = 'button';
                   button.name = 'options';
                   button.id = a; 
-                button.value = obj[a];
-                rdiv.appendChild(button);
-                
-            
+                  button.value = obj[a];
+                  rdiv.appendChild(button);
               }
-            
-            };
+            }
+         
             
             $.ajax({
           url : 'person_list.php',
+          type : 'post',
+          data: {
+            index:1
+          },
           datatype:'json',
           success: function(output){
             
-            //console.log(output);
-            a = JSON.parse(output); 
-                for (any in a){ 
-              b = a[any];
-              for (anyth in b){
-                person_obj1[anyth] = b[anyth]
-              }
+              //console.log(output);
+              a = JSON.parse(output); 
+                  for (any in a){ 
+                b = a[any];
+                for (anyth in b){
+                  person_obj1[anyth] = b[anyth]
                 }
-            //create_table_from(person_obj1,'prof');
-            create_table_from(person_obj1);
-          }
+                  }
+              //create_table_from(person_obj1,'prof');
+              create_table_from(person_obj1);
+            }
           
             });
             
@@ -243,7 +278,7 @@ else{
             //id is the id of request "pathaune manchhey"
             //if this is the acceptance buttons' click function make actn=0 and send to the same php
             actn = acn;
-            node = document.getElementById(div_name)
+            node = document.getElementById(div_name);
             
 
 
@@ -462,17 +497,16 @@ else{
         }
         
         //making ajax call instead of direct using jso
-        
-        $.ajax({
-          url:'persons.php',
-          success: function(output){
-            //debugger;
-          }
-        
-        });
 
+        
+        
+          
+  var user_name = '<?php echo $user_name;?>';
+        var user_location = <?php echo json_encode($users_location);?>;
         var jso = <?php echo json_encode($W);?>;
-        //console.log(jso);
+        
+       
+        //don't check for null but check the message sent from php
         if (jso == null){
           $('#top-bar').hide();
           $('#top-bar1').show();
@@ -482,7 +516,6 @@ else{
         }
         var image_link  = '<?php echo ($img_link);?>';
         if (!image_link){
-          console.log('default image function called');
           var panel = document.getElementById("container");
           var img = document.createElement("img");
           img.src = "/uploads/banner/B5Bssd130803010803.jpg";
@@ -492,9 +525,6 @@ else{
           panel.appendChild(img);
         }
         else{
-          
-          console.log('custom image called');
-          
           var panel = document.getElementById("container");
           var img = document.createElement("img");
           img.src = image_link;
@@ -516,17 +546,28 @@ else{
                
             }
          }
+         for (sth in user_location){
+            sth_in = user_location[sth]; ;
+            for(any in sth_in){
+                name = 'YOU';
+                ins = sth_in[any];
+                // coords.push(ins);
+                coords[name] = ins;
+               
+            }
+          
+         }
         var extend1 = new L.LatLngBounds();
         //var markers = new L.MarkerClusterGroup({ spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false });
         var map = new L.Map('map', {
             center: new L.LatLng(28.425,84.435),
             zoom: 7,
-            layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
+            layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.i65ff4hn/{z}/{x}/{y}.png')
         });
         
         for (any in coords){
-            
             x = coords[any];
+            
             acc = x[2];
             img_lnk = x[3];
             //create icon of the image of the users
@@ -548,12 +589,26 @@ else{
             //this(acc) is accuracy value scale it and then use as the radius of the circle
             
             var circle = L.circle(x, acc*100, {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.5
-      }).addTo(map);
-             
-            var marker = L.marker(x); //automatically takes the first two elements in this case it is lat and lon
+       color: 'red',
+         fillColor: '#f03',
+         fillOpacity: 0.5
+             }).addTo(map);
+            
+            
+             var customIcon = L.icon({
+        iconUrl: 'images/download.jpg', 
+        iconSize:     [25, 25]
+       });
+            
+            if (any == "YOU"){
+              var marker = L.marker(x,{
+                icon: customIcon
+                
+              }); 
+            }
+      else{
+              var marker = L.marker(x); //automatically takes the first two elements in this case it is lat and lon
+            }
             //var marker = L.marker((x), {icon:myIcon});
             /*marker.bindLabel(any,{
               noHide:true,
@@ -563,8 +618,10 @@ else{
             //marker.bindPopup(any);
             */
             
+
             //instead of making the image markers trying the image in popup
-            popupContent = '<img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
+            popupContent = any;
+            popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
             marker.bindPopup(popupContent).openPopup().addTo(map);
             
             

@@ -2,8 +2,8 @@
 	session_start();
 	if(isset($_SESSION['namm'])){
 		$nam = $_SESSION['namm'];
-		//echo $nam;
-		//exit();
+		$index = $_POST['index']; 
+		//indicates the call from which page 1 is from query and 2 from history
 		include 'connection.php';
 		$sql1 = "SELECT * FROM `user` WHERE `name`='" . $nam . "'";
 		$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
@@ -18,20 +18,34 @@
 				while($rows1 = mysqli_fetch_array($per_result)){
 					$sql2 = "SELECT * FROM `person`WHERE `person_id` = '" . $rows1[1] . "'";
 					$person_result = mysqli_query($con,$sql2);
-					while($row1 = mysqli_fetch_array($person_result)){
-						$person_list [] = array($row1[0]=>$row1[1]); 
-						
+					if ($index == 1){
+						while($row1 = mysqli_fetch_array($person_result)){
+							
+							if ($row1[1] != $nam){
+								$person_list [] = array($row1[0]=>$row1[1]); 
+							
+							}
+
+									
+						}	
 					} 
+					else if ($index == 2){					
+						while($row1 = mysqli_fetch_array($person_result)){
+							if ($row1[1] != $nam){
+								$person_list [] = array($row1[0]=>$row1[1]);
+							}
+							else{
+								$text = "Your Track";
+								$person_list [] = array($row1[0]=>$text);
+							}
+							 
+						}
+					}
 				}
 				
 				
 				
-				/*$sql = "SELECT * FROM `person`WHERE `person_id` = '" . $row[3] . "'";
-				$person_result = mysqli_query($con,$sql);
-				while($row1 = mysqli_fetch_array($person_result)){
-					$person_list [] = array($row1[0]=>$row1[1]); 
-						
-				}*/				
+				
 			
 			}
 		}

@@ -22,7 +22,7 @@
     #leftside{
 					right:50px;
 					top:25px;
-					width:100px;
+					width:120px;
 					z-index:1001;
 					position: absolute;
 			}
@@ -134,7 +134,7 @@ $('#notification-bar').hide();
 var map = new L.Map('map', {
     center: new L.LatLng(28.425,84.435),
     zoom: 7,
-    layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.hc1eo89i/{z}/{x}/{y}.png')
+    layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.i65ff4hn/{z}/{x}/{y}.png')
 });
 var person_obj1 = {};
 
@@ -184,6 +184,10 @@ function timedclick(){
 $.ajax({
 	url : 'person_list.php',
 	datatype:'json',
+	type:'post',
+	data:{
+		index:2
+	},
 	success: function(output){
 		//console.log(output);
 		
