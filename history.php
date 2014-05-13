@@ -34,6 +34,11 @@
     	height:50px;
     	z-index:1001
     }
+    
+    #go-back{
+    	position:absolute;
+    	top: 600
+    }
     #top-bar {
     	position: absolute;
     	top: 05px;
@@ -126,6 +131,7 @@
 	<input type="text" id="time" name="myText" style="color:green;"> 
 	<button onclick="timedclick()">ShoW</button>
 </div>
+
 <script type="text/javascript">
 //createEditableSelect(document.forms[0].myText);
 
@@ -186,7 +192,7 @@ $.ajax({
 	datatype:'json',
 	type:'post',
 	data:{
-		index:2
+		index:2 //calling person_list from history_page
 	},
 	success: function(output){
 		//console.log(output);
@@ -219,11 +225,23 @@ var marker_layergr = L.layerGroup();
 
 //function that creates a polyline on the user's time related data and polyline is added on marker_layergr
 function createpolyline(l4pll){
+	debugger;
+	leng = l4pll.length - 1;
+	latest_point = l4pll[leng]
 	if(poly){console.log('polyline already exists');}
-	 var poly = new L.Polyline(l4pll, {
+	console.log(l4pll);
+	
+	var poly = new L.Polyline(l4pll, {
             color: 'green',
             weight: 7
         });
+        //add marker for the point
+        latest_point_marker = L.marker(latest_point);
+	//zoom map to the latest data
+	map.setView(latest_point,19);
+	
+	
+	
 	  
 	 
 	 //addMarkers(poly);
@@ -244,6 +262,7 @@ function createpolyline(l4pll){
 
 	//var polyline = L.polyline(l4pll, {color: 'red'}).addTo(map);
 	marker_layergr.addLayer(poly);
+	marker_layergr.addLayer(latest_point_marker);
 	
 	//polyline.setLatLngs(l4pll);
 	//polyline.addTo(map);
@@ -290,7 +309,6 @@ function clickfunction(id){
 	//console.log(id);
 	//clear the values in the present extend1 layer
 	var extend1 = new L.LatLngBounds();
-	debugger;
 	if ((marker.getLatLng()) || (marker_layergr)){
 		marker_layergr.clearLayers();
 		
@@ -322,23 +340,28 @@ function clickfunction(id){
   		datatype: 'json',
   		
   		success: function(output){
-  		
   			var latlngforpll = [];
   			a = JSON.parse(output);
-  			  		
+  			console.log(a);
   			for (anythg in a){
   				b = (a[anythg]);
   				for (ath in b){
   					
-  					x = parseInt(b[ath][0]);
-  					y = parseInt(b[ath][1]);
+  					x = parseFloat(b[ath][0]);
+  					y = parseFloat(b[ath][1]);
   					var latlng = L.latLng(x,y);
   					latlngforpll.push(latlng);
-  					extend1.extend(latlng);
-  					marker = L.marker(latlng).addTo(map);
-  					marker.bindPopup(ath);
-  					marker_layergr.addLayer(marker);
-  					
+  					//extend1.extend(latlng);
+  					var circle = L.circle(latlng, 0.5, {
+					    color: 'red',
+					    fillColor: '#f03',
+					    fillOpacity: 0.5
+					}).addTo(map);
+						  					
+  					//marker = L.marker(latlng).addTo(map);
+  					circle.bindPopup(ath);
+  					//marker_layergr.addLayer(marker);
+  					marker_layergr.addLayer(circle);
   				}
   				
   				//createpolyline(latlngforpll);	//call the function which would create the polyline over the persons time data
@@ -350,7 +373,7 @@ function clickfunction(id){
 			//	extend1.extend(latlngforpll[i]);
   			//}
   			createpolyline(latlngforpll);
-  			map.fitBounds(extend1);
+  			//map.fitBounds(extend1);
   			
   		}
   		//alert (dis);
@@ -389,11 +412,17 @@ function addthepersons(person1){
 	 	
 }
 	
-
-
+</script>
+<div id ="go-back">
+  <button type="button" id="loading-example-btn" data-loading-text="Loading..." class="btn btn-primary" onclick= "button_click()">Go back to previous page           
+  </button>
+</div>
+<script type="text/javascript">
+	function button_click(){
+		window.location.href = "http://kathmandulivinglabs.org/tracker/query_mod.php";
+	}
 
 </script>
-	
 </body>
 
 </html>

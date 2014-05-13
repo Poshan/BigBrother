@@ -5,6 +5,8 @@
 	$time1 = (int)$_POST['tiime'];
 	$times = $time1*60*60;
 	
+	//times correct!!!
+	//COnsider the UTC Time is late to phones' time 
 	
 	include 'connection.php';
 	session_start();
@@ -57,11 +59,10 @@
 	//echo "<br>";
 	
 	
-	$sql1 = "SELECT * FROM `aap` WHERE `pid`='" . $pos . "'";//&& DATE(time) >= '" . $result_dated . "'"; //and date > result_dated
+	$sql1 = "SELECT * FROM `aap` WHERE `pid`='" . $pos . "' ORDER BY `time`";
 	$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
 	$W = array();
 if ($timed == 0){
-	
 	while ($row = mysqli_fetch_array($result1)){
 		//while row[3] is greater than the result_date
 		//$time1 = date('y-m-d H:i:s',strtotime($row[3]));
