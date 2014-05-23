@@ -155,7 +155,7 @@ else{
 </head>     
 <body>
  
-<!-- <a href="history.php">click</a> -->
+
 <div id = "top-bar">
   <h1>Track-or wherever you ll go</h1>
   

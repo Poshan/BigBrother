@@ -225,11 +225,9 @@ var marker_layergr = L.layerGroup();
 
 //function that creates a polyline on the user's time related data and polyline is added on marker_layergr
 function createpolyline(l4pll){
-	debugger;
 	leng = l4pll.length - 1;
 	latest_point = l4pll[leng]
 	if(poly){console.log('polyline already exists');}
-	console.log(l4pll);
 	
 	var poly = new L.Polyline(l4pll, {
             color: 'green',
@@ -237,6 +235,7 @@ function createpolyline(l4pll){
         });
         //add marker for the point
         latest_point_marker = L.marker(latest_point);
+        latest_point_marker.bindPopup("latest position");
 	//zoom map to the latest data
 	map.setView(latest_point,19);
 	
@@ -271,7 +270,19 @@ function createpolyline(l4pll){
 
 //!@#$%^&*@@#$%^&*(^%$#@#$%^&*()_)(*&#@#$%^&*
 //add a function which in particular add markers when data json is sent
-function addMarkers(obj){}
+function addMarkers(latlng, ath){
+	var circle = L.circle(latlng, 2, {
+			    color: 'red',
+			    fillColor: '#f03',
+			    fillOpacity: 0.5
+			}).addTo(map);
+						  					
+		//marker = L.marker(latlng).addTo(map);
+		circle.bindPopup(ath);
+		//marker_layergr.addLayer(marker);
+		marker_layergr.addLayer(circle);
+	
+}
 
 
 //leaflet decorationsss
@@ -301,13 +312,14 @@ function makeDecor(l4pll){
 
 
 
-
+//var global_id;
 
 // function which receives the time related data of each user on click of the person on the button... id is the person id
 function clickfunction(id){
 	//alert('clicked');
 	//console.log(id);
 	//clear the values in the present extend1 layer
+	//global_id = id;
 	var extend1 = new L.LatLngBounds();
 	if ((marker.getLatLng()) || (marker_layergr)){
 		marker_layergr.clearLayers();
@@ -316,10 +328,11 @@ function clickfunction(id){
 	}
 // ajax call to abcd.php where the id from the button i.e. user id is sent and the person's time data is received
 	
-
+	var interval;
 	var tyyme;
 	var timed_value;
-	if (tyme == undefined){ //no time value entered
+	if (tyme == undefined){ 
+			//no time value entered
 			timed_value = 0;
 			//tyyme = 0;
 	}
@@ -346,22 +359,14 @@ function clickfunction(id){
   			for (anythg in a){
   				b = (a[anythg]);
   				for (ath in b){
-  					
   					x = parseFloat(b[ath][0]);
   					y = parseFloat(b[ath][1]);
   					var latlng = L.latLng(x,y);
   					latlngforpll.push(latlng);
   					//extend1.extend(latlng);
-  					var circle = L.circle(latlng, 0.5, {
-					    color: 'red',
-					    fillColor: '#f03',
-					    fillOpacity: 0.5
-					}).addTo(map);
-						  					
-  					//marker = L.marker(latlng).addTo(map);
-  					circle.bindPopup(ath);
-  					//marker_layergr.addLayer(marker);
-  					marker_layergr.addLayer(circle);
+  					//function that creates circle markers and bindPopup to them 
+  					addMarkers(latlng,ath);
+  					
   				}
   				
   				//createpolyline(latlngforpll);	//call the function which would create the polyline over the persons time data
@@ -372,15 +377,21 @@ function clickfunction(id){
 			//	debugger;
 			//	extend1.extend(latlngforpll[i]);
   			//}
-  			createpolyline(latlngforpll);
+  			
   			//map.fitBounds(extend1);
   			
+			createpolyline(latlngforpll);
   		}
   		//alert (dis);
 		//call the function which would create the polyline over the persons time data
 	//makeDecor(latlngforpll);
+	
 	});
 
+}
+function history_repeater(id){
+	global_id = id;
+	interval = window.setInterval(clickfunction,1000,global_id);
 }
 marker_layergr.addTo(map);
 
@@ -401,7 +412,7 @@ function addthepersons(person1){
 	        button.type = 'button';
 	        button.name = 'options';
 	        button.id = a; 
-	        button.setAttribute("onclick","clickfunction(this.id)");//on click send the id of the person 
+	        button.setAttribute("onclick","history_repeater(this.id)");//on click send the id of the person 
 	        button.value = person1[a];//display the person name
 	        //var label = document.createElement('label');
         	//label.setAttribute("class", "btn btn-default");

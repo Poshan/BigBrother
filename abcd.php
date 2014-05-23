@@ -3,20 +3,19 @@
 	$pos = (int)$_POST['pid'];
 	$timed = $_POST['timed'];
 	$time1 = (int)$_POST['tiime'];
-	$times = $time1*60*60;
+	$times = ($time1*60*60);
 	
+	// 5 hours and 45 minutes 20700 seconds added to get the UTC
 	//times correct!!!
-	//COnsider the UTC Time is late to phones' time 
+	//Consider the UTC Time is late to phones' time 
+	
 	
 	include 'connection.php';
 	session_start();
 	$nam = $_SESSION['namm'];
 	//echo $nam;
-	$uid = $_SESSION['idd'];
-	//echo $uid;
-	
-	
-	//get uid from hte name !#$%^&$%$#@!#$% rather store the id in the session variable
+	$uid = $_SESSION['idd'];	
+
 
 
 
@@ -86,7 +85,8 @@ if ($timed == 0){
 
 else{
 	$time_value = $times;
-	$time_now = time();
+	$time_now = time() - 20700;
+	//no problem with subtraction 
 	
 	while ($row = mysqli_fetch_array($result1)){
 		$time1 = strtotime($row[3]);
