@@ -1,54 +1,3 @@
-<?php
-  session_start();
-  if (isset($_SESSION['namm']) && isset($_SESSION['idd'])){
-    $user_name = $_SESSION['namm'];
-    
-    
-    
-    include "connection.php";
-        $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
-        $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
-        if (!result1){
-          echo 'no result';
-        }
-        else{
-          while ($roow = mysqli_fetch_array($result1)){
-            $img_link = $roow[3];
-            $sql2 = "SELECT * FROM `relatn` WHERE `uid`='" . $_SESSION['idd'] . "' AND `viewable` = 1";
-                  $result2 = mysqli_query($con, $sql2) or die(mysqli_error($con)); 
-                  if (!result2){
-                      echo 'noone to view yet';
-                    }
-                    else{
-                      while ($rows = mysqli_fetch_array($result2)){
-                        $sql = "SELECT * FROM `person`WHERE `person_id` = '" . $rows[1] . "'";
-                          $person_result = mysqli_query($con,$sql);
-                          while($row1 = mysqli_fetch_array($person_result)){
-                              $X = $row1[2]; 
-                              $Y = $row1[3];
-                              $acc = $row1[4];
-                              $imag_link = $row1[5]; 
-                             
-                              if ($row1[1] == $user_name){
-                                $users_location[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
-                                
-                              }
-                              else{
-                                
-                                $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
-                                
-                              }       
-                          }       
-                      }
-                     
-                    }
-          }
-        }
-  }
-else{
-  echo 'not logged in';
-}
-?>
 <html>
 <head>
   <title>
@@ -63,8 +12,6 @@ else{
  <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
-
   <style>
    #top-bar{
       height: 45px;
@@ -152,6 +99,7 @@ else{
     
 
   </style>
+  
 </head>     
 <body>
  
@@ -177,14 +125,17 @@ else{
       <!-- Tab panes -->
     <div class="tab-content">
       <div class="tab-pane active" id="home">
-        <div id ="map"></div>
-        
+        <div id ="map">
+        </div>
+        <script type = "text/javascript" src = "maps.js"></script>
       </div>
       
      
       
       <div class="tab-pane" id="profile">
-        <div id= "name" align="center">
+      <div id= "name" align="center">
+      
+      <!--instead make another ajax call to find out name-->
       <h1><?php echo $_SESSION['namm'];?></h1>
   </div>
         
@@ -470,102 +421,25 @@ else{
             });
           }
           
-        </script>
-        
-        
-        
-        
-        
-        
-        
-      
+        </script>  
       </div>
-      </br>
-      
-      
-      
-      
+      </br>  
     </div>
     <div id = "top-bar1">
           u are currently offline 
           go back to <a href = 'index.php'>login page</a>
     </div>
   <script type="text/javascript">
+        var coords = {};
+        var latlng = [];
+        
         $('#top-bar1').hide();
         function button_click(){
           window.location.href = "http://kathmandulivinglabs.org/tracker/history.php";
         }
-        
-        //making ajax call instead of direct using jso
-
-        
-        
-          
-  var user_name = '<?php echo $user_name;?>';
-        var user_location = <?php echo json_encode($users_location);?>;
-        var jso = <?php echo json_encode($W);?>;
-        
-       
-        //don't check for null but check the message sent from php
-        if (jso == null){
-          $('#top-bar').hide();
-          $('#top-bar1').show();
-          $('.tab-content').hide();
-     
-          
-        }
-        var image_link  = '<?php echo ($img_link);?>';
-        if (!image_link){
-          var panel = document.getElementById("container");
-          var img = document.createElement("img");
-          img.src = "/uploads/banner/B5Bssd130803010803.jpg";
-          img.width = "80";
-          img.height = "50";
-          img.position = "fixed";
-          panel.appendChild(img);
-        }
-        else{
-          var panel = document.getElementById("container");
-          var img = document.createElement("img");
-          img.src = image_link;
-          img.alt = 'poshan';
-          img.width = "80";
-          img.height = "50";
-          img.positon = "fixed";
-          panel.appendChild(img);
-        }
-        var coords = {};
-        var latlng = [];
-        for(sth in jso){
-            sth_in = jso[sth]; ;
-            for(any in sth_in){
-                name = any;
-                ins = sth_in[any];
-                // coords.push(ins);
-                coords[name] = ins;
-               
-            }
-         }
-         for (sth in user_location){
-            sth_in = user_location[sth]; ;
-            for(any in sth_in){
-                name = 'YOU';
-                ins = sth_in[any];
-                // coords.push(ins);
-                coords[name] = ins;
-               
-            }
-          
-         }
-        var extend1 = new L.LatLngBounds();
-        //var markers = new L.MarkerClusterGroup({ spiderfyOnMaxZoom: false, showCoverageOnHover: true, zoomToBoundsOnClick: false });
-        var map = new L.Map('map', {
-            center: new L.LatLng(28.425,84.435),
-            zoom: 7,
-            layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.i65ff4hn/{z}/{x}/{y}.png')
-        });
-        
-        for (any in coords){
+        function actual_display(coords){
+            var extend1 = new L.LatLngBounds();
+            for (any in coords){
             x = coords[any];
             
             acc = x[2];
@@ -589,16 +463,16 @@ else{
             //this(acc) is accuracy value scale it and then use as the radius of the circle
             
             var circle = L.circle(x, acc*100, {
-       color: 'red',
-         fillColor: '#f03',
-         fillOpacity: 0.5
-             }).addTo(map);
+          color: 'red',
+          fillColor: '#f03',
+                fillOpacity: 0.5
+            }).addTo(map);
             
             
-             var customIcon = L.icon({
-        iconUrl: 'images/download.jpg', 
-        iconSize:     [25, 25]
-       });
+            var customIcon = L.icon({
+          iconUrl: 'images/download.jpg', 
+          iconSize:     [25, 25]
+            });
             
             if (any == "YOU"){
               var marker = L.marker(x,{
@@ -641,8 +515,6 @@ else{
                  latlng.push(ll);
             }
         } 
-        //map.addLayer(markers);
-        
         for (var i = 0; i < latlng.length; i++) {
             //L.marker(latlng[i]).addTo(map);
             extend1.extend(latlng[i]);
@@ -650,15 +522,107 @@ else{
         //var marker = L.marker(latlng).addTo(map);
         //http://leaflet.github.io/Leaflet.label/leaflet.js and             http://leaflet.github.io/Leaflet.label/leaflet.label.css
         map.fitBounds(extend1); 
-        L.control.scale().addTo(map);       
+        L.control.scale().addTo(map); 
+        }
+        function display(data){
+          console.log('display function');
+          console.log(data);
+          for(sth in jso){
+                console.log('teeu');
+                sth_in = jso[sth];
+                for(any in sth_in){
+                    name = any;
+                    ins = sth_in[any];
+                    // coords.push(ins);
+                    coords[name] = ins;               
+                }
+          }
+          console.log(coords);
+          actual_display(coords);
+          //send coords to actual display function
+        }
+        //var jso = [];
+        //making ajax call instead of direct using jso
+        $.ajax({
+          url:'data.php',
+          type: 'post',
+          datatype: 'json',
+          success:function (output){
+            debugger;
+            //console.log('inside success function');
+            jso = JSON.parse(output);
+            display(jso);
+          }
 
+        });
+        console.log('james');
+        //console.log(jso);
+        //seperate php for the user's location 
+        var user_location = <?php echo json_encode($users_location);?>;
+        //seperate php for the user's name
+          
+        var user_name = '<?php echo $user_name;?>';
+        
+        // var jso1 = '<?php echo ($W);?>';
+        //var jso = <?php echo json_encode($W);?>;
+        
+       
+        /*
+        
+        if (jso == null){
+          // $('#top-bar').hide();
+          // $('#top-bar1').show();
+          //$('.tab-content').hide();
+          
+          
+        }
+        
+        */
+        
+        //get  image location of the persons
+        var image_link  = '<?php echo ($img_link);?>';
+        if (!image_link){
+          var panel = document.getElementById("container");
+          var img = document.createElement("img");
+          img.src = "/uploads/banner/B5Bssd130803010803.jpg";
+          img.width = "80";
+          img.height = "50";
+          img.position = "fixed";
+          panel.appendChild(img);//don't check for null but check the message sent from php
+        }
+        else{
+          var panel = document.getElementById("container");
+          var img = document.createElement("img");
+          img.src = image_link;
+          img.alt = 'poshan';
+          img.width = "80";
+          img.height = "50";
+          img.positon = "fixed";
+          panel.appendChild(img);
+        }
+        
+        
+        
+         
+         /*
+         
+         for (sth in user_location){
+            sth_in = user_location[sth]; ;
+            for(any in sth_in){
+                name = 'YOU';
+                ins = sth_in[any];
+                // coords.push(ins);
+                coords[name] = ins;
+               
+            }
+          
+         }
+         
+         */
+       
+       
+      
 </script>
-  
-  
-  
-  
-
-
 
 </body>
 </html>
