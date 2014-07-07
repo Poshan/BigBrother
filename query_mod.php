@@ -99,11 +99,10 @@
     
 
   </style>
+  <script type = 'text/javascript' src = 'name_image.js'></script>
   
 </head>     
 <body>
- 
-
 <div id = "top-bar">
   <h1>Track-or wherever you ll go</h1>
   
@@ -136,11 +135,11 @@
       <div id= "name" align="center">
       
       <!--instead make another ajax call to find out name-->
-      <h1><?php echo $_SESSION['namm'];?></h1>
+      <h1 id = 'user_name'></h1>
   </div>
-        
         <div id ="prof">these are your viewable persons </br> </div>
         <script>
+
            var person_obj1 = {};
            function create_table_from(obj){
            
@@ -432,98 +431,18 @@
   <script type="text/javascript">
         var coords = {};
         var latlng = [];
-        
+        var image_link = '';
         $('#top-bar1').hide();
+        
+        /*
+         call the history page when clicked on the view tracks button
+        */
+        
         function button_click(){
           window.location.href = "http://kathmandulivinglabs.org/tracker/history.php";
         }
-        function actual_display(coords){
-            var extend1 = new L.LatLngBounds();
-            for (any in coords){
-            x = coords[any];
-            
-            acc = x[2];
-            img_lnk = x[3];
-            //create icon of the image of the users
-            if (!img_lnk){
-              var myIcon = L.icon({
-                iconUrl: '/uplaods/team/130803010816uLs11b.jpg',
-                iconSize: [25,25],
-                iconAnchor:[5,5],
-              });
-            }
-            else {
-              var myIcon = L.icon({
-                iconUrl: img_lnk,
-                iconSize: [25,25],
-                iconAnchor:[5,5],
-              });
-            }
-            //debugger;
-            //this(acc) is accuracy value scale it and then use as the radius of the circle
-            
-            var circle = L.circle(x, acc*100, {
-          color: 'red',
-          fillColor: '#f03',
-                fillOpacity: 0.5
-            }).addTo(map);
-            
-            
-            var customIcon = L.icon({
-          iconUrl: 'images/download.jpg', 
-          iconSize:     [25, 25]
-            });
-            
-            if (any == "YOU"){
-              var marker = L.marker(x,{
-                icon: customIcon
-                
-              }); 
-            }
-      else{
-              var marker = L.marker(x); //automatically takes the first two elements in this case it is lat and lon
-            }
-            //var marker = L.marker((x), {icon:myIcon});
-            /*marker.bindLabel(any,{
-              noHide:true,
-              direction:'auto'
-            }).showLabel();
-            //marker.addTo(map);
-            //marker.bindPopup(any);
-            */
-            
-
-            //instead of making the image markers trying the image in popup
-            popupContent = any;
-            popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
-            marker.bindPopup(popupContent).openPopup().addTo(map);
-            
-            
-            
-            
-            
-            //marker.addTo(map);
-            
-            
-            //markers.addLayer(marker);
-            var x1,y1;
-            for (p in x){
-                 x1 = x[0];
-                 y1 = x[1];
-                 var ll = L.latLng(x1,y1);
-   
-                 latlng.push(ll);
-            }
-        } 
-        for (var i = 0; i < latlng.length; i++) {
-            //L.marker(latlng[i]).addTo(map);
-            extend1.extend(latlng[i]);
-        };
-        //var marker = L.marker(latlng).addTo(map);
-        //http://leaflet.github.io/Leaflet.label/leaflet.js and             http://leaflet.github.io/Leaflet.label/leaflet.label.css
-        map.fitBounds(extend1); 
-        L.control.scale().addTo(map); 
-        }
+        
+        
         function display(data){
           console.log('display function');
           console.log(data);
@@ -538,68 +457,124 @@
                 }
           }
           console.log(coords);
-          actual_display(coords);
+          //actual_display(coords);
           //send coords to actual display function
+                var extend1 = new L.LatLngBounds(); //extend of the map
+              for (any in coords){
+                  x = coords[any]; 
+                  acc = x[2]; //accuracy
+                  img_lnk = x[3]; //link of image of the person
+              
+              
+              /*
+                pratik bro's help required for designing the icons as persons
+                currently not in use though
+                make icons for the persons
+                if no image is available then make use of a default image
+                else use the image of the person
+              */
+              
+              
+                if (!img_lnk){ 
+                  var myIcon = L.icon({
+                    iconUrl: '/uplaods/team/130803010816uLs11b.jpg',
+                    iconSize: [25,25],
+                    iconAnchor:[5,5],
+                  });
+                }
+                else {
+                  var myIcon = L.icon({
+                    iconUrl: img_lnk,
+                    iconSize: [25,25],
+                    iconAnchor:[5,5],
+                  });
+                }
+            
+              //debugger;
+              //this(acc) is accuracy value scale it and then use as the radius of the circle
+            
+                var circle = L.circle(x, acc*100, {
+                  color: 'red',
+            fillColor: '#f03',
+                  fillOpacity: 0.5
+                }).addTo(map);
+            
+            
+            /*
+    this portion was used for the display of the user's own location currently the user's location
+    in the data.php is removed so this code is not used the user's own location is also shown
+    normally as others             
+            */
+            /*
+              var customIcon = L.icon({
+          iconUrl: 'images/download.jpg', 
+          iconSize:     [25, 25]
+              });
+            
+              if (any == "YOU"){
+                var marker = L.marker(x,{
+                  icon: customIcon
+                }); 
+              }
+              else{
+                //automatically takes the first two elements in this case it is lat and lon
+                var marker = L.marker(x); 
+              }
+    */
+              var marker = L.marker(x);                  
+              
+              /*
+                 instead of making the image markers the image in popup
+                 check here to show the user's own location differently
+              */
+              
+              popupContent = any;  //name of the person          
+              popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       //image url of the person
+              marker.bindPopup(popupContent).openPopup().addTo(map);
+
+
+       /*
+        for defining the extend of the map
+       */             
+              var x1,y1;
+              for (p in x){
+                 x1 = x[0];
+                 y1 = x[1];
+                 var ll = L.latLng(x1,y1);
+                 latlng.push(ll);
+              }
+            } 
+            for (var i = 0; i < latlng.length; i++) {
+              //L.marker(latlng[i]).addTo(map);
+              extend1.extend(latlng[i]);
+            };
+  
+            map.fitBounds(extend1);
         }
-        //var jso = [];
-        //making ajax call instead of direct using jso
+        
+        /*
+          call the data.php for the coordinates, accuracy, image_link of the persons visible by user
+        */
         $.ajax({
           url:'data.php',
           type: 'post',
           datatype: 'json',
           success:function (output){
-            debugger;
+            //debugger;
             //console.log('inside success function');
             jso = JSON.parse(output);
             display(jso);
           }
 
         });
-        console.log('james');
-        //console.log(jso);
-        //seperate php for the user's location 
-        var user_location = <?php echo json_encode($users_location);?>;
-        //seperate php for the user's name
-          
-        var user_name = '<?php echo $user_name;?>';
         
-        // var jso1 = '<?php echo ($W);?>';
-        //var jso = <?php echo json_encode($W);?>;
         
-       
-        /*
+        //var user_name = '<?php echo $user_name;?>';
         
-        if (jso == null){
-          // $('#top-bar').hide();
-          // $('#top-bar1').show();
-          //$('.tab-content').hide();
-          
-          
-        }
-        
-        */
-        
+
         //get  image location of the persons
-        var image_link  = '<?php echo ($img_link);?>';
-        if (!image_link){
-          var panel = document.getElementById("container");
-          var img = document.createElement("img");
-          img.src = "/uploads/banner/B5Bssd130803010803.jpg";
-          img.width = "80";
-          img.height = "50";
-          img.position = "fixed";
-          panel.appendChild(img);//don't check for null but check the message sent from php
-        }
-        else{
-          var panel = document.getElementById("container");
-          var img = document.createElement("img");
-          img.src = image_link;
-          img.alt = 'poshan';
-          img.width = "80";
-          img.height = "50";
-          img.positon = "fixed";
-          panel.appendChild(img);
-        }
+        //var image_link  = '<?php echo ($img_link);?>';
+       
         
         
         
@@ -619,7 +594,6 @@
          }
          
          */
-       
        
       
 </script>
