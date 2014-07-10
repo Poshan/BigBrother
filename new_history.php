@@ -233,11 +233,6 @@ var marker_layergr = L.layerGroup();
 
 //function that creates a polyline on the user's time related data and polyline is added on marker_layergr
 function createpolyline(l4pll){
-	if ((marker.getLatLng()) || (marker_layergr)){
-		marker_layergr.clearLayers();
-		
-		// if already markers and polylines are present than clear it
-	}
 	leng = l4pll.length - 1;
 	latest_point = l4pll[leng]
 	if(poly){console.log('polyline already exists');}
@@ -252,8 +247,33 @@ function createpolyline(l4pll){
 	//zoom map to the latest data
 	map.setView(latest_point,19);
 	
+	
+	
+
+
+	 //addMarkers(poly);
+	  // var arrowHead = new L.polylineDecorator(poly, {
+	  // 	patterns: [{
+	  // 		offset: 25,
+	  // 		repeat: 50,
+	  // 		symbol: L.Symbol.arrowHead({
+	  // 			pixelSize: 15,
+	  // 			pathOptions: {
+	  // 				 fillOpacity: 1,
+	  // 				  weight: 0
+	  // 			}
+	  // 		})
+	  // 	}]
+
+	  // });
+
+	//var polyline = L.polyline(l4pll, {color: 'red'}).addTo(map);
 	marker_layergr.addLayer(poly);
 	marker_layergr.addLayer(latest_point_marker);
+	
+	//polyline.setLatLngs(l4pll);
+	//polyline.addTo(map);
+	
 }
 
 //!@#$%^&*@@#$%^&*(^%$#@#$%^&*()_)(*&#@#$%^&*
@@ -270,16 +290,126 @@ function addMarkers(latlng, ath){
 		//marker_layergr.addLayer(marker);
 		marker_layergr.addLayer(circle);
 
+	}
+
+
+//leaflet decorationsss
+function makeDecor(l4pll){
+	 // var decorator = L.polylineDecorator(l4pll, {
+  //       patterns: [
+  //           // define a pattern of 10px-wide dashes, repeated every 20px on the line 
+  //           {offset: 0, repeat: '20px', symbol: new L.Symbol.Dash({pixelSize: 10})}
+  //       ]
+  //   });
+
+var pathPattern = L.polylineDecorator(
+	[l4pll],
+	{
+		patterns: [
+		{ offset: 12, repeat: 25, symbol: L.Symbol.dash({pixelSize: 10, pathOptions: {color: '#f00', weight: 2}}) },
+		{ offset: 0, repeat: 25, symbol: L.Symbol.dash({pixelSize: 0}) }
+		]
+	}
+	);
+
+marker_layergr.addLayer(pathPattern);
+
+
 }
 
 
-var length_latlngs = 0;
+
+var latlng_length;
+//var global_id;
+
+// function which receives the time related data of each user on click of the person on the button... id is the person id
+function clickfunction(id){
+	//alert('clicked');
+	//console.log(id);
+	//clear the values in the present extend1 layer
+	//global_id = id;
+	var extend1 = new L.LatLngBounds();
+	if ((marker.getLatLng()) || (marker_layergr)){
+		marker_layergr.clearLayers();
+		
+		// if already markers and polylines are present than clear it
+	}
+// ajax call to abcd.php where the id from the button i.e. user id is sent and the person's time data is received
+
+	var interval;
+	var tyyme;
+	var timed_value;
+	if (tyme == undefined){ 
+		//no time value entered
+		timed_value = 0;
+		//tyyme = 0;
+	}
+	else {
+		timed_value = 1;
+		tyyme = tyme;
+	}
+
+	$.ajax({                            
+		url: 'abcd.php',
+		type: 'post',
+		data: {
+			pid : id,
+			timed: timed_value,
+			tiime: tyyme
+		},
+
+		datatype: 'json',
+
+		success: function(output){
+			var latlngforpll = [];
+			a = JSON.parse(output);
+			console.log(a);
+			for (anythg in a){
+				b = (a[anythg]);
+				for (ath in b){
+					x = parseFloat(b[ath][0]);
+					y = parseFloat(b[ath][1]);
+					var latlng = L.latLng(x,y);
+					latlngforpll.push(latlng);
+					//extend1.extend(latlng);
+					//function that creates circle markers and bindPopup to them 
+					addMarkers(latlng,ath);
+					
+				}
+				
+				//createpolyline(latlngforpll);	//call the function which would create the polyline over the persons time data
+
+			}
+			
+			latlng_length = latlngforpll.length;
+			//for (var i = 0; i < latlngforpll.length; i++) {
+		//	debugger;
+		//	extend1.extend(latlngforpll[i]);
+			//}
+			
+			//map.fitBounds(extend1);
+			
+			createpolyline(latlngforpll);
+		}
+		//alert (dis);
+	//call the function which would create the polyline over the persons time data
+//makeDecor(latlngforpll);
+
+	});
+
+}
+var length_latlngs;
 function checker(id){
 	//check the user 
 	//if same user ..................
-	
-	
+	debugger;
 	//ajax call for the coordinates
+	if (length_latlngs == undefined ){
+		console.log('first time');
+	}
+	else {
+		console.log(length_latlngs);
+	}
 	var interval;
 	var tyyme;
 	var timed_value;
@@ -304,7 +434,7 @@ function checker(id){
 		success: function(output){
 			var latlngforpll = [];
 			a = JSON.parse(output);
-			//console.log(a);
+			console.log(a);
 			for (anythg in a){
 				b = (a[anythg]);
 				for (ath in b){
@@ -315,28 +445,9 @@ function checker(id){
 					//addMarkers(latlng,ath);
 				}
 			}
-			console.log(latlngforpll.length);
+			length_latlngs = latlngforpll.length();
+			console.log(latlngforpll.length());
 			console.log(length_latlngs);
-			if (latlngforpll.length > length_latlngs){
-				//change the display
-				//new data arrived 
-				console.log('i love you');
-				length_latlngs = latlngforpll.length;
-				createpolyline(latlngforpll);
-				
-			}
-			else if (latlngforpll.length == length_latlngs) {
-				//no change in data
-				console.log('i hate you');
-				
-			}
-			/*
-			else {
-				//first arrival
-				console.log('i dont give a shit');
-				length_latlngs = latlngforpll.length;
-			}
-			*/
 		}
 	});
 
@@ -354,7 +465,7 @@ function checker(id){
 function history_repeater(id){
 	//debugger;
 	//first display here ..........
-	
+
 	global_id = id;
 	interval = window.setInterval(checker,10000,global_id);
 }
