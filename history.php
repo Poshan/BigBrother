@@ -137,11 +137,15 @@
 
 $('#notification-bar').hide();
 
-var map = new L.Map('map', {
+/*var map = new L.Map('map', {
     center: new L.LatLng(28.425,84.435),
     zoom: 7,
     layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.i65ff4hn/{z}/{x}/{y}.png')
-});
+});*/
+var map = L.map('map').setView([28.425,84.435], 7);
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 var person_obj1 = {};
 
 
@@ -208,7 +212,7 @@ $.ajax({
 		//if there is no result output of the success than call a function which creats a tab on the top which says "sorry no result for the user"
 		if (checkEmpty(person_obj1)==false){
 			$('#top-bar').hide();
-			$('#notification-bar').show();
+			//$('#notification-bar').show();
 			addthepersons(person_obj1);
 		}
 		
@@ -391,7 +395,7 @@ function clickfunction(id){
 }
 function history_repeater(id){
 	global_id = id;
-	interval = window.setInterval(clickfunction,1000,global_id);
+	interval = window.setInterval(clickfunction,10000,global_id);
 }
 marker_layergr.addTo(map);
 
