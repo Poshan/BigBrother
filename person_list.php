@@ -23,7 +23,7 @@
 							
 							if ($row1[1] != $nam){
 								$person_list [] = array($row1[0]=>$row1[1]); 
-							
+								
 							}
 
 									
@@ -31,12 +31,14 @@
 					} 
 					else if ($index == 2){					
 						while($row1 = mysqli_fetch_array($person_result)){
+							
+							//send name and the image of the persons
 							if ($row1[1] != $nam){
-								$person_list [] = array($row1[0]=>$row1[1]);
+						$person_list [] = array($row1[0]=>array($row1[1],$row1[5]));
 							}
 							else{
 								$text = "Your Track";
-								$person_list [] = array($row1[0]=>$text);
+						$person_list [] = array($row1[0]=>array($text,$row1[5]));
 							}
 							 
 						}

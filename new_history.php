@@ -122,7 +122,8 @@
 			</div>
 		</div>
 	</div>	
-	<div id ='map'></map>
+	<div id ='map'></div>
+	<script type = "text/javascript" src = "maps.js"></script>
 		<div id = "top-bar">
 			currently u cannot view anyone
 		</div>
@@ -144,11 +145,15 @@ $('#notification-bar').hide();
 });*/
 
 //instead use maps.js
+
+/*
+
 var map = L.map('map').setView([28.425,84.435], 7);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+*/
 
 var person_obj1 = {};
 
@@ -205,10 +210,10 @@ $.ajax({
 	success: function(output){
 		//console.log(output);
 		a = JSON.parse(output); //JSON parsed the return from the person_list.php
-		for (any in a){         //creation of the object person_obj1 which contains id and name of persons
+		for (any in a){      //creation of the object person_obj1 which contains id and name of persons
 			b = a[any];
 			for (anyth in b){
-				person_obj1[anyth] = b[anyth]
+				person_obj1[anyth] = b[anyth];
 			}
 		}
 		
@@ -316,7 +321,10 @@ function checker(id){
 					x = parseFloat(b[ath][0]);
 					y = parseFloat(b[ath][1]);
 					var latlng = L.latLng(x,y);
-					latlngforpll.push(latlng);
+					latlngforpll.push(latlng); //dont remove this
+					//instead add another object and send it to display
+					
+					
 					//addMarkers(latlng,ath);
 				}
 			}
@@ -389,19 +397,21 @@ function history_repeater(id){
 //function which creates the buttons on the basis of the persons viewable by a user
 function addthepersons(person1){	
 	//console.log(person1);
+	//debugger;
 	var panel = document.getElementById("names"); //to put the buttons in the element named "names"
 	var rdiv = document.createElement('div');
 	rdiv.setAttribute("class", "btn-group-vertical");
 	rdiv.setAttribute("data-toggle", "modal");
 	panel.appendChild(rdiv);
 	for (a in person1){
+		//person1[a][1] is the image
 		var button = document.createElement('input');
 		button.setAttribute("class","btn btn-primary")
 		button.type = 'button';
 		button.name = 'options';
 		button.id = a; 
 	        button.setAttribute("onclick","history_repeater(this.id)");//on click send the id of the person 
-	        button.value = person1[a];//display the person name
+	        button.value = person1[a][0];//display the person name
 	        //var label = document.createElement('label');
         	//label.setAttribute("class", "btn btn-default");
         	//label.innerHTML = person_obj[a];

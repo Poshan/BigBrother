@@ -85,7 +85,7 @@ if ($timed == 0){
 
 else{
 	$time_value = $times;
-	$time_now = time() - 20700;
+	$time_now = time();
 	//no problem with subtraction 
 	
 	while ($row = mysqli_fetch_array($result1)){
