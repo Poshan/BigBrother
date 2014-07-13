@@ -235,21 +235,37 @@ var marker = L.marker();
 var marker_layergr = L.layerGroup();
 //var polyline = L.polyline();
 
+function addMarkers(latlng, ath){
+	var circle = L.circle(latlng, 2, {
+	    color: 'red',
+	    fillColor: '#f03',
+	    fillOpacity: 0.5
+	}).addTo(map);
+					  					
+	marker = L.marker(latlng).addTo(map);
+	circle.bindPopup(ath);
+	//marker_layergr.addLayer(marker);
+	marker_layergr.addLayer(circle);
+}
+
 //function that creates a polyline on the user's time related data and polyline is added on marker_layergr
 function createpolyline(l4pll){
-	//debugger;
-	/*
-	if ((marker.getLatLng()) || (marker_layergr)){
-		marker_layergr.clearLayers();
-		
-		// if already markers and polylines are present than clear it
+	latnlngs = [];
+	for (anythg in l4pll){
+	    b = l4pll[anythg];
+	    for (ath in b){
+	        x = parseFloat(b[ath][0]);
+  		y = parseFloat(b[ath][1]);
+  		var latlng = L.latLng(x,y);
+  		latnlngs.push(latlng);
+  		addMarkers(latlng,ath);
+	    }
 	}
-	*/
-	leng = l4pll.length - 1;
-	latest_point = l4pll[leng]
-	if(poly){console.log('polyline already exists');}
-	
-	var poly = new L.Polyline(l4pll, {
+
+	//create an array of latlngs from l4pll to create a polyline
+	leng = latnlngs.length-1;
+	latest_point = latnlngs[leng];
+	var poly = new L.Polyline(latnlngs, {
 		color: 'green',
 		weight: 7
 	});
@@ -311,8 +327,10 @@ function checker(id){
 		},
 		datatype: 'json',
 		success: function(output){
+			
 			console.log('pull from server started....');
 			var latlngforpll = [];
+			var data = {};
 			a = JSON.parse(output);
 			//console.log(a);
 			for (anythg in a){
@@ -323,9 +341,9 @@ function checker(id){
 					var latlng = L.latLng(x,y);
 					latlngforpll.push(latlng); //dont remove this
 					//instead add another object and send it to display
+					//data[]
 					
 					
-					//addMarkers(latlng,ath);
 				}
 			}
 			//debugger;
@@ -342,8 +360,7 @@ function checker(id){
 				}
 				console.log('i love you');
 				length_latlngs = latlngforpll.length;
-				createpolyline(latlngforpll);
-				
+				createpolyline(a);
 			}
 			else if (latlngforpll.length == length_latlngs) {
 				//no change in data
