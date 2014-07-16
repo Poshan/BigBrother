@@ -6,11 +6,11 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.label/leaflet.label.css" />
-
-  
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
   <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
  <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
-  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <style>
    #top-bar{
@@ -49,13 +49,11 @@
   color: white;
 
   background-color: #b0de5d;
-  background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); /* FF3.6 */
-  background-image: -o-linear-gradient(top, #b0de5c, #82cb00); /* Opera 11.10+ */
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); /* Chrome 10+, Saf5.1+ */
+  background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); 
+  background-image: -o-linear-gradient(top, #b0de5c, #82cb00); 
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); 
+  background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); 
   background-image: linear-gradient(top, #b0de5c, #82cb00);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6�IE9 */
-
   border-radius: 5px;
 
   text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
@@ -215,6 +213,10 @@
             else if (what == 'no'){
               var content = 'you rejected the request'
             }
+            
+            else if (what == 're'){
+              var content = 'Request already sent';
+            }
             var ddiv = document.getElementById('top-bar1');
             ddiv.innerHTML = content;
             
@@ -362,9 +364,11 @@
                   uuuid : id_req
               },
               success: function(output){
-                debugger;
                 if (output == 'yes'){
                   on_top_bar('yes');
+                }
+                else if (output == 're'){
+                  on_top_bar('re');
                 }
                 else if (output != 'yes'){
                   on_top_bar('no');
@@ -419,8 +423,35 @@
               } 
             });
           }
-          
+          selected = {};
+          $(function(){
+          $("#search").autocomplete({
+            source:"search.php",
+            minLength:2,
+            select:function(event,ui){
+              console.log(ui);
+              document.getElementById("search-button").disabled = false;
+              selected = ui;
+            }
+            
+              });
+      });
+      function connect(){
+        //debugger;
+        //console.log(selecte)
+        idz = selected.item['person_id'];
+        //selected
+        sendreqTo(idz);
+        //notify the user at the request sent
+        
+      }
         </script>  
+        </br>
+  <div>
+        <label for="search">Search:</label>
+        <input id="search" />
+        <button id = "search-button" disabled onclick = 'connect()'>Connect</button>
+  </div>
       </div>
       </br>  
     </div>
@@ -439,7 +470,7 @@
         */
         
         function button_click(){
-          window.location.href = "http://kathmandulivinglabs.org/tracker/history.php";
+          window.location.href = "http://kathmandulivinglabs.org/tracker/new_history.php";
         }
         
         
