@@ -214,6 +214,9 @@
               var content = 'you rejected the request'
             }
             
+            else if (what == 'al'){
+              var content = 'already a connection';
+            }
             else if (what == 're'){
               var content = 'Request already sent';
             }
@@ -369,6 +372,9 @@
                 }
                 else if (output == 're'){
                   on_top_bar('re');
+                }
+                else if (output == 'al'){
+                  on_top_bar('al');
                 }
                 else if (output != 'yes'){
                   on_top_bar('no');

@@ -1,4 +1,5 @@
 <?php
+	//check if for the same user there already is request sent
 	session_start();
 	if (isset($_SESSION['namm']) || isset($_SESSION['idd'])){
 		
@@ -17,11 +18,19 @@
 	 	//check if a value already exists in the table and then echo 
 	 	//already sent and show likewise in the client side
 	 	
+	 	$sql2 = "SELECT * FROM `relatn` WHERE `uid` ='" . $id . "' && person_id ='" . $sentTo . "'";
+	 	$result2 = mysqli_query($con,$sql2) or die(mysqli_error($con));
+	 	$rooow = mysqli_fetch_array($result2);
+	 	
+	 	
 	 	$sql1 = "SELECT * FROM `requests` WHERE `user_id` ='" . $sentTo . "' && `request_from` ='" . $id . "'";
 	 	$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
 	 	
 	 	$roow = mysqli_fetch_array($result1);
-	 	if ($roow){
+	 	if ($rooow){
+	 		echo 'al';
+	 	}
+	 	elseif ($roow){
 	 		echo 're';
 	 	}
 	 	else{
