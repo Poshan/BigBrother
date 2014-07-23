@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>
-   this is the start
+   Welcome to the Tracker Web Interface
   </title>
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -102,14 +102,14 @@
 </head>     
 <body>
 <div id = "top-bar">
-  <h1>Track-or wherever you ll go</h1>
+  <h1>Tracker</h1>
   
     <div id="container">
   <button type="button" id="loading-example-btn" data-loading-text="Loading..." class="btn btn-primary" onclick= "button_click()">View Tracks            
   </button>
             <button data-toggle="dropdown" class="btn btn-info dropdown-toggle">Settings <span class="caret"></span></button>
             <ul class="dropdown-menu">
-                <li><a href="http://kathmandulivinglabs.org/tracker/logout.php">LOgOuT</a></li>        
+                <li><a href="http://kathmandulivinglabs.org/tracker/logout.php">Logout</a></li>        
             </ul>
         </div>       
 </div>
@@ -135,7 +135,7 @@
       <!--instead make another ajax call to find out name-->
       <h1 id = 'user_name'></h1>
   </div>
-        <div id ="prof">these are your viewable persons </br> </div>
+        <div id ="prof">These are your viewable persons </br> </div>
         <script>
 
            var person_obj1 = {};
@@ -170,34 +170,34 @@
          
             
             $.ajax({
-          url : 'person_list.php',
-          type : 'post',
-          data: {
-            index:1
-          },
-          datatype:'json',
-          success: function(output){
+            url : 'person_list.php',
+            type : 'post',
+            data: {
+                index:1
+            },
+            datatype:'json',
+            success: function(output){
             
-              //console.log(output);
-              a = JSON.parse(output); 
-                  for (any in a){ 
-                b = a[any];
-                for (anyth in b){
-                  person_obj1[anyth] = b[anyth]
-                }
-                  }
-              //create_table_from(person_obj1,'prof');
-              create_table_from(person_obj1);
-            }
+                //console.log(output);
+                  a = JSON.parse(output); 
+                    for (any in a){ 
+                    b = a[any];
+                    for (anyth in b){
+                        person_obj1[anyth] = b[anyth]
+                    }
+                    }
+                //create_table_from(person_obj1,'prof');
+                  create_table_from(person_obj1);
+              }
           
-            });
+           });
             
            
           
         
         </script>
         
-        <div id = 'requests'>THese are the requests  incomming</div>
+        <div id = 'requests'>These are the requests incomming</div>
         <script>
           
           var incom_request ={};
@@ -215,7 +215,7 @@
             }
             
             else if (what == 'al'){
-              var content = 'already a connection';
+              var content = 'Already a connection';
             }
             else if (what == 're'){
               var content = 'Request already sent';
@@ -286,11 +286,7 @@
                 //var prof1 = dddiv;
                 var panel = document.getElementById('requests');
                 //var panel = document.getElementById(prof1);
-                
-                
-                
-                
-                
+                            
                 for (a in obj){
                   
                     var named = document.createElement('div');
@@ -329,7 +325,7 @@
           
           function requests(){
               $.ajax({
-                url:'requests.php//',
+                url:'requests.php',
                 datatype:'json',
                 type: 'post',
                 data:{request_type:1},//1 means incoming requests
@@ -478,24 +474,66 @@
         function button_click(){
           window.location.href = "http://kathmandulivinglabs.org/tracker/new_history.php";
         }
-        
-        
-        function display(data){
-          console.log('display function');
-          console.log(data);
-          for(sth in jso){
-                console.log('teeu');
-                sth_in = jso[sth];
+        function check(data){
+          for(sth in data){
+                debugger;
+                /*
+                check if the incomming result is only of one user
+                */
+                sth_in = data[sth];
                 for(any in sth_in){
                     name = any;
                     ins = sth_in[any];
                     // coords.push(ins);
-                    coords[name] = ins;               
+                    
+                    
+                    //if (sth_in[any][0] == 0 && sth_in[any][1] == 0 && data.length == 1){
+                    
+                    
+                    if (sth_in[any][0] == 0 && sth_in[any][1] == 0){
+                      //console.log('breathe breathe in the air');
+                      first_map();
+                    }
+                    else{
+                      coords[name] = ins; 
+                    }               
+                }
+          }
+          display(coords);
+          
+        }
+        
+        function display(coords){
+          /*
+          console.log('display function');
+          console.log(data);
+          debugger;
+          for(sth in data){
+                //debugger;
+                
+                check if the incomming result is only of one user
+                
+                sth_in = data[sth];
+                for(any in sth_in){
+                    name = any;
+                    ins = sth_in[any];
+                    // coords.push(ins);
+                    if (sth_in[any][0] == 0 && sth_in[any][1] == 0){
+                      first_map();
+                    }
+                    coords[name] = ins; 
+                                  
                 }
           }
           console.log(coords);
+          */
           //actual_display(coords);
           //send coords to actual display function
+          //check if coords is empty and length is one
+          //maynot have his/her location still can view other person
+          
+          if(!(jQuery.isEmptyObject(coords))){
+          
                 var extend1 = new L.LatLngBounds(); //extend of the map
               for (any in coords){
                   x = coords[any]; 
@@ -564,9 +602,14 @@
                  instead of making the image markers the image in popup
                  check here to show the user's own location differently
               */
-              
-              popupContent = any;  //name of the person          
-              popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       //image url of the person
+              if (any == 'user'){
+                popupContent = user_name;
+                popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
+              }
+              else{
+                popupContent = any;  //name of the person          
+                popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       //image url of the person
+              }
               marker.bindPopup(popupContent).openPopup().addTo(map);
 
 
@@ -588,19 +631,49 @@
   
             map.fitBounds(extend1);
         }
+        }
+        function notify(){
+          var ddiv = document.getElementById('top-bar1');
+              var content = 'You have not yet submitted any location, please submit the ';
+              content += 'location using our mobile app from ';
+              content+= '<a> Google Play Store. </a> ';
+              content+= 'In the meantime you can try searching and adding people you know, who are on tracker.';
+              ddiv.innerHTML = content;
+              
+              $('#top-bar1').show();
+          
+        }
+        function first_map(){
+          //console.log('mapfirst');
+          //var marker1 = L.marker([27.6972,85.3380]);
+          //marker1.addTo(map);
+          map.setView([27.6972,85.3380],16);
+          notify();
+        }
         
         /*
           call the data.php for the coordinates, accuracy, image_link of the persons visible by user
         */
+        
         $.ajax({
           url:'data.php',
           type: 'post',
           datatype: 'json',
           success:function (output){
-            //debugger;
-            //console.log('inside success function');
-            jso = JSON.parse(output);
-            display(jso);
+            /*
+            if (output == 'first'){
+              //you dont have any location 
+              //this is default location for everyone
+              //downlod client app to locate yourself
+              //search others and connect to see their location
+              first_map();
+            }
+            
+            else{*/
+              //console.log('inside success function');
+              jso = JSON.parse(output);
+              check(jso);
+            //}
           }
 
         });

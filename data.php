@@ -3,16 +3,18 @@
   if (isset($_SESSION['namm']) && isset($_SESSION['idd'])){
     
     $user_name = $_SESSION['namm'];//name is stored in session not to loose in reload
-  
-    
-    
     include "connection.php";
         $sql1 = "SELECT * FROM `user` WHERE `name`='" . $_SESSION['namm'] . "'";
         $result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
-        if (!result1){
+        if (!$result1){
           echo 'no result';
         }
         else{
+        /*
+         if (isset($_SESSION['first'])){
+          echo 'first';
+         }
+         else{*/
           while ($roow = mysqli_fetch_array($result1)){
             $img_link = $roow[3];//find the image of the user to show on the first view()
 
@@ -20,9 +22,10 @@
               sql2 is the persons list who are on the viewable 
             */
 
+           
             $sql2 = "SELECT * FROM `relatn` WHERE `uid`='" . $_SESSION['idd'] . "' AND `viewable` = 1"; 
                   $result2 = mysqli_query($con, $sql2) or die(mysqli_error($con)); 
-                  if (!result2){
+                  if (!$result2){
                       echo 'noone to view yet';
                     }
                     else{
@@ -40,12 +43,13 @@
                               $acc = $row1[4];
                               $imag_link = $row1[5]; 
                              
+                             
+                             
                               if ($row1[1] == $user_name){
-                                $users_location[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
+                                $W[] = array('user' => array($X,$Y,$acc,$imag_link));
                                 
                               }
                               else{
-                                
                                 $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
                                 
                               }       
@@ -55,7 +59,8 @@
                     }
           }
           echo (json_encode($W));
-        }
+        //}
+       }
   }
 else{
   echo 'not logged in';

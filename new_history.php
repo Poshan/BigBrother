@@ -5,15 +5,13 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
 	<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-	<script src="lib\leaflet.polylineDecorator.min.js"></script>
+	<script src="lib/leaflet.polylineDecorator.min.js"></script>
 	<title>View the history</title>
 	<style>
 	#map{
 		height:100%;
 		width:100%;
-
 		outline: 5px inset #ADB0FF;
 		outline-offset: 10px;
 		top: 10px;
@@ -34,10 +32,10 @@
 		height:50px;
 		z-index:1001
 	}
-
 	#go-back{
 		position:absolute;
-		top: 600
+		top: 600px;
+		z-index:1000;
 	}
 	#top-bar {
 		position: absolute;
@@ -100,6 +98,7 @@
 
 		text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
 	}
+	
 	</style>
 
 </head>
@@ -124,6 +123,7 @@
 	</div>	
 	<div id ='map'></div>
 	<script type = "text/javascript" src = "maps.js"></script>
+	<script type="text/javascript" src = "/tracker/spin.min.js"></script>
 		<div id = "top-bar">
 			currently u cannot view anyone
 		</div>
@@ -132,28 +132,13 @@
 			<input type="text" id="time" name="myText" style="color:green;"> 
 			<button onclick="timedclick()">ShoW</button>
 		</div>
+		<div id = "top-bar1">
+		</div>
 
 		<script type="text/javascript">
 //createEditableSelect(document.forms[0].myText);
 
 $('#notification-bar').hide();
-
-/*var map = new L.Map('map', {
-    center: new L.LatLng(28.425,84.435),
-    zoom: 7,
-    layers: new L.TileLayer('https://a.tiles.mapbox.com/v3/poshan.i65ff4hn/{z}/{x}/{y}.png')
-});*/
-
-//instead use maps.js
-
-/*
-
-var map = L.map('map').setView([28.425,84.435], 7);
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-*/
 
 var person_obj1 = {};
 
@@ -164,7 +149,7 @@ var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 
 function checkEmpty(obj) {
-
+14
     // null and undefined are "empty"
     if (obj == null) return true;
 
@@ -293,10 +278,23 @@ function addMarkers(latlng, ath){
 		circle.bindPopup(ath);
 		//marker_layergr.addLayer(marker);
 		marker_layergr.addLayer(circle);
-		
+		//map.spin(false);
 
 }
-
+function no_result(string){
+	var ddiv = document.getElementById('top-bar1');
+	if (string == 'true'){
+		console.log('true');
+		ddiv.innerHTML = 'no result for this user';
+		$('#ddiv').show();
+	}
+	else if (string == 'false'){
+		console.log('false');
+		//temp solution only
+		ddiv.innerHTML = '';
+		$('#ddiv').hide();
+	}
+}
 
 var length_latlngs = 0;
 function checker(id){
@@ -327,7 +325,7 @@ function checker(id){
 		},
 		datatype: 'json',
 		success: function(output){
-			
+			//debugger;
 			console.log('pull from server started....');
 			var latlngforpll = [];
 			var data = {};
@@ -346,25 +344,29 @@ function checker(id){
 					
 				}
 			}
-			//debugger;
+			if (latlngforpll.length == 0){
+				no_result('true'); //show a box saying no result
+			}
+			 //hide that box saying no result
 			console.log('pull from server completed');
 			console.log(latlngforpll.length);
 			console.log(length_latlngs);
 			if (latlngforpll.length != length_latlngs){
 				//change the display
 				//new data arrived 
+				no_result('false');
 				if ((marker.getLatLng()) || (marker_layergr)){
 					marker_layergr.clearLayers();
 		
 					// if already markers and polylines are present than clear it
 				}
-				console.log('i love you');
+				//console.log('i love you');
 				length_latlngs = latlngforpll.length;
 				createpolyline(a);
 			}
 			else if (latlngforpll.length == length_latlngs) {
 				//no change in data
-				console.log('i hate you');
+				//console.log('i hate you');
 				
 			}
 			
@@ -376,6 +378,7 @@ function checker(id){
 			}
 			*/
 		}
+
 	});
 
 	//make an arrangement for first view i.e. store length only after viewing or something
@@ -392,6 +395,7 @@ var logged = [];
 function history_repeater(id){
 	//debugger;
 	//first display here ..........
+	//map.spin(true);
 	console.log('clicked.......');
 	logged.push(id);
 	//console.log(logged);
