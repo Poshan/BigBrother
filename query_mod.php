@@ -58,7 +58,34 @@
 
   text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
   }
+     #top-bar2 {
+      position: absolute;
+      top: 100px;
+      left: 50px;
+      z-index: 1001;
+  font-size: 1.0em;
+  margin-top: 0.6em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  padding: 4px 12px 3px;
+  margin-left: 0;
+  margin-right: 0;
+  background: #edeeef;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 
+  color: white;
+
+  background-color: #b0de5d;
+  background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); 
+  background-image: -o-linear-gradient(top, #b0de5c, #82cb00); 
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); 
+  background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); 
+  background-image: linear-gradient(top, #b0de5c, #82cb00);
+  border-radius: 5px;
+
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+  }
     #map{
       
       width:100%;
@@ -490,7 +517,7 @@
                     //if (sth_in[any][0] == 0 && sth_in[any][1] == 0 && data.length == 1){
                     
                     
-                    if (sth_in[any][0] == 0 && sth_in[any][1] == 0){
+                    if (data.length == 1 && sth_in[any][0] == 0 && sth_in[any][1] == 0){
                       //console.log('breathe breathe in the air');
                       first_map();
                     }
@@ -633,14 +660,14 @@
         }
         }
         function notify(){
-          var ddiv = document.getElementById('top-bar1');
+          var ddiv = document.getElementById('top-bar2');
               var content = 'You have not yet submitted any location, please submit the ';
               content += 'location using our mobile app from ';
               content+= '<a> Google Play Store. </a> ';
               content+= 'In the meantime you can try searching and adding people you know, who are on tracker.';
               ddiv.innerHTML = content;
               
-              $('#top-bar1').show();
+              $('#top-bar2').show();
           
         }
         function first_map(){

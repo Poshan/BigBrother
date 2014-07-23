@@ -2,12 +2,14 @@
 <head>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
 	<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 	<script src="lib/leaflet.polylineDecorator.min.js"></script>
-	<title>View the history</title>
+	<script src="spin.min.js"></script>
+	<script src="leaflet.spin.js"></script>
 	<style>
 	#map{
 		height:100%;
@@ -100,6 +102,7 @@
 	}
 	
 	</style>
+	<title>Tracks</title>
 
 </head>
 
@@ -123,7 +126,6 @@
 	</div>	
 	<div id ='map'></div>
 	<script type = "text/javascript" src = "maps.js"></script>
-	<script type="text/javascript" src = "/tracker/spin.min.js"></script>
 		<div id = "top-bar">
 			currently u cannot view anyone
 		</div>
@@ -278,7 +280,7 @@ function addMarkers(latlng, ath){
 		circle.bindPopup(ath);
 		//marker_layergr.addLayer(marker);
 		marker_layergr.addLayer(circle);
-		//map.spin(false);
+		map.spin(false);
 
 }
 function no_result(string){
@@ -287,6 +289,7 @@ function no_result(string){
 		console.log('true');
 		ddiv.innerHTML = 'no result for this user';
 		$('#ddiv').show();
+		map.spin(false);
 	}
 	else if (string == 'false'){
 		console.log('false');
@@ -395,7 +398,7 @@ var logged = [];
 function history_repeater(id){
 	//debugger;
 	//first display here ..........
-	//map.spin(true);
+	map.spin(true);
 	console.log('clicked.......');
 	logged.push(id);
 	//console.log(logged);
