@@ -140,7 +140,7 @@
 		<script type="text/javascript">
 //createEditableSelect(document.forms[0].myText);
 
-$('#notification-bar').hide();
+//$('#notification-bar').hide();
 
 var person_obj1 = {};
 
@@ -368,6 +368,7 @@ function checker(id){
 				createpolyline(a);
 			}
 			else if (latlngforpll.length == length_latlngs) {
+				map.spin(false);
 				//no change in data
 				//console.log('i hate you');
 				
