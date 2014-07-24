@@ -328,7 +328,6 @@ function checker(id){
 		},
 		datatype: 'json',
 		success: function(output){
-			//debugger;
 			console.log('pull from server started....');
 			var latlngforpll = [];
 			var data = {};
@@ -363,15 +362,11 @@ function checker(id){
 		
 					// if already markers and polylines are present than clear it
 				}
-				//console.log('i love you');
 				length_latlngs = latlngforpll.length;
 				createpolyline(a);
 			}
 			else if (latlngforpll.length == length_latlngs) {
-				map.spin(false);
-				//no change in data
-				//console.log('i hate you');
-				
+				map.spin(false);	
 			}
 			
 			/*
@@ -430,6 +425,7 @@ function addthepersons(person1){
 	panel.appendChild(rdiv);
 	for (a in person1){
 		//person1[a][1] is the image
+		image_src = person1[a][1];
 		var button = document.createElement('input');
 		button.setAttribute("class","btn btn-primary")
 		button.type = 'button';
@@ -441,7 +437,13 @@ function addthepersons(person1){
         	//label.setAttribute("class", "btn btn-default");
         	//label.innerHTML = person_obj[a];
         	//button.appendChild(label);
-        	rdiv.appendChild(button);     
+        	var immg = document.createElement('img');
+        	immg.setAttribute('src',image_src);
+        	immg.setAttribute('width', '50px');
+        	immg.setAttribute('height', '40px');
+        	rdiv.appendChild(immg);
+        	rdiv.appendChild(button);
+        	     
         }
 
     }
@@ -459,4 +461,4 @@ function addthepersons(person1){
     </script>
 </body>
 
-</html>
+</html>addthepersons
