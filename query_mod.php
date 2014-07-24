@@ -503,7 +503,7 @@
         }
         function check(data){
           for(sth in data){
-                debugger;
+                //debugger;
                 /*
                 check if the incomming result is only of one user
                 */
@@ -529,35 +529,31 @@
           display(coords);
           
         }
+        function locationnotavailable(a){
+          console.log(a);
+        }
+        function nullchecker(a, name){
+          //create an array of the persons whose locations are not known and display likewise
+          var no_location = [];
+          console.log('checking if the x is null');
+          console.log(name);
+          console.log(a);
+          if (a[0] == 0 && a[1] == 0 && a[2] == 0){
+            no_location.push(name);
+            return 1;
+          }
+          else{
+            return 0;
+          }
+          locationnotavailable(no_location);
+        }
         
         function display(coords){
           /*
-          console.log('display function');
-          console.log(data);
-          debugger;
-          for(sth in data){
-                //debugger;
-                
-                check if the incomming result is only of one user
-                
-                sth_in = data[sth];
-                for(any in sth_in){
-                    name = any;
-                    ins = sth_in[any];
-                    // coords.push(ins);
-                    if (sth_in[any][0] == 0 && sth_in[any][1] == 0){
-                      first_map();
-                    }
-                    coords[name] = ins; 
-                                  
-                }
-          }
-          console.log(coords);
+            check if any of the coords is 0, 0
           */
-          //actual_display(coords);
-          //send coords to actual display function
-          //check if coords is empty and length is one
-          //maynot have his/her location still can view other person
+          
+          
           
           if(!(jQuery.isEmptyObject(coords))){
           
@@ -567,7 +563,8 @@
                   acc = x[2]; //accuracy
                   img_lnk = x[3]; //link of image of the person
               
-              
+                  //checks if x is null
+                  
               /*
                 pratik bro's help required for designing the icons as persons
                 currently not in use though
@@ -576,7 +573,9 @@
                 else use the image of the person
               */
               
-              
+              if (nullchecker == 1){
+                console.log('your');
+              }
                 if (!img_lnk){ 
                   var myIcon = L.icon({
                     iconUrl: '/uplaods/team/130803010816uLs11b.jpg',
@@ -635,7 +634,7 @@
               }
               else{
                 popupContent = any;  //name of the person          
-                popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       //image url of the person
+                popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       
               }
               marker.bindPopup(popupContent).openPopup().addTo(map);
 
@@ -659,6 +658,7 @@
             map.fitBounds(extend1);
         }
         }
+        
         function notify(){
           var ddiv = document.getElementById('top-bar2');
               var content = 'You have not yet submitted any location, please submit the ';
