@@ -8,7 +8,7 @@
 	// 5 hours and 45 minutes 20700 seconds added to get the UTC
 	//times correct!!!
 	//Consider the UTC Time is late to phones' time 
-	
+	//check if multiplication worked fine
 	
 	include 'connection.php';
 	session_start();
@@ -16,19 +16,6 @@
 	//echo $nam;
 	$uid = $_SESSION['idd'];	
 
-
-
-
-
-	
-	//$sql3 = "SELECT * FROM `user` WHERE `name`='" . $nam . "'";
-	//$result3 = mysqli_query($con,$sql3) or die(mysqli_error($con));
-	//while ($row3 = mysqli_fetch_array($result3)){
-	//	$uid = $row3[0];
-	//}
-	//echo $uid;
-	
-	
 	//find the "result_date" which is the date when person accepted the user
 	$result_date = '';
 
@@ -40,19 +27,9 @@
 		$result_date = $row1[4];
 	}
 	
-	//echo $result_date;
-	//$result_int = (int)$result_date;
-	//echo $result_int;
-	//$result_dated = strtotime($result_date);
-	
-	
-	//echo $result_date;
-	//echo "<br>";
-	
 	
 	//$result_dated = date('y-m-d H:i:s',strtotime($result_date));
 	$result_dated = strtotime($result_date);
-	
 	
 	//echo 'resulted_date' . $result_dated;
 	//echo "<br>";
@@ -65,14 +42,14 @@ if ($timed == 0){
 	while ($row = mysqli_fetch_array($result1)){
 		//while row[3] is greater than the result_date
 		//$time1 = date('y-m-d H:i:s',strtotime($row[3]));
-		$time1 = strtotime($row[3]);
+		$time2 = strtotime($row[3]);
 		
 		
 		//echo 'time in aap' . $time1;
 		//echo "<br>";
 		
 		
-		if ($result_dated < $time1){
+		if ($result_dated < $time2){
 			$X = $row[1];
 			$Y = $row[2];
 			$W[] = array($row[3] => array($X,$Y));
@@ -83,22 +60,25 @@ if ($timed == 0){
 }
 
 
-else{
+elseif ($timed == 1){
+	
 	$time_value = $times;
 	$time_now = time();
 	//no problem with subtraction 
 	
 	while ($row = mysqli_fetch_array($result1)){
-		$time1 = strtotime($row[3]);
-		
-		if (($time1 > ($time_now-$time_value))&&( $time1 <=$time_now)&&($result_dated < $time1)){
+		$time3 = strtotime($row[3]); //same time zone as time()
+
+		/*
+		if (($time3 > ($time_now-$time_value))&&( $time3 <= $time_now)&&($result_dated < $time3)){}
+		*/
+		if (($time3 > ($time_now-$time_value)) && ($result_dated < $time3)){
 			$X = $row[1];
 			$Y = $row[2];
 			$W[] = array($row[3] => array($X,$Y));
 		}
-		
 	}
-	
 	echo json_encode($W);
+	
 }
 ?>
