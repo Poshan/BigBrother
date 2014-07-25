@@ -13,78 +13,107 @@
  <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
   <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <style>
-   #top-bar{
-      height: 45px;
-      width : 500px;
-      position: relative;
-      z-index: 1001;
-      background-color:#EDE8A6;
-      
+    #top-bar{
+          height: 45px;
+          width : 500px;
+          position: relative;
+          z-index: 1001;
+          background-color:#EDE8A6;   
     }
+    
     #container{
-      top : 0px;
-      left:500px;
-      height:45px;
-      width:500px;
-      position: absolute;
-      background-color:darkkhaki;
-      
+    top : 0px;
+    left:500px;
+    height:45px;
+    width:500px;
+    position: absolute;
+    background-color:darkkhaki  
     }
-     #top-bar1 {
-      position: absolute;
-      top: 05px;
-      left: 150px;
-      z-index: 1001;
-  font-size: 1.0em;
-  margin-top: 0.6em;
-  margin-bottom: 1em;
-  font-weight: bold;
-  padding: 4px 12px 3px;
-  margin-left: 0;
-  margin-right: 0;
-  background: #edeeef;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-
-  color: white;
-
-  background-color: #b0de5d;
-  background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); 
-  background-image: -o-linear-gradient(top, #b0de5c, #82cb00); 
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); 
-  background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); 
-  background-image: linear-gradient(top, #b0de5c, #82cb00);
-  border-radius: 5px;
-
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+    
+    #top-bar1 {
+    position: absolute;
+    top: 05px;
+    left: 150px;
+    z-index: 1001;
+    font-size: 1.0em;
+    margin-top: 0.6em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    padding: 4px 12px 3px;
+    margin-left: 0;
+    margin-right: 0;
+    background: #edeeef;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  
+    color: white;
+  
+    background-color: #b0de5d;
+    background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: -o-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); 
+    background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: linear-gradient(top, #b0de5c, #82cb00);
+    border-radius: 5px;
+  
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
   }
      #top-bar2 {
-      position: absolute;
-      top: 100px;
-      left: 50px;
-      z-index: 1001;
-  font-size: 1.0em;
-  margin-top: 0.6em;
-  margin-bottom: 1em;
-  font-weight: bold;
-  padding: 4px 12px 3px;
-  margin-left: 0;
-  margin-right: 0;
-  background: #edeeef;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-
-  color: white;
-
-  background-color: #b0de5d;
-  background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); 
-  background-image: -o-linear-gradient(top, #b0de5c, #82cb00); 
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); 
-  background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); 
-  background-image: linear-gradient(top, #b0de5c, #82cb00);
-  border-radius: 5px;
-
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    z-index: 1001;
+    font-size: 1.0em;
+    margin-top: 0.6em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    padding: 4px 12px 3px;
+    margin-left: 0;
+    margin-right: 0;
+    background: #edeeef;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  
+    color: white;
+  
+    background-color: #b0de5d;
+    background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: -o-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); 
+    background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: linear-gradient(top, #b0de5c, #82cb00);
+    border-radius: 5px;
+  
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+  }
+  
+       #top-bar3 {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    z-index: 1001;
+    font-size: 1.0em;
+    margin-top: 0.6em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    padding: 4px 12px 3px;
+    margin-left: 0;
+    margin-right: 0;
+    background: #edeeef;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  
+    color: white;
+  
+    background-color: #b0de5d;
+    background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: -o-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#c0de5d), to(#82cb00)); 
+    background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); 
+    background-image: linear-gradient(top, #b0de5c, #82cb00);
+    border-radius: 5px;
+  
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
   }
     #map{
       
@@ -152,14 +181,9 @@
         <div id ="map">
         </div>
         <script type = "text/javascript" src = "maps.js"></script>
-      </div>
-      
-     
-      
+      </div>    
       <div class="tab-pane" id="profile">
       <div id= "name" align="center">
-      
-      <!--instead make another ajax call to find out name-->
       <h1 id = 'user_name'></h1>
   </div>
         <div id ="prof">These are your viewable persons </br> </div>
@@ -488,12 +512,13 @@
           u are currently offline 
           go back to <a href = 'index.php'>login page</a>
     </div>
+    <div id = "top-bar3"></div>
   <script type="text/javascript">
         var coords = {};
         var latlng = [];
         var image_link = '';
         $('#top-bar1').hide();
-        
+        $('#top-bar3').hide();
         /*
          call the history page when clicked on the view tracks button
         */
@@ -529,136 +554,129 @@
           display(coords);
           
         }
-        function locationnotavailable(a){
-          console.log(a);
+        function locationnotavailable(b){
+          var contents = '';
+          for (var i = b.length - 1; i >= 0; i--) {
+            if (b[i] == 'user'){
+              contents += 'You dont have coordinates yet';
+              contents += 'Please use <a>client app</a>';
+            contents += 'to locate yourself';
+            }
+            else{
+              contents += b[i];
+              contents += ', ';
+              contents += 'also havenot been located yet'
+            }
+            
+          };
+          
+          
+          var ddivv = document.getElementById('top-bar3');
+          ddivv.innerHTML = contents;
+          $('#top-bar3').show();
+          $('#top-bar3').delay(10000).fadeOut();
+          
         }
-        function nullchecker(a, name){
+        function nullchecker(a){
           //create an array of the persons whose locations are not known and display likewise
-          var no_location = [];
+          
           console.log('checking if the x is null');
-          console.log(name);
-          console.log(a);
+
           if (a[0] == 0 && a[1] == 0 && a[2] == 0){
-            no_location.push(name);
-            return 1;
+            return 1;           
           }
           else{
             return 0;
           }
-          locationnotavailable(no_location);
         }
         
         function display(coords){
-          /*
-            check if any of the coords is 0, 0
-          */
-          
-          
-          
           if(!(jQuery.isEmptyObject(coords))){
-          
-                var extend1 = new L.LatLngBounds(); //extend of the map
-              for (any in coords){
-                  x = coords[any]; 
-                  acc = x[2]; //accuracy
-                  img_lnk = x[3]; //link of image of the person
-              
-                  //checks if x is null
+            var no_location = [];
+                  var extend1 = new L.LatLngBounds(); //extend of the map
+            for (any in coords){
+                      x = coords[any]; 
+                      acc = x[2]; //accuracy
+                      img_lnk = x[3]; //link of image of the person
+                
+                    
+                    
+                /*
+                  pratik bro's help required for designing the icons as persons
+                  currently not in use though
+                  make icons for the persons
+                  if no image is available then make use of a default image
+                  else use the image of the person
+                */
+                    
+                    if (nullchecker(x) == 0){
                   
-              /*
-                pratik bro's help required for designing the icons as persons
-                currently not in use though
-                make icons for the persons
-                if no image is available then make use of a default image
-                else use the image of the person
-              */
+                
+                      if (!img_lnk){ 
+                          var myIcon = L.icon({
+                              iconUrl: '/uplaods/team/130803010816uLs11b.jpg',
+                              iconSize: [25,25],
+                              iconAnchor:[5,5],
+                          });
+                      }
+                      else {
+                          var myIcon = L.icon({
+                              iconUrl: img_lnk,
+                              iconSize: [25,25],
+                              iconAnchor:[5,5],
+                          });
+                      }
+             
               
-              if (nullchecker == 1){
-                console.log('your');
-              }
-                if (!img_lnk){ 
-                  var myIcon = L.icon({
-                    iconUrl: '/uplaods/team/130803010816uLs11b.jpg',
-                    iconSize: [25,25],
-                    iconAnchor:[5,5],
-                  });
-                }
-                else {
-                  var myIcon = L.icon({
-                    iconUrl: img_lnk,
-                    iconSize: [25,25],
-                    iconAnchor:[5,5],
-                  });
-                }
-            
-              //debugger;
-              //this(acc) is accuracy value scale it and then use as the radius of the circle
-            
-                var circle = L.circle(x, acc*100, {
-                  color: 'red',
-            fillColor: '#f03',
-                  fillOpacity: 0.5
-                }).addTo(map);
-            
-            
-            /*
-    this portion was used for the display of the user's own location currently the user's location
-    in the data.php is removed so this code is not used the user's own location is also shown
-    normally as others             
-            */
-            /*
-              var customIcon = L.icon({
-          iconUrl: 'images/download.jpg', 
-          iconSize:     [25, 25]
-              });
-            
-              if (any == "YOU"){
-                var marker = L.marker(x,{
-                  icon: customIcon
-                }); 
-              }
-              else{
-                //automatically takes the first two elements in this case it is lat and lon
-                var marker = L.marker(x); 
-              }
-    */
-              var marker = L.marker(x);                  
-              
-              /*
-                 instead of making the image markers the image in popup
-                 check here to show the user's own location differently
-              */
-              if (any == 'user'){
-                popupContent = user_name;
-                popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
-              }
-              else{
-                popupContent = any;  //name of the person          
-                popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       
-              }
-              marker.bindPopup(popupContent).openPopup().addTo(map);
-
-
-       /*
-        for defining the extend of the map
-       */             
-              var x1,y1;
-              for (p in x){
-                 x1 = x[0];
-                 y1 = x[1];
-                 var ll = L.latLng(x1,y1);
-                 latlng.push(ll);
-              }
-            } 
-            for (var i = 0; i < latlng.length; i++) {
-              //L.marker(latlng[i]).addTo(map);
-              extend1.extend(latlng[i]);
-            };
+                      var circle = L.circle(x, acc*100, {
+                          color: 'red',
+                    fillColor: '#f03',
+                          fillOpacity: 0.5
+                      }).addTo(map);
+                
+                
+                      var marker = L.marker(x);                  
+                
+                /*
+                   instead of making the image markers the image in popup
+                   check here to show the user's own location differently
+                */
+                      if (any == 'user'){
+                        popupContent = user_name;
+                        popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
+                      }
+                      else{
+                        popupContent = any;  //name of the person          
+                        popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       
+                      }
+                      marker.bindPopup(popupContent).openPopup().addTo(map);
   
-            map.fitBounds(extend1);
+  
+         /*
+          for defining the extend of the map
+         */             
+                      var x1,y1;
+                      for (p in x){
+                        x1 = x[0];
+                        y1 = x[1];
+                        var ll = L.latLng(x1,y1);
+                        latlng.push(ll);
+                      }
+                  }
+                  else{
+                    console.log( any + 'dont have coords');
+                    no_location.push(any);
+                  } 
+
+            }
+            locationnotavailable(no_location);
+            for (var i = 0; i < latlng.length; i++) {
+                  //L.marker(latlng[i]).addTo(map);
+                  extend1.extend(latlng[i]);
+             };
+                map.fitBounds(extend1);
+          }
         }
-        }
-        
         function notify(){
           var ddiv = document.getElementById('top-bar2');
               var content = 'You have not yet submitted any location, please submit the ';
