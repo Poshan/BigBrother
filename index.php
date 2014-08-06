@@ -3,13 +3,14 @@
 	if (isset($_SESSION['namm']) || isset($_SESSION['idd'])){
 		header('Location:query_mod.php');
 	}
+	
 	$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']); 
 
 	// make a note of the location of the upload handler script 
 	$uploadHandler = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'upload.processor.php'; 
 
 	// set a max file size for the html upload form 	
-$max_file_size = 100000; // size in bytes 
+	$max_file_size = 1000000; // size in bytes 
 ?>
 
 <html>
@@ -35,7 +36,7 @@ $max_file_size = 100000; // size in bytes
 </h1>
 <div id ="formContent">
 	<div id ="form">
-		<form action="insertion.php" method="post">
+		<form action="<?php echo $uploadHandler ?>" enctype="multipart/form-data" method="post">
 			<div class="row">
 			<div class="label"> User Name*</div><!--end .label-->	
 			<div class="input">
@@ -59,36 +60,27 @@ $max_file_size = 100000; // size in bytes
 			<input type="password" id="password" class="detail" name="password" value="" required = "required"/>
 			</div><!--end of .input-->
 			<div class="context">could be combination of numbers and letters</div><!--end of .context-->
-			</div><!--end of .row-->	
-
-			<div class="submit">
-				<input type="submit" id="submit" name="submit" value="submit"/>
+			</div><!--end of .row-->
+			
+			<div class="row">
+			<div class="label">Photo</div><!--end .label-->	
+			<div class="input">
+			<input type="file" id="file" class="detail" name="file"/>
+			</div><!--end ofg .input-->
+			<div class="context"><?php echo'max filesize is' . $max_file_size . 'bytes'; ?></div><!--end of .context-->
+			</div><!--end of .row-->
+			
+        		<div class="submit">
+			<input type="submit" id="submit" name="submit" value="submit"/>
 			</div><!--end of .submit-->
+                 
 		</form><!--end of the form-->
 		* are compulsary fields</br>
 		<?php echo $error_messege;?>
 
-		<form id="Upload" action="<?php echo $uploadHandler ?>" enctype="multipart/form-data" method="post"> 
+
+
      
-        <h1> 
-            Upload form 
-        </h1> 
-         
-        <p> 
-            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max_file_size ?>"> 
-        </p> 
-         
-        <p> 
-            <label for="file">File to upload:</label> 
-            <input id="file" type="file" name="file"> 
-        </p> 
-                 
-        <p> 
-            <label for="submit">Press to...</label> 
-            <input id="submit" type="submit" name="submit" value="Upload me!"> 
-        </p> 
-     
-    </form> 
 	</div><!--end #form-->
 </div><!--end of formContent-->
 
