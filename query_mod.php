@@ -45,7 +45,8 @@
       <div id= "name" align="center">
       <h1 id = 'user_name'></h1>
   </div>
-        <div id ="prof">These are persons you can view location of</br> </div>
+        <div id ="prof">These are persons you can view location of </div>
+        </br>
         <script>
 
            var person_obj1 = {};
@@ -102,8 +103,9 @@
           
            });    
         </script>
-        
-        <div id ="viewes">These are persons viewing your location</br> </div>
+        </br>
+        <div id ="viewes">These are persons viewing your location </div>
+      </br>
         <script>
 
            var person_obj1 = {};
@@ -179,7 +181,9 @@
             else if (what == 'no'){
               var content = 'you rejected the request'
             }
-            
+            else if (what == 'own'){
+              var content = 'Already a connection, No need to send request to self'
+            }
             else if (what == 'al'){
               var content = 'Already a connection';
             }
@@ -239,14 +243,8 @@
                 on_top_bar('no');
                     
                }
-   
-                  //requests();
-         }
-                
-            
+         }  
             });
-            
-            
           }
           
           function create_table_fromm(obj){
@@ -254,7 +252,7 @@
                 //check for null value of obj if null then show 'no requests'
                 if (jQuery.isEmptyObject(obj)){
                   var panel = document.getElementById('requests');
-                  panel.innerHTML = 'No incomming list';
+                  panel.innerHTML = 'No incomming request';
                 }
                 else{
                   //var prof1 = dddiv;
@@ -337,8 +335,12 @@
                   uuuid : id_req
               },
               success: function(output){
+             
                 if (output == 'yes'){
                   on_top_bar('yes');
+                }
+                else if (output == 'own'){
+                  on_top_bar('own');
                 }
                 else if (output == 're'){
                   on_top_bar('re');
@@ -349,6 +351,7 @@
                 else if (output != 'yes'){
                   on_top_bar('no');
                 }
+     
               }
             });
           }
@@ -409,9 +412,8 @@
                 document.getElementById("search-button").disabled = false;
                 selected = ui;
               }
-              
-                });
             });
+          });
       function connect(){
         //debugger;
         //console.log(selecte)
@@ -521,14 +523,15 @@
                       x = coords[any]; 
                       acc = x[2]; //accuracy
                       img_lnk = x[3]; //link of image of the person
-                
+               
                     
                     
                 /*
                   pratik bro's help required for designing the icons as persons
                   currently not in use though
                   make icons for the persons
-                  if no image is available then make use of a default image
+                  if 
+                   is available then make use of a default image
                   else use the image of the person
                 */
                     
@@ -537,7 +540,7 @@
                 
                       if (!img_lnk){ 
                           var myIcon = L.icon({
-                              iconUrl: '/uplaods/team/130803010816uLs11b.jpg',
+                              iconUrl: 'images/image.jpg',
                               iconSize: [25,25],
                               iconAnchor:[5,5],
                           });
