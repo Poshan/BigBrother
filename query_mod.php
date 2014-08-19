@@ -319,11 +319,11 @@
               
             
         </script>
-        <div id = 'suggestions1'> 
+        <!--<div id = 'suggestions1'> 
           You may want to connect to followings
-        </div>
+        </div>-->
         <script type="text/javascript">
-          var suggestionObj = {};
+          /*var suggestionObj = {};
           suggestions();
           function sendreqTo(req_id){
             var id_req = req_id;
@@ -422,7 +422,7 @@
         sendreqTo(idz);
         //notify the user at the request sent
         
-      }
+      }*/
         </script>  
         </br>
   <div>
@@ -440,8 +440,8 @@
     <div id = "top-bar3"></div>
   <script type="text/javascript">
         var coords = {};
-        var latlng = [];
         var image_link = '';
+        var markerlayergr = L.layerGroup();
         $('#top-bar1').hide();
         $('#top-bar3').hide();
         /*
@@ -475,9 +475,8 @@
                       coords[name] = ins; 
                     }               
                 }
-          }
+              }
           display(coords);
-          
         }
         function locationnotavailable(b){
           var contents = '';
@@ -516,9 +515,21 @@
         }
         
         function display(coords){
+          console.log('at test one');
+          
+          /*if (circle || marker){
+            // circle nd marker 
+            console.log('circle and markers already there need now clear');
+          }
+          if (map.hasLayer(circle) || map.hasLayer(marker)){
+            map.removeLayer(circle);
+            map.removeLayer(marker);
+          }
+          */
           if(!(jQuery.isEmptyObject(coords))){
             var no_location = [];
-                  var extend1 = new L.LatLngBounds(); //extend of the map
+            var latlng = [];
+            var extend1 = new L.LatLngBounds(); //extend of the map
             for (any in coords){
                       x = coords[any]; 
                       acc = x[2]; //accuracy
@@ -554,14 +565,16 @@
                       }
              
               
-                      var circle = L.circle(x, acc*100, {
+                      circle = L.circle(x, acc*100, {
                           color: 'red',
-                    fillColor: '#f03',
+                    	  fillColor: '#f03',
                           fillOpacity: 0.5
-                      }).addTo(map);
+                      });
+
+                      markerlayergr.addLayer(circle);
                 
                 
-                      var marker = L.marker(x);                  
+                      marker = L.marker(x);                  
                 
                 /*
                    instead of making the image markers the image in popup
@@ -575,10 +588,11 @@
                         popupContent = any;  //name of the person          
                         popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       
                       }
-                      marker.bindPopup(popupContent).openPopup().addTo(map);
+                      marker.bindPopup(popupContent).openPopup();
+                      markerlayergr.addLayer(marker);
   
-  
-         /*
+                      markerlayergr.addTo(map);
+         /*         
           for defining the extend of the map
          */             
                       var x1,y1;
@@ -610,7 +624,6 @@
               content+= '<a> Google Play Store. </a> ';
               content+= 'In the meantime you can try searching and adding people you know, who are on tracker.';
               ddiv.innerHTML = content;
-              
               $('#top-bar2').show();
           
         }
@@ -625,31 +638,90 @@
         /*
           call the data.php for the coordinates, accuracy, image_link of the persons visible by user
         */
-        
-        $.ajax({
-          url:'data.php',
-          type: 'post',
-          datatype: 'json',
-          success:function (output){
-            /*
-            if (output == 'first'){
-              //you dont have any location 
-              //this is default location for everyone
-              //downlod client app to locate yourself
-              //search others and connect to see their location
-              first_map();
-            }
-            
-            else{*/
-              //console.log('inside success function');
-              jso = JSON.parse(output);
-              check(jso);
-            //}
-          }
 
-        });
+
+
+        var check_object = {};
+        function  check_for_change_in_coordinates(a){
+          //need to write better algorithm than this for checking the change in the coordinates
+          if ( JSON.stringify(a) === JSON.stringify(check_object) ){
+            //no change in objects
+            return false;
+          }
+          else {
+            check_object = a;
+            return true;
+          }
+        }
+	      
+        function checker(){
+          // console.log('inside the checker');
+          $.ajax({
+            url:'data.php',
+            type: 'post',
+            datatype: 'json',
+            success:function (output){
+              /*
+              if (output == 'first'){
+                //you dont have any location 
+                //this is default location for everyone
+                //downlod client app to locate yourself
+                //search others and connect to see their location
+                first_map();
+              }
+              
+              else{*/
+                //console.log('inside success function');
+                jso = JSON.parse(output);
+                //check for the change in the length of the jso
+                //bad idea bcoz there wont be change in the length of the jso file.....
+                //so check the coordinates' change 
+                //debugger;
+                
+                // check_for_change_in_coordinates(jso);
+                /*for (var i = jso.length - 1; i >= 0; i--) {
+                  var checker_array = [];
+                  checker_array.push(check_for_change_in_coordinates(jso[i]));
+                };
+                
+
+
+                if (jso.length > length_check){             	
+                	check(jso);
+                	// length_check = jso.length;	
+                }*/
+                if (check_for_change_in_coordinates(jso) == true){
+                  if (markerlayergr){
+                    // console.log('simple man');
+                    markerlayergr.clearLayers();
+                  }
+                  console.log('gone for test');
+                  check(jso);
+                }
+                
+              //}
+            }
+
+          });
+        }
+        var logged = [];
+        function logged1(){
+          if (logged.length == 0){
+            logged.push('firstload');
+            checker();
+            // console.log('at the point of test');
+            logged1();
+          }
+          else if (logged.length > 0){
+            // console.log('at the test point 2');
+            interval = window.setInterval(checker,10000);
+            logged.push('nonfirstload');
+          }
+        }
+        logged1();
+
         
-        
+                
         //var user_name = '<?php echo $user_name;?>';
         
 

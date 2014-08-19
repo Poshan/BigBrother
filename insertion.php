@@ -1,14 +1,8 @@
 <?php
 
 	include "connection.php";
-	$directory_self = str_replace(basename($_SERVER['PHP_SELF']), '', $_SERVER['PHP_SELF']); 
-	$uploadsDirectory = $_SERVER['DOCUMENT_ROOT'] . $directory_self . 'uploaded_files/'; 
-	$uploadForm = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'index.php'; 
-	$uploadSuccess = 'http://' . $_SERVER['HTTP_HOST'] . $directory_self . 'upload.success.php'; 
-	$fieldname = 'file';
 
-	
-	if ((!empty($_POST['fname']))&&(!empty($_POST['password']))&&isset($_POST['submit'])){
+	if ((!empty($_POST['fname']))&&(!empty($_POST['password']))){
 		if ($_FILES[$fieldname]['error'] == 0)
 		$name = $_POST["fname"];
 		$phone = $_POST["phone"];

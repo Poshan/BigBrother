@@ -16,23 +16,16 @@
 		$user_id = $rows[0];
 	}
 	if (md5($password_input) == $password_from_db){ 
-	
-	//get the user id from the db 
-	
-		$sql1 = "SELECT `id` FROM `user` WHERE `name` ='" . $name . "'";
+		$sql1 = "SELECT `id` FROM `user` WHERE `name` ='" . $name_input . "'";
 		$result1 = mysqli_query($con,$sql1) or die(mysqli_error($con));
 	
 		if (!result1){ 
 			echo 0;
-	
 		}
 		else{
-			//also check the authentication credentials
 			while($row = mysqli_fetch_array($result1)){
 				$id = $row['id'];
 			}
-		
-		
 			echo $id;
 		}
 	}
