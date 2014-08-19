@@ -18,7 +18,7 @@
 					$sql2 = "SELECT * FROM `person`WHERE `person_id` = '" . $rows1[0] . "'";
 					$person_result = mysqli_query($con,$sql2);
 						while($row1 = mysqli_fetch_array($person_result)){
-							if ($row1[1] != $nam){
+						 	if ($row1[1] != $nam){
 								$viewe_list [] = array($row1[0]=>$row1[1]); 
 							}		
 						}	
