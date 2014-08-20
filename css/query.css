@@ -1,0 +1,163 @@
+#container{
+	width:99%;
+	height:100%;
+	background-color: beige;
+}
+#top-one{
+	position:relative;
+	height:42px;
+	padding-left: 10px;
+	background-color: darkmagenta;
+}
+#top-one>div>h1{
+	margin: 2px;
+	padding-top: 2px;
+}
+#title{
+	width:200px;
+	display:inline-block;
+}
+#settings-image-tracks{
+	display: inline-block;
+	padding-left: 500px;
+	vertical-align: text-bottom;
+}
+#view-tracks-button{
+	display: inline-block;
+}
+#settings-button-logout{
+	display: inline-block;
+}
+#settings-logout-button{
+	display: block;
+	position:relative;
+}
+#logout-button{
+	display: block;
+}
+#user-name{
+	display: inline-block;
+}
+#user-name h1{
+	margin-top: 2px;
+	font-size: 30px;
+	padding-right: 25px;
+}
+#profile-container{
+	width: 500px;
+	display: inline-block;
+	position: absolute;
+	border: solid;
+	border-color: cadetblue;
+	border-radius: 10px;
+	height: 600px;
+	margin-top: 10px;
+	margin-left: 50px;
+	padding-left: 5px;
+	z-index: 1002;
+	background-color: white;
+}
+#profile-content{
+	height:575px;
+}
+#close-icon{
+	position:relative;
+}
+#open-profile-container{
+	padding-top: 10px;
+	left:15px;
+	top:100px;
+	position:absolute;
+	z-index: 1003;
+}
+#profile-container #personal-info{
+	padding-left: 10px;
+	padding-right: 10px;
+	/*display: inline-block;*/
+	/*width: 180px;
+	border:solid;
+	border-color:cadetblue;
+	border-radius: 10px;*/
+	height: 100px;
+
+}
+/*#profile-container #lists{
+	display: inline-block;	
+	width: 400px;
+	border:solid;
+	border-width: 2px;
+	border-color:cadetblue;
+	height: 470px;
+	border-radius: 10px;
+}
+
+#profile-container #viewings{
+	display: inline-block;
+	width: 400px;
+	border:solid;
+	border-color:cadetblue;
+	height: 470px;
+	border-width: 2px;
+	border-radius: 10px;
+}
+#profile-container #viewes{
+	display: inline-block;
+	width: 400px;
+	border:solid;
+	border-radius: 10px;
+	border-color:cadetblue;
+	height: 470px;
+	border-width: 2px;
+}
+*/
+#personal-info #username{
+	display: inline-block;
+}
+#personal-info #image{
+	display: inline-block;
+	padding-top:5px;
+	width: 100px;
+}
+#personal-info #search{
+	display: inline-block;
+	padding-left: 15px;
+}
+#personal-info #image img{
+	height: 80px;
+	width:100px;
+}
+
+#list-holder{
+	
+}
+#map{
+	z-index:1001;
+	height:100%;
+}
+/*#close-icon{
+	display: inline-block;
+}*/
+.tab-content{
+	height:450px;
+}
+.tab-content #viewing-pane{
+	height:430px;
+	overflow-y: scroll;
+}
+
+
+.tab-content #viewes-pane{
+	height:430px;
+	overflow-y: scroll;
+}
+.tab-content #lists-pane{
+	height:430px;
+	overflow-y: scroll;
+
+}
+.open>.dropdown-menu {
+	/*
+	logout button
+	*/
+	z-index: 1003
+}
