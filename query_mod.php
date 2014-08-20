@@ -7,443 +7,104 @@
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.label/leaflet.label.css" />
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"/>
-  <link rel = "stylesheet" href="css/query_css.css"/>
+  <link rel="stylesheet" href="css/query.css"/>
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
   <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
  <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
   <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  <script type = 'text/javascript' src = 'js/name_image.js'></script>
-</head>     
-<body>
-<div id = "top-bar">
-  <h1>Tracker</h1>
   
-    <div id="container">
-  <button type="button" id="loading-example-btn" data-loading-text="Loading..." class="btn btn-primary" onclick= "button_click()">View Tracks            
-  </button>
+
+</head>     
+<body> 
+  <div id= "container">
+  <div id="top-one">
+    <div id = "title">
+      <h1>Tracker</h1>
+    </div>
+    <div id = "settings-image-tracks">
+      <div id = "user-name">
+        <h1 id = "user-name-h1"></h1>
+      </div>
+      <div id = "view-tracks-button">
+        <button type="button" id="view-tracks" class="btn btn-primary" onclick= "button_click()">
+          View Tracks            
+          </button>
+        </div>
+        
+        <div id = "settings-button-logout">
+          <div id = "settings-logout-button">
             <button data-toggle="dropdown" class="btn btn-info dropdown-toggle">Settings <span class="caret"></span></button>
             <ul class="dropdown-menu">
-                <li><a href="http://kathmandulivinglabs.org/tracker/logout.php">Logout</a></li>        
-            </ul>
-        </div>       
-</div>
+                    <li><a href="http://kathmandulivinglabs.org/tracker/logout.php">Logout</a></li>        
+                </ul>
+          </div>
+      </div>  
+    </div>
+  </div>
+  <div id = "open-profile-container">
+    <a href="#" onclick = "openTheContainer()">Profile</a>
+  </div>
   
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-      <li><a href="#profile" data-toggle="tab">Profile</a></li>
-    </ul>
-
-      <!-- Tab panes -->
-    <div class="tab-content">
-      <div class="tab-pane active" id="home">
-        <div id ="map">
-        </div>
-        <script type = "text/javascript" src = "js/maps.js"></script>
-      </div>    
-      <div class="tab-pane" id="profile">
-      <div id= "name" align="center">
-      <h1 id = 'user_name'></h1>
-  </div>
-        <div id ="prof">These are persons you can view location of </div>
-        </br>
-        <script>
-
-           var person_obj1 = {};
-           function create_table_from(obj){
-           
-              //var prof1 = dddiv;
-                var panel = document.getElementById('prof');
-                
-                
-                //var input1 = document.createElement("input");
-    //input1.name = "post";
-                //panel.appendChild(input1);
-              
-              //var panel = document.getElementById(prof1);
-              var rdiv = document.createElement('div');
-              rdiv.setAttribute("class", "btn-group");
-              rdiv.setAttribute("data-toggle", "modal");
-              
-              panel.appendChild(rdiv);
-              //input1.appendChild(rdiv);
-              
-              for (a in obj){
-                  var button = document.createElement('input');
-                  button.setAttribute("class","btn btn-primary")
-                  button.type = 'button';
-                  button.name = 'options';
-                  button.id = a; 
-                  button.value = obj[a];
-                  rdiv.appendChild(button);
-              }
-            }
-         
-            
-            $.ajax({
-            url : 'person_list.php',
-            type : 'post',
-            data: {
-                index:1
-            },
-            datatype:'json',
-            success: function(output){
-            
-                //console.log(output);
-                  a = JSON.parse(output); 
-                    for (any in a){ 
-                    b = a[any];
-                    for (anyth in b){
-                        person_obj1[anyth] = b[anyth]
-                    }
-                    }
-                //create_table_from(person_obj1,'prof');
-                  create_table_from(person_obj1);
-              }
-          
-           });    
-        </script>
-        </br>
-        <div id ="viewes">These are persons viewing your location </div>
-      </br>
-        <script>
-
-           var person_obj1 = {};
-           function create_table_from(obj){
-           
-              //var prof1 = dddiv;
-                var panel = document.getElementById('viewes');
-                
-                
-                //var input1 = document.createElement("input");
-    //input1.name = "post";
-                //panel.appendChild(input1);
-              
-              //var panel = document.getElementById(prof1);
-              var rdiv = document.createElement('div');
-              rdiv.setAttribute("class", "btn-group");
-              rdiv.setAttribute("data-toggle", "modal");
-              
-              panel.appendChild(rdiv);
-              //input1.appendChild(rdiv);
-              
-              for (a in obj){
-                  var button = document.createElement('input');
-                  button.setAttribute("class","btn btn-primary")
-                  button.type = 'button';
-                  button.name = 'options';
-                  button.id = a; 
-                  button.value = obj[a];
-                  rdiv.appendChild(button);
-              }
-            }
-         
-            
-            $.ajax({
-            url : 'viewes.php',
-            type : 'post',
-            data: {
-                index:1
-            },
-            datatype:'json',
-            success: function(output){
-            
-                //console.log(output);
-                  a = JSON.parse(output); 
-                    for (any in a){ 
-                    b = a[any];
-                    for (anyth in b){
-                        person_obj1[anyth] = b[anyth]
-                    }
-                    }
-                //create_table_from(person_obj1,'prof');
-                  create_table_from(person_obj1);
-              }
-          
-           });
-            
-           
-          
-        
-        </script>
-        
-        <div id = 'requests'>These are the requests incomming</div>
-        <script>
-          
-          var incom_request ={};
-          requests();
-          function on_top_bar(what){
-            //debugger;
-            if (what == 'yes'){
-              var content = 'You added a new person'
-            }
-            
-            else if (what == 'no'){
-              var content = 'you rejected the request'
-            }
-            else if (what == 'own'){
-              var content = 'Already a connection, No need to send request to self'
-            }
-            else if (what == 'al'){
-              var content = 'Already a connection';
-            }
-            else if (what == 're'){
-              var content = 'Request already sent';
-            }
-            var ddiv = document.getElementById('top-bar1');
-            ddiv.innerHTML = content;
-            
-            $('#top-bar1').show();
-            $('#top-bar1').delay(1000).fadeOut();
-            //$('#accept_reject').hide();
-            
-            //name of the id required
-          }
-          function clickfunction(id, acn, div_name){
-            //id is the id of request "pathaune manchhey"
-            //if this is the acceptance buttons' click function make actn=0 and send to the same php
-            // debugger;
-            console.log(div_name);
-            actn = acn;
-            // node = document.getElementById(div_name);
-            
-            $.ajax({
-              url : "requests_responses.php",
-              type:'post',
-              data: {
-                action: actn,
-                req_id : id         
-              },
-              success: function(output){
-                  //debugger;
-                  //console.log(output);
-                /*
-                while (node.firstChild){
-                    node.removeChild(node.firstChild);
-                }
-                */
-                if (actn == 1){
-                  // node.innerHTML = 'Accepted';
-                  div_name.innerHTML = 'Accepted';
-                }
-                else if (actn == 2){
-                  // node.innerHTML = 'Rejected';
-                  div_name.innerHTML = 'Rejected';
-              
-                }
-             
-             if (output == 'yes'){
-                    
-                  on_top_bar('yes');
-               
-                    
-             }
-                  
-              else if (output == 'no'){
-                on_top_bar('no');
-                    
-               }
-         }  
-            });
-          }
-          
-          function create_table_fromm(obj){
-                // debugger;
-                //check for null value of obj if null then show 'no requests'
-                if (jQuery.isEmptyObject(obj)){
-                  var panel = document.getElementById('requests');
-                  panel.innerHTML = 'No incomming request';
-                }
-                else{
-                  //var prof1 = dddiv;
-                  var panel = document.getElementById('requests');
-                  //var panel = document.getElementById(prof1);
-                              
-                  for (a in obj){
-                      var named = document.createElement('div');
-                      named.innerHTML = obj[a];
-                      panel.appendChild(named);
-                      var rdiv = document.createElement('div');
-                      rdiv.setAttribute("class", "btn-group");
-                      rdiv.setAttribute("data-toggle", "modal");
-                      rdiv.setAttribute("id", obj[a]);
-                      panel.appendChild(rdiv);
-                      var button = document.createElement('input');
-                      button.setAttribute("class","btn btn-primary");
-                      button.type = 'button';
-                      button.name = 'options';
-                      button.id = a; 
-                      div_name = obj[a];
-                      button.value = 'approve';
-                      button.setAttribute("onclick","clickfunction(this.id,1,"+div_name+")");
-                      
-                      rdiv.appendChild(button);
-                      
-                      //reject button
-                      var button_rej = document.createElement('input');
-                      button_rej.setAttribute("class", "btn btn-primary");
-                      button_rej.type = 'button';
-                      button_rej.name = 'options';
-                      button_rej.id = a;
-                      button_rej.value = 'Decline';
-                      button_rej.setAttribute("onclick","clickfunction(this.id,2,"+div_name+")");
-                                     
-                      rdiv.appendChild(button_rej);
-                   }
-               }
-            
-            };
-          
-          function requests(){
-              $.ajax({
-                url:'requests.php',
-                datatype:'json',
-                type: 'post',
-                data:{request_type:1},//1 means incoming requests
-                success:function(output){
-                    //debugger;
-                    a = JSON.parse(output); 
-                        for (any in a){ 
-                      b = a[any];
-                      for (anyth in b){
-                        incom_request[anyth] = b[anyth]
-                      }
-                       }
-                  //create_table_from(incom_request,'requests');
-                    console.log(incom_request);
-                    create_table_fromm(incom_request);
-                  }
-              
-                  });
-           }
-              
-            
-        </script>
-        <!--<div id = 'suggestions1'> 
-          You may want to connect to followings
+  <div id="profile-container">
+    <div id = "profile-content">
+      <div id="personal-info">
+        <!--<div id ="username">
+          <h1>
+            username
+          </h1>
         </div>-->
-        <script type="text/javascript">
-          /*var suggestionObj = {};
-          suggestions();
-          function sendreqTo(req_id){
-            var id_req = req_id;
-            console.log(req_id);
-            $.ajax({
-              url: 'sendreq.php',
-              type: 'post',
-              data: {
-                  uuuid : id_req
-              },
-              success: function(output){
-             
-                if (output == 'yes'){
-                  on_top_bar('yes');
-                }
-                else if (output == 'own'){
-                  on_top_bar('own');
-                }
-                else if (output == 're'){
-                  on_top_bar('re');
-                }
-                else if (output == 'al'){
-                  on_top_bar('al');
-                }
-                else if (output != 'yes'){
-                  on_top_bar('no');
-                }
-     
-              }
-            });
-          }
-          function create_table_frommm(obj){
-            console.log(obj);
-            var panell = document.getElementById('suggestions1');
-            for (a in obj){
-              
-              var nammm = document.createElement('div'); 
-              nammm.innerHTML = obj[a];
-              panell.appendChild(nammm);
-              
-              var rdivv = document.createElement('div');
-              rdivv.setAttribute("class", "btn-group-vertical");
-                  rdivv.setAttribute("data-toggle", "modal");
-                  panell.appendChild(rdivv);
-              var button1 = document.createElement('input');
-                  button1.setAttribute("class","btn btn-primary");
-                    button1.type = 'button';
-                    button1.name = 'options';
-                    button1.id = a; 
-                  //button.value = obj[a];
-                  button1.value = 'send REq';
-                  button1.setAttribute("onclick","sendreqTo(this.id,1)");
-                  rdivv.appendChild(button1);
-              
-            }
-            
-          
-          }
-          
-          function suggestions(){
-            //call suggestions.php to get the suggestions
-            $.ajax({
-              url:'suggestions.php',
-              type:'post',
-              datatype: 'json',
-              success: function(output){
-                //function called
-                a = JSON.parse(output);
-                for (sth in a){
-                  b = a[sth];
-                  for (sthh in b){
-                    suggestionObj [sthh] = b[sthh];
-                  }
-                }
-                create_table_frommm(suggestionObj);
-              } 
-            });
-          }
-          selected = {};
-          $(function(){
-            $("#search").autocomplete({
-              source:"search.php",
-              minLength:2,
-              select:function(event,ui){
-                console.log(ui);
-                document.getElementById("search-button").disabled = false;
-                selected = ui;
-              }
-            });
-          });
-      function connect(){
-        //debugger;
-        //console.log(selecte)
-        idz = selected.item['person_id'];
-        //selected
-        sendreqTo(idz);
-        //notify the user at the request sent
-        
-      }*/
-        </script>  
-        </br>
-  <div>
-        <label for="search">Search:</label>
-        <input id="search" />
-        <button id = "search-button" disabled onclick = 'connect()'>Connect</button>
-  </div>
+        <div id= "image">
+          <img src = "http://kathmandulivinglabs.org/tracker/uploaded_files/1407303881-WIN_20140520_074608.JPG"/>
+        </div>
+        <div id = "search">
+              <label for="search">Search:</label>
+              <input id="search" />
+              <button id = "search-button" disabled onclick = 'connect()'>Connect</button>
+        </div>
       </div>
-      </br>  
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#viewing-pane" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>Viewing</a></li>
+            <li><a href="#viewes-pane" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>Viewes</a></li>
+            <li><a href="#lists-pane" data-toggle="tab"><span class="glyphicon glyphicon-list"></span> Lists</a></li>
+        </ul>
+        <div class = "tab-content">
+          <div class="tab-pane active" id="viewing-pane">
+            Nirab </br>
+            Nirab </br>
+            Nirab </br>
+            Nirab </br>
+            Nirab </br>
+            Nirab </br>
+            Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>
+          </div>
+          <div class="tab-pane" id="viewes-pane">
+          </div>
+          <div class="tab-pane" id="lists-pane">
+          </div>
+        </div>
     </div>
-    <div id = "top-bar1">
-          u are currently offline 
-          go back to <a href = 'index.php'>login page</a>
+    <div id = "close-icon">
+      <a href="#" onclick = "hideProfileTab()">close</a>
     </div>
-    <div id = "top-bar3"></div>
+  </div>
+  <div id= "map"></div>    
+</div>
+  <script type = 'text/javascript' src = 'js/name_image.js'></script>
+  <script src = "js/maps.js"></script>
+  <script src = "js/gui-interactivity.js"></script>
   <script type="text/javascript">
         var coords = {};
         var image_link = '';
         var markerlayergr = L.layerGroup();
-        $('#top-bar1').hide();
-        $('#top-bar3').hide();
+        //$('#top-bar1').hide();
+        //$('#top-bar3').hide();
+        console.log(user_name);
+        //user's name
+       
+
+
+
         /*
          call the history page when clicked on the view tracks button
         */
@@ -494,12 +155,12 @@
             
           };
           
-          
+          /*
           var ddivv = document.getElementById('top-bar3');
           ddivv.innerHTML = contents;
           $('#top-bar3').show();
           $('#top-bar3').delay(10000).fadeOut();
-          
+          */
         }
         function nullchecker(a){
           //create an array of the persons whose locations are not known and display likewise
@@ -588,9 +249,9 @@
                         popupContent = any;  //name of the person          
                         popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       
                       }
+                      
                       marker.bindPopup(popupContent).openPopup();
                       markerlayergr.addLayer(marker);
-  
                       markerlayergr.addTo(map);
          /*         
           for defining the extend of the map
@@ -618,7 +279,7 @@
           }
         }
         function notify(){
-          var ddiv = document.getElementById('top-bar2');
+              var ddiv = document.getElementById('top-bar2');
               var content = 'You have not yet submitted any location, please submit the ';
               content += 'location using our mobile app from ';
               content+= '<a> Google Play Store. </a> ';

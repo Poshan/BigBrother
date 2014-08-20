@@ -13,7 +13,7 @@ $.ajax({
   	   console.log(user_name);
   	   console.log(user_image);
   	}
-
+    /*
         document.getElementById('user_name').innerHTML = user_name;
         if (!user_image){
   	    console.log('no image');
@@ -36,7 +36,10 @@ $.ajax({
   	    img.positon = "fixed";
   	    panel.appendChild(img);
         }
-  	
+  	*/
+      var usernameh1div = document.getElementById('user-name-h1');
+      var contentforusername = user_name;
+      usernameh1div.innerHTML = contentforusername;
   }
   
 });
