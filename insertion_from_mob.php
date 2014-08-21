@@ -37,7 +37,7 @@ function insertion ($idd, $namee, $accuracyy, $timestampp, $XX, $YY){
 	}
 	else{
 		$sql = "UPDATE `person`
-	        SET `X_coord` ='" . $XX . "', `Y_coord` ='" . $YY . "', `accuracy` ='" . $accuracyy . "'" .
+	        SET `X_coord` ='" . $XX . "', `Y_coord` ='" . $YY . "', `accuracy` ='" . $accuracyy . "' , `location_time` ='" . $timee ."'" . 
 	        " WHERE `person_id` = '" . $idd . "'";
 	
 		mysqli_query($con,$sql) or die(mysql_error($con));
