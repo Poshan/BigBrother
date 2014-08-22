@@ -237,7 +237,7 @@
                             time_diff['hrs'] = rounded(diff_in_hrs); //rounded off to nearest hours
                           }
                         }
-                      }
+                      }p
                     
                 /*
                   pratik bro's help required for designing the icons as persons

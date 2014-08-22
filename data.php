@@ -37,15 +37,16 @@
                               $Y = $row1[3];
                               $acc = $row1[4];
                               $imag_link = $row1[5]; 
+                              $timee = $row1[6];
                              
                              
                              
                               if ($row1[1] == $user_name){
-                                $W[] = array('user' => array($X,$Y,$acc,$imag_link));
+                                $W[] = array('user' => array($X,$Y,$acc,$imag_link,$timee));
                                 
                               }
                               else{
-                                $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link));
+                                $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link,$timee));
                                 
                               }       
                           }       

@@ -15,7 +15,7 @@
 <html>
 <head>
 <title>
-test ui
+Tracker
 </title>
 <link rel="stylesheet" href="css/gui.css"/>
 <link rel="stylesheet" href="css/formcss.css"/>
