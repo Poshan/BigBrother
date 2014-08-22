@@ -11,7 +11,7 @@
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
   <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
- <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
+  <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
   <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   
 
@@ -174,9 +174,14 @@
             return 0;
           }
         }
+
+        function rounded(a){
+          //if a is in decimal round it to nearest hour
+          return (Math.round(a));
+        }
         
         function display(coords){
-          console.log('at test one');
+          // console.log('at test one');
           
           /*if (circle || marker){
             // circle nd marker 
@@ -195,8 +200,44 @@
                       x = coords[any]; 
                       acc = x[2]; //accuracy
                       img_lnk = x[3]; //link of image of the person
-               
-                    
+                      time_string = x[4]; //the time 
+                      var reggie = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
+                      var date_array = reggie.exec(time_string);
+                      date_object = new Date(
+                        (+date_array[1]),
+                        (+date_array[2])-1, 
+                        (+date_array[3]),
+                        (+date_array[4]),
+                        (+date_array[5]),
+                        (+date_array[6]) 
+                      );
+                     
+                      var utc_date = date_object.getTime()/1000;
+                      // console.log(date_object);
+                      // console.log(utc_date);
+                      //current timestamp
+                      var date_now = new Date();
+                      var utc_now = date_now.getTime()/1000;
+
+                      //for the difference 
+                      var diff_in_seconds = 0;
+                      var diff_in_minutes = 0;
+                      var diff_in_hrs = 0;
+                      var time_diff = [];
+
+                      if (utc_date){
+                        if (utc_date > 0){
+                          diff_in_seconds = utc_now - utc_date;
+                          diff_in_minutes = diff_in_seconds/60;
+                          diff_in_hrs = diff_in_minutes/60;
+                          if (diff_in_hrs < 1){
+                            time_diff['min'] = diff_in_minutes;
+                          }
+                          else if (diff_in_hrs > 1){
+                            time_diff['hrs'] = rounded(diff_in_hrs); //rounded off to nearest hours
+                          }
+                        }
+                      }
                     
                 /*
                   pratik bro's help required for designing the icons as persons
@@ -244,10 +285,18 @@
                       if (any == 'user'){
                         popupContent = user_name;
                         popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
+                        if (time_diff['min']){
+                          popupContent += '</br>' + time_diff['min'] + ' mins ago';
+                        }
+                        else if (time_diff['hrs']){
+                          popupContent += '</br>' + time_diff['hrs'] + ' hours ago';
+                        }
+                        
                       }
                       else{
                         popupContent = any;  //name of the person          
-                        popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';                       
+                        popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>'; 
+                        popupContent += '</br>' + time_diff + 'ago';                       
                       }
                       
                       marker.bindPopup(popupContent).openPopup();
