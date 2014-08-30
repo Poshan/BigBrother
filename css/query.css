@@ -143,6 +143,7 @@
 .tab-content #viewing-pane{
 	height:430px;
 	overflow-y: scroll;
+
 }
 
 
@@ -160,4 +161,74 @@
 	logout button
 	*/
 	z-index: 1003
+}
+.my-div-icon{
+	/*
+	div for the icon
+	*/
+	width: 200px;
+	height:200px;
+	border:solid;
+	border-color: rgb(35,69,98);
+	border-width: 1px;
+}
+
+
+
+.arrow_box {
+	position: relative;
+	background: #a6ccd5;
+	border: 4px solid #c9ffef;
+}
+.arrow_box:after, .arrow_box:before {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(166, 204, 213, 0);
+	border-top-color: #a6ccd5;
+	border-width: 30px;
+	margin-left: -30px;
+}
+.arrow_box:before {
+	border-color: rgba(201, 255, 239, 0);
+	border-top-color: #c9ffef;
+	border-width: 36px;
+	margin-left: -36px;
+}
+div.container{
+    border:#cccccc thin solid;
+    width:300px;
+    height:16px;
+    display:block;
+}
+div.container1>*{
+    margin-top:1px;
+    display:inline-block;
+    width: 100px;
+    height: 16px;
+    border: #cccccc thin solid;
+}
+#showHideButton {
+    background: #ccc;
+    cursor: pointer;
+    border-top: solid 2px #eaeaea;
+    border-left: solid 2px #eaeaea;
+    border-bottom: solid 2px #777;
+    border-right: solid 2px #777;
+    padding: 5px 5px;   	
+ }
+#showHideButton.down {
+    background: #bbb;
+    border-top: solid 2px #777;
+    border-left: solid 2px #777;
+    border-bottom:solid 2px  #eaeaea;
+    border-right: solid 2px #eaeaea;
 }

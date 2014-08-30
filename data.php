@@ -42,11 +42,11 @@
                              
                              
                               if ($row1[1] == $user_name){
-                                $W[] = array('user' => array($X,$Y,$acc,$imag_link,$timee));
+                                $W[] = array('user' => array($rows[1],$X,$Y,$acc,$imag_link,$timee));
                                 
                               }
                               else{
-                                $W[] = array($row1[1] => array($X,$Y,$acc,$imag_link,$timee));
+                                $W[] = array($row1[1] => array($rows[1],$X,$Y,$acc,$imag_link,$timee));
                                 
                               }       
                           }       

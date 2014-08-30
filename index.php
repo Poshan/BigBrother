@@ -90,7 +90,7 @@ Tracker
 		</div>
 	</div>
 	<div id = 'logo-image'>
-		<img src= 'img/image-logo1.jpg' height="95%" width="100%"></img>
+		<img src= 'img/image-logo1.JPG' height="95%" width="100%"></img>
 	</div>
 </div>
 </body>

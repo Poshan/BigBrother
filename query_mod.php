@@ -13,10 +13,64 @@
   <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
   <script src="http://leaflet.github.io/Leaflet.label/leaflet.label.js"></script>
   <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  
+  <script src = "js/profile-tab.js"></script>
+  <script>
+    function hidemarkers(id){
+      if (markermap){
+        //check if markerlayergr exists
+        if (markerlayergr){
+          for (any in markermap){
+            //checking for the match of the id
+            if (id == any){
+              //if the marker exists than 
+              markerlayergr.removeLayer(markermap[any]);
+            }
+          }
+        }          
+      }
+    }
+    function showmarkers(id){
+      if (markermap){
+        //check if markerlayergr exists
+        if (markerlayergr){
+          for (any in markermap){
+            //checking for the match of the id
+            if (id == any){
+              //if the marker exists than 
+              markerlayergr.addLayer(markermap[any]);
+            }
+          }
+        }          
+      }
+    }
+    //similarly make a showmarker function which adds the marker to the markerlayergr
+    function onload1() {
+      //also make the profile button visible
+      // debugger;
+      console.log('onload1');
+      $("a#showHideButton").click(function (event) {
+        //find out the id of person being clicked
+          id = event.target.title;
+        //changing the css
+        $(this).toggleClass("down");
+
+        //changing the display
+          var html = $(this).html();
+          if (html == "HIDE"){
+              $(this).html('SHOW');
+              hidemarkers(id);
+          }
+          else if (html == "SHOW"){
+              $(this).html("HIDE");
+              showmarkers(id);
+          }
+      });
+}
+
+  </script>
 
 </head>     
-<body> 
+<body onload = "onload1()"> 
   <div id= "container">
   <div id="top-one">
     <div id = "title">
@@ -70,13 +124,7 @@
         </ul>
         <div class = "tab-content">
           <div class="tab-pane active" id="viewing-pane">
-            Nirab </br>
-            Nirab </br>
-            Nirab </br>
-            Nirab </br>
-            Nirab </br>
-            Nirab </br>
-            Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>Nirab </br>
+
           </div>
           <div class="tab-pane" id="viewes-pane">
           </div>
@@ -93,15 +141,16 @@
   <script type = 'text/javascript' src = 'js/name_image.js'></script>
   <script src = "js/maps.js"></script>
   <script src = "js/gui-interactivity.js"></script>
+  <script src = "js/profile.js"></script>
   <script type="text/javascript">
         var coords = {};
         var image_link = '';
         var markerlayergr = L.layerGroup();
         //$('#top-bar1').hide();
         //$('#top-bar3').hide();
-        console.log(user_name);
-        //user's name
+        // console.log(user_name);
        
+
 
 
 
@@ -182,7 +231,7 @@
         
         function display(coords){
           // console.log('at test one');
-          
+          markermap = {};
           /*if (circle || marker){
             // circle nd marker 
             console.log('circle and markers already there need now clear');
@@ -197,10 +246,14 @@
             var latlng = [];
             var extend1 = new L.LatLngBounds(); //extend of the map
             for (any in coords){
-                      x = coords[any]; 
-                      acc = x[2]; //accuracy
-                      img_lnk = x[3]; //link of image of the person
-                      time_string = x[4]; //the time 
+                      // debugger;
+                      x = coords[any];
+                      var id = x[0];
+                      var x_co = x[1];
+                      var y_co = x[2];
+                      acc = x[3]; //accuracy
+                      img_lnk = x[4]; //link of image of the person
+                      time_string = x[5]; //the time 
                       var reggie = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
                       var date_array = reggie.exec(time_string);
                       date_object = new Date(
@@ -237,7 +290,7 @@
                             time_diff['hrs'] = rounded(diff_in_hrs); //rounded off to nearest hours
                           }
                         }
-                      }p
+                      }
                     
                 /*
                   pratik bro's help required for designing the icons as persons
@@ -249,8 +302,6 @@
                 */
                     
                     if (nullchecker(x) == 0){
-                  
-                
                       if (!img_lnk){ 
                           var myIcon = L.icon({
                               iconUrl: 'images/image.jpg',
@@ -265,23 +316,33 @@
                               iconAnchor:[5,5],
                           });
                       }
-             
-              
-                      circle = L.circle(x, acc*100, {
+                      
+                      //divicon
+                    var my_divicon = L.divIcon({
+                        className: 'arrow_box'
+                    });
+                      
+                      var coord = L.latLng(x_co,y_co);
+                      circle = L.circle(coord, acc, {
                           color: 'red',
                     	  fillColor: '#f03',
                           fillOpacity: 0.5
                       });
 
-                      markerlayergr.addLayer(circle);
-                
-                
-                      marker = L.marker(x);                  
-                
+
+                      // markerlayergr.addLayer(circle);
+                      var marker = L.marker(coord,{title:any});
+                      //adding to the marker map
+                      markermap[id] = marker;
+
+                      // marker = L.marker(x,{icon:my_divicon});  
+                      var link = '<img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
+                      $('.arrow_box').html(link);                
                 /*
                    instead of making the image markers the image in popup
                    check here to show the user's own location differently
                 */
+
                       if (any == 'user'){
                         popupContent = user_name;
                         popupContent += '</br> <img src = ' + img_lnk + ' height = ' + 42 + ' width = ' + 42 + '>';
@@ -291,7 +352,6 @@
                         else if (time_diff['hrs']){
                           popupContent += '</br>' + time_diff['hrs'] + ' hours ago';
                         }
-                        
                       }
                       else{
                         popupContent = any;  //name of the person          
@@ -307,14 +367,14 @@
          */             
                       var x1,y1;
                       for (p in x){
-                        x1 = x[0];
-                        y1 = x[1];
+                        x1 = x[1];
+                        y1 = x[2];
                         var ll = L.latLng(x1,y1);
                         latlng.push(ll);
                       }
                   }
                   else{
-                    console.log( any + 'dont have coords');
+                    // console.log( any + 'dont have coords');
                     no_location.push(any);
                   } 
 
@@ -371,6 +431,7 @@
             type: 'post',
             datatype: 'json',
             success:function (output){
+              // debugger;
               /*
               if (output == 'first'){
                 //you dont have any location 
@@ -402,10 +463,8 @@
                 }*/
                 if (check_for_change_in_coordinates(jso) == true){
                   if (markerlayergr){
-                    // console.log('simple man');
                     markerlayergr.clearLayers();
                   }
-                  console.log('gone for test');
                   check(jso);
                 }
                 
@@ -424,6 +483,7 @@
           }
           else if (logged.length > 0){
             // console.log('at the test point 2');
+
             interval = window.setInterval(checker,10000);
             logged.push('nonfirstload');
           }
@@ -457,9 +517,9 @@
          }
          
          */
-       
+
+
       
 </script>
-
 </body>
 </html>
